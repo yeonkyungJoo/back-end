@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @Entity
-@MappedSuperclass
+//@MappedSuperclass
 @Getter
 public class Content {
     @Id
