@@ -8,9 +8,22 @@ server:
       force: true
 
 spring:
+  jwt:
+    secret: devidea
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=mysql;
-    platform: h2
+    url: jdbc:h2:mem:test;
+    driver-class-name: org.h2.Driver
     username: sa
     password:
-    driverClassName: org.h2.Driver
+    h2:
+      console:
+        enabled: true
+      path: /h2-console
+    jpa:
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.H2Dialect
+      show-sql: true
+      database-platform: org.hibernate.dialect.H2Dialect
