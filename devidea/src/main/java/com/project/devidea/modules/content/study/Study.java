@@ -4,42 +4,53 @@ import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.Content;
 import com.project.devidea.modules.tag.Tag;
 import com.project.devidea.modules.zone.Zone;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Study extends Content {
+    //    @Id
+//    @GeneratedValue
+//    Long id;
     @ManyToMany
     private Set<Account> members = new HashSet<>();
-    String title;
-    String shortDescription;
-    String fullDescription;
+    private String title;
+    private String shortDescription;
+    private String fullDescription;
     @ManyToMany
-    Set<Tag> tags;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "locationid")
-    Zone location;
-
-    boolean recruiting;
-
-    boolean open;
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_id")
-    Account admin;
+    @JoinColumn(name = "location_id")
+    private Zone location;
 
-    int maxCount;
+    private boolean recruiting;
+    private LocalDate PublishedDateTime;
+    private boolean open;
+    private int Likes = 0;
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "admin_id")
+//    Account admin;
 
-    Level level;
+    private int maxCount;
 
-    Boolean mentoRecruiting;
+    private Level level;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "mento_id")
-    Account mento;
+    private Boolean mentoRecruiting;
 
-    String question;
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "mento_id")
+//    Account mento;
+
+    private String question;
     //StudyBoard studyBoard
 }

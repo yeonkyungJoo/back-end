@@ -1,19 +1,16 @@
 package com.project.devidea.modules.content;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
+import javax.persistence.*;
+import java.io.Serializable;
 @Entity
 @MappedSuperclass
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Content {
     @Id
     @GeneratedValue
-    private Long id;
-
+    Long id;
 }
