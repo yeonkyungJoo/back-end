@@ -10,40 +10,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Study /*extends Content*/ {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Study extends Content {
+    @ManyToMany
+    private Set<Account> members = new HashSet<>();
+    String title;
+    String shortDescription;
+    String fullDescription;
+    @ManyToMany
+    Set<Tag> tags;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "locationid")
+    Zone location;
 
-//    @ManyToMany
-//    private Set<Account> members = new HashSet<>();
-//    String title;
-//    String shortDescription;
-//    String fullDescription;
-//    @ManyToMany
-//    Set<Tag> tags;
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "locationid")
-//    Zone location;
-//
-//    boolean recruiting;
-//
-//    boolean open;
-//
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "admin_id")
-//    Account admin;
-//
-//    int maxCount;
-//
-//    Level level;
-//
-//    Boolean mentoRecruiting;
-//
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "mento_id")
-//    Account mento;
-//
-//    String question;
-//    //StudyBoard studyBoard
+    boolean recruiting;
+
+    boolean open;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id")
+    Account admin;
+
+    int maxCount;
+
+    Level level;
+
+    Boolean mentoRecruiting;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "mento_id")
+    Account mento;
+
+    String question;
+    //StudyBoard studyBoard
 }

@@ -19,6 +19,7 @@ class AccountRepositoryTest {
         accountRepository.save(
                 Account.builder()
                         .id(1L)
+                        .name("고범석")
                         .nickname("hello")
                         .email("ko@naver.com")
                         .password("1234")
