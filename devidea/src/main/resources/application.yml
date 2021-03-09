@@ -14,3 +14,16 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
+
+  jpa: #띄어쓰기 2칸
+    hibernate:
+      ddl-auto: create #띄어쓰기 6칸
+    properties: #띄어쓰기 4칸
+      hibernate: #뛰어쓰기 6칸
+        show_sql: true
+        format_sql: true #띄어쓰기 8칸
+        default_batch_fetch_size: 1000
+logging.level: #띄어쓰기 없음
+      #  org.hibernate.SQL: debug #띄어쓰기 2칸
+  org.hibernate.type.descriptor.sql: trace
+  root: info
