@@ -35,24 +35,35 @@ public class Tag implements Serializable {
     @Column(unique = true)
     private String thirdName;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="parent_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     private Tag parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent")
-    private List<Tag> children=new ArrayList();
+    private List<Tag> children = new ArrayList();
 
     //연관메서드
-    public void addChild(Tag child){
+    public void addChild(Tag child) {
         this.children.add(child);
-        child.parent=this;
+        child.parent = this;
     }
+    //편의 메서드
+    public Boolean contains(String name) {
+        return firstName.equals(name) ||
+                (secondName != null &&
+                        secondName.equals(name)) ||
+                (thirdName != null &&
+                        thirdName.equals(name));
+
+    }
+
     @Override
-    public String toString(){
-        String result= "firstName:"+firstName+
-                ",secondName:"+secondName+
-                ",thirdName:"+thirdName+
+    public String toString() {
+        String result = "firstName:" + firstName +
+                ",secondName:" + secondName +
+                ",thirdName:" + thirdName +
                 ", parent:";
-        return result+=parent!=null?parent.firstName:"null";
+        return result += parent != null ? parent.firstName : "null";
     }
 }

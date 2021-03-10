@@ -7,5 +7,6 @@ import java.util.List;
 public interface ZoneRepository extends JpaRepository<Zone, Long> {
     List<Zone> findAll();
     Zone findByCityAndProvince(String cityName, String provinceName);
+
 }
 
