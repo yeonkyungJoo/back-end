@@ -3,6 +3,7 @@ package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
+import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import com.project.devidea.modules.account.form.SignUpResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -28,16 +33,6 @@ public class AccountService {
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final ModelMapper modelMapper;
-
-    private void authenticate(String email, String password) throws Exception{
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
-    }
 
 //    회원가입
     public SignUpResponseDto save(SignUpRequestDto signUpRequestDto) {
@@ -55,11 +50,34 @@ public class AccountService {
         return modelMapper.map(savedAccount, SignUpResponseDto.class);
     }
 
-//    public String login(LoginRequestDto loginRequestDto) throws Exception {
-//        authenticate(loginRequestDto.getEmail(), loginRequestDto.getPassword());
-//
-//        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(loginRequestDto.getEmail());
-//        return jwtTokenUtil.generateToken(userDetails);
-//    }
+    /**
+     * 로그인 로직, 단순 로그인만 우선적으로 진행했습니다.
+     * @param requestDto : 아이디, 비밀번호
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public Map<String, String> login(LoginRequestDto requestDto) throws Exception {
+        authenticate(requestDto.getEmail(), requestDto.getPassword());
+
+        String jwtToken = jwtTokenUtil.generateToken(requestDto.getEmail());
+        return createTokenMap(jwtToken);
+    }
+
+    private Map<String, String> createTokenMap(String jwtToken) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", "Bearer " + jwtToken);
+        map.put("header", jwtTokenUtil.getHeader());
+        return map;
+    }
+
+    private void authenticate(String email, String password) throws Exception{
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
 
 }

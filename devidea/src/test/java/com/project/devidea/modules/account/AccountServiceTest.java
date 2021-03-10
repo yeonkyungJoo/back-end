@@ -2,6 +2,7 @@ package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
+import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import com.project.devidea.modules.account.form.SignUpResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +14,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -95,5 +99,27 @@ class AccountServiceTest {
                 () -> assertEquals(responseDto.getName(), account.getName()),
                 () -> assertEquals(responseDto.getGender(), account.getGender())
         );
+    }
+
+    @Test
+    @DisplayName("로그인 시 jwt 코드 반환")
+    void loginAndConfirm() throws Exception {
+
+//        given
+        accountRepository.save(Account.builder().id(1L).email("ko@naver.com")
+                .password(passwordEncoder.encode("123412341234")).nickname("고범석").name("고범석").build());
+        LoginRequestDto loginRequestDto = LoginRequestDto.builder()
+                .email("ko@naver.com")
+                .password("123412341234")
+                .build();
+        when(jwtTokenUtil.generateToken(any(String.class)))
+                .thenReturn("jwttoken");
+
+//        when
+        Map<String, String> result = accountService.login(loginRequestDto);
+
+//        then
+        verify(jwtTokenUtil).generateToken(any(String.class));
+        assertEquals(result.get("token"), "Bearer jwttoken");
     }
 }
