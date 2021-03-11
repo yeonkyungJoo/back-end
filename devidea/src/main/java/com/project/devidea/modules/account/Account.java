@@ -60,7 +60,7 @@ public class Account implements UserDetails {
 
 //    private List<Career> careers;
 
-//    private String provider;
+    private String provider;
 
 //    private Set<Like> likes;
 

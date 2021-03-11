@@ -82,4 +82,10 @@ public class JwtTokenUtil implements Serializable {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    public Map<String, String> createTokenMap(String jwtToken) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", "Bearer " + jwtToken);
+        map.put("header", this.getHeader());
+        return map;
+    }
 }

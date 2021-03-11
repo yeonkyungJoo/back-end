@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/login", "/sign-up").permitAll()
+                    .antMatchers("/", "/login/**", "/sign-up").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

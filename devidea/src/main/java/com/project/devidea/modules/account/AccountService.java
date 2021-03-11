@@ -30,7 +30,6 @@ public class AccountService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final AuthenticationManager authenticationManager;
-    private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final ModelMapper modelMapper;
 
@@ -55,19 +54,11 @@ public class AccountService {
      * @param requestDto : 아이디, 비밀번호
      * @return
      */
-    @Transactional(readOnly = true)
     public Map<String, String> login(LoginRequestDto requestDto) throws Exception {
         authenticate(requestDto.getEmail(), requestDto.getPassword());
 
         String jwtToken = jwtTokenUtil.generateToken(requestDto.getEmail());
-        return createTokenMap(jwtToken);
-    }
-
-    private Map<String, String> createTokenMap(String jwtToken) {
-        Map<String, String> map = new HashMap<>();
-        map.put("token", "Bearer " + jwtToken);
-        map.put("header", jwtTokenUtil.getHeader());
-        return map;
+        return jwtTokenUtil.createTokenMap(jwtToken);
     }
 
     private void authenticate(String email, String password) throws Exception{

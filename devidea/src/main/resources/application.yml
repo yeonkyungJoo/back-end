@@ -27,7 +27,16 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
         show_sql: true
+
 jwt:
   header: Authorization
   secret: devidea
   token-validity-in-seconds: 86400
+sns:
+  google:
+    url: https://accounts.google.com/o/oauth2/v2/auth
+    client:
+      id: 9719839326-fnc7hcgbq8nit8qp6s3ip7vrfn01gche.apps.googleusercontent.com
+      secret: k64ajtdh7iPfaEkW_TjbwiGm
+    callback:
+      url: http://localhost:8080/login/oauth/google/callback
