@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@Table(indexes = @Index(name = "location", columnList = "location_id"))
+@Table(indexes = @Index(name = "location", columnList = "location_id"))
 public class Study implements Serializable  {
     @GeneratedValue
     @Id
