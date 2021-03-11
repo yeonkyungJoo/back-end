@@ -8,12 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-@Repository
-public interface StudyRepository extends JpaRepository<Study, Long> ,StudyRepositoryCustom{
+public interface StudyRepository extends JpaRepository<Study, Long>, StudyRepositoryCustom{
+    @EntityGraph(attributePaths = {"location", "tags"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Study> findAll();
-
     //공개 스터디중 최신순으로
-    @EntityGraph(attributePaths = {"zones", "tags"})
+    @EntityGraph(attributePaths = {"zone", "tags"})
     List<Study> findStudyByOpenOrderByPublishedDateTimeDesc(Boolean Open);
 
 

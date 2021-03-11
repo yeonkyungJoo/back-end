@@ -1,14 +1,13 @@
 package com.project.devidea.modules.content.study.form;
 
-import com.project.devidea.modules.zone.ZoneForm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,14 +19,19 @@ public class StudyRequestForm {
     @NotBlank
     private Long page; //page
 
-    private int pageSize;
+    private List<String> tags;
 
-    private String zone; //지역
+    private Integer pageSize;
+
+    private String localNameOfCity; ////서울특별시
+
+    private String province; //송파구
+
+    private Boolean recruiting; //모집하고 있는 스터디
+
 
     private Boolean mentorRecruiting; //멘토 있는 스터디
 
-    private boolean recruiting; //모집하고 있는 스터디
-
-    private boolean like; //좋아요 순으로
+    private Boolean like; //좋아요 순으로
 
 }

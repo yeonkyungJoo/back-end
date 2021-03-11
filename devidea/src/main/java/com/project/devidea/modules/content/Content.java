@@ -5,10 +5,10 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 @SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(of = "id")
 public class Content {

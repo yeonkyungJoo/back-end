@@ -12,7 +12,7 @@ import com.querydsl.core.types.Path;
 /**
  * QContent is a Querydsl query type for Content
  */
-@Generated("com.querydsl.codegen.EntitySerializer")
+@Generated("com.querydsl.codegen.SupertypeSerializer")
 public class QContent extends EntityPathBase<Content> {
 
     private static final long serialVersionUID = 1652927961L;
