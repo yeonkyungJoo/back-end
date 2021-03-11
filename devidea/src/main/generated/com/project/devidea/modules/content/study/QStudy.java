@@ -22,20 +22,17 @@ public class QStudy extends EntityPathBase<Study> {
 
     public static final QStudy study = new QStudy("study");
 
-    public final com.project.devidea.modules.content.QContent _super = new com.project.devidea.modules.content.QContent(this);
-
     public final NumberPath<Integer> counts = createNumber("counts", Integer.class);
 
     public final StringPath fullDescription = createString("fullDescription");
 
-    //inherited
-    public final NumberPath<Long> id = _super.id;
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final EnumPath<Level> level = createEnum("level", Level.class);
 
     public final NumberPath<Integer> Likes = createNumber("Likes", Integer.class);
 
-    public final com.project.devidea.modules.zone.QZone location;
+    public final com.project.devidea.modules.tagzone.zone.QZone location;
 
     public final NumberPath<Integer> maxCount = createNumber("maxCount", Integer.class);
 
@@ -53,7 +50,7 @@ public class QStudy extends EntityPathBase<Study> {
 
     public final StringPath shortDescription = createString("shortDescription");
 
-    public final SetPath<com.project.devidea.modules.tag.Tag, com.project.devidea.modules.tag.QTag> tags = this.<com.project.devidea.modules.tag.Tag, com.project.devidea.modules.tag.QTag>createSet("tags", com.project.devidea.modules.tag.Tag.class, com.project.devidea.modules.tag.QTag.class, PathInits.DIRECT2);
+    public final SetPath<com.project.devidea.modules.tagzone.tag.Tag, com.project.devidea.modules.tagzone.tag.QTag> tags = this.<com.project.devidea.modules.tagzone.tag.Tag, com.project.devidea.modules.tagzone.tag.QTag>createSet("tags", com.project.devidea.modules.tagzone.tag.Tag.class, com.project.devidea.modules.tagzone.tag.QTag.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 
@@ -75,7 +72,7 @@ public class QStudy extends EntityPathBase<Study> {
 
     public QStudy(Class<? extends Study> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.location = inits.isInitialized("location") ? new com.project.devidea.modules.zone.QZone(forProperty("location")) : null;
+        this.location = inits.isInitialized("location") ? new com.project.devidea.modules.tagzone.zone.QZone(forProperty("location")) : null;
     }
 
 }

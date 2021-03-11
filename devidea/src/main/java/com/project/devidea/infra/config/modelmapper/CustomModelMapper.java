@@ -20,8 +20,9 @@ public class CustomModelMapper {
                 .setDestinationNameTokenizer(NameTokenizers.UNDERSCORE)
                 .setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
         modelMapper.createTypeMap(Study.class, StudyListForm.class)
-                .addMapping(Study::getTags, StudyListForm::customSetTags)
-                .addMapping(Study::getLocation, StudyListForm::customSetLocation);
+                .addMapping(Study::getId, StudyListForm::setId)
+                .addMapping(Study::getTags, StudyListForm::setTags)
+                .addMapping(Study::getLocation, StudyListForm::setLocations);
         return modelMapper;
     }
 }

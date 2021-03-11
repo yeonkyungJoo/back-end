@@ -1,15 +1,11 @@
 package com.project.devidea.modules.content.study.form;
 
 import com.project.devidea.modules.content.study.Level;
-import com.project.devidea.modules.tag.Tag;
-import com.project.devidea.modules.zone.Zone;
-import com.querydsl.core.annotations.QueryProjection;
-import lombok.AllArgsConstructor;
+import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,9 +13,8 @@ import java.util.Set;
 @Data
 public class StudyListForm {
 
-
     @NotBlank
-   private Long id;
+    private Long id;
     @NotBlank
     private String title;
 
@@ -31,7 +26,11 @@ public class StudyListForm {
     private int counts;
 
     @NotBlank
-    private String location;
+    private String localNameOfCity;
+
+    @NotBlank
+    private String province;
+
     @NotBlank
     private LocalDateTime PublishedDateTime;
     @NotBlank
@@ -40,14 +39,20 @@ public class StudyListForm {
     private int maxCount;
     @NotBlank
     private Level level;
+
+    private boolean recruiting; //모집하고 있는 스터디
+
     @NotBlank
     private Boolean mentoRecruiting;
 
-    public void customSetTags(Set<Tag> tagSet){
-        tagSet.stream().forEach(tag -> tags.add(tag.getFirstName()));
+    public void setTags(Set<Tag> tagSet){
+        tagSet.stream().forEach(
+                tag -> tags.add(tag.getFirstName())
+        );
     }
-    public void customSetLocation(Zone zone){
-        location=zone.getCity();
+    public void setLocations(Zone location){
+        localNameOfCity=location.getLocalNameOfCity();
+        province=location.getProvince();
     }
 
 }

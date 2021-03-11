@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 public interface StudyRepositoryCustom {
 
    @EntityGraph(attributePaths = {"tags", "location"})

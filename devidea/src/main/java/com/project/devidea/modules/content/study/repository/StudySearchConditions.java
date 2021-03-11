@@ -1,13 +1,14 @@
 package com.project.devidea.modules.content.study.repository;
 
 import com.project.devidea.modules.content.study.QStudy;
-import com.project.devidea.modules.tag.QTag;
-import com.project.devidea.modules.zone.QZone;
+import com.project.devidea.modules.tagzone.tag.QTag;
+import com.project.devidea.modules.tagzone.zone.QZone;
+import com.querydsl.core.types.Visitor;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import com.querydsl.core.types.dsl.Expressions;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class StudySearchConditions {
     public static QStudy qStudy=QStudy.study;
@@ -15,26 +16,43 @@ public class StudySearchConditions {
     private static QTag qTag=QTag.tag;
 
     public static BooleanExpression eqKeyword(String keyword) {
-        if (keyword == null) return null;
+        if(keyword==null) return null;
         BooleanExpression zoneCondition = eqZone(keyword);
-        BooleanExpression tagCondition = qStudy.tags.any()
-                .firstName.containsIgnoreCase(keyword)
-                .or(qStudy.tags.any()
-                        .secondName.containsIgnoreCase(keyword))
-                .or(qStudy.tags.any()
-                        .thirdName.containsIgnoreCase(keyword));
+        BooleanExpression tagCondition = eqTag(keyword);
         BooleanExpression titleCondition = qStudy.title.containsIgnoreCase(keyword);
         return zoneCondition.or(tagCondition).or(titleCondition);
     }
 
     public static BooleanExpression eqZone(String zone) {
         if (zone == null) return null;
-        BooleanExpression condition1 = qZone.localNameOfCity.eq(zone);
-        BooleanExpression condition2 = qZone.province.eq(zone);
-        BooleanExpression condition3 = qZone.city.eq(zone);
-        return condition1.or(condition2).or(condition3);
+        return eqLocalNameOfCity(zone).or(eqProvince(zone));
     }
-
+    public static BooleanExpression eqTags(List<String> tags) {
+        if(tags==null) return null;
+        BooleanExpression tagCondition;
+        for(String tag:tags){
+            tagCondition=eqTag(tag);
+            if(tagCondition.isTrue()== Expressions.asBoolean(true).isTrue()){
+                return tagCondition;
+            }
+        }
+        return Expressions.asBoolean(false).isFalse();
+    }
+    public static BooleanExpression eqTag(String tag) {
+        if (tag == null) return null;
+        return qStudy.tags.any().
+                firstName.containsIgnoreCase(tag)
+                .or(qStudy.tags.any()
+                        .secondName.containsIgnoreCase(tag))
+                .or(qStudy.tags.any()
+                        .thirdName.containsIgnoreCase(tag));
+    }
+    public static BooleanExpression eqLocalNameOfCity(String city) {
+        return city!=null?qStudy.location.localNameOfCity.containsIgnoreCase(city):null;
+    }
+    public static BooleanExpression eqProvince(String province) {
+        return province!=null?qStudy.location.city.containsIgnoreCase(province):null;
+    }
     private static BooleanExpression eqMentorRecruiting(Boolean mentorRecruiting) {
         return mentorRecruiting != null ? qStudy.mentoRecruiting.eq(mentorRecruiting) : null;
     }
@@ -47,11 +65,4 @@ public class StudySearchConditions {
         return like != null ? qStudy.recruiting.eq(like) : null;
     }
 
-    public static BooleanExpression ltStudyId(Long studyId) {
-        if (studyId == 0) {
-            return null; // BooleanExpression 자리에 0이 반환되면 조건문에서 자동으로 제거된다
-        }
-
-        return qStudy.id.lt(studyId);
-    }
 }
