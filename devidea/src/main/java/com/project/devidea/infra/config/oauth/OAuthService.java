@@ -1,38 +1,22 @@
 package com.project.devidea.infra.config.oauth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.devidea.infra.config.jwt.JwtTokenUtil;
-import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
+import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
+import com.project.devidea.infra.config.oauth.provider.SocialOAuth;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountRepository;
-import com.project.devidea.modules.account.AccountService;
-import com.project.devidea.modules.account.form.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BandCombineOp;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -74,16 +58,31 @@ public class OAuthService {
     }
 
     private Account save(Map<String, String> userInfoMap, SocialLoginType socialLoginType) {
-        return accountRepository.save(Account.builder()
-                .email(userInfoMap.get("email"))
-                .name(userInfoMap.get("name"))
-                .password(passwordEncoder.encode(OAUTH_PASSWORD))
-                .nickname(userInfoMap.get("name"))
-                .roles("ROLE_USER")
-                .joinedAt(LocalDateTime.now())
-                .profileImage(userInfoMap.get("picture"))
-                .provider(socialLoginType.name())
-                .build());
+        if (socialLoginType.equals(SocialLoginType.GOOGLE)) {
+            return accountRepository.save(Account.builder()
+                    .email(userInfoMap.get("email"))
+                    .name(userInfoMap.get("name"))
+                    .password(passwordEncoder.encode(OAUTH_PASSWORD))
+                    .nickname(userInfoMap.get("name"))
+                    .roles("ROLE_USER")
+                    .joinedAt(LocalDateTime.now())
+                    .profileImage(userInfoMap.get("picture"))
+                    .provider(socialLoginType.name())
+                    .build());
+        } else if (socialLoginType.equals(SocialLoginType.GITHUB)) {
+            return accountRepository.save(Account.builder()
+                    .email(userInfoMap.get("login"))
+                    .name(userInfoMap.get("login"))
+                    .password(passwordEncoder.encode(OAUTH_PASSWORD))
+                    .nickname(userInfoMap.get("login"))
+                    .roles("ROLE_USER")
+                    .joinedAt(LocalDateTime.now())
+                    .provider(socialLoginType.name())
+                    .url(userInfoMap.get("html_url"))
+                    .build());
+        } else {
+            return null;
+        }
     }
 
     private SocialOAuth findSocialOAuthByType(SocialLoginType socialLoginType) {

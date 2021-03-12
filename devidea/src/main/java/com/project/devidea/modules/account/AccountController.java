@@ -1,8 +1,7 @@
 package com.project.devidea.modules.account;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.devidea.infra.config.oauth.OAuthService;
-import com.project.devidea.infra.config.oauth.SocialLoginType;
+import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
 import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;

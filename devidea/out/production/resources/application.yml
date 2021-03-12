@@ -33,6 +33,14 @@ jwt:
   secret: devidea
   token-validity-in-seconds: 86400
 sns:
+  github:
+    url:
+    client:
+      id: 9bc5902314cd6dbcb181
+      secret: 546cd1a7649e1b134d6c8651d486609493984e25
+    callback:
+      url: http://localhost:8080/login/oauth/github/callback
+
   google:
     url: https://accounts.google.com/o/oauth2/v2/auth
     client:

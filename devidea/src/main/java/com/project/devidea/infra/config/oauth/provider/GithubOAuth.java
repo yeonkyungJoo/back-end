@@ -1,4 +1,4 @@
-package com.project.devidea.infra.config.oauth;
+package com.project.devidea.infra.config.oauth.provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,36 +13,28 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class GoogleOAuth implements SocialOAuth {
+public class GithubOAuth implements SocialOAuth {
 
-    private final String GOOGLE_SNS_BASE_URL = "https://accounts.google.com/o/oauth2/v2/auth";
-    private final String GOOGLE_SNS_CLIENT_ID = "9719839326-fnc7hcgbq8nit8qp6s3ip7vrfn01gche.apps.googleusercontent.com";
-    private final String GOOGLE_SNS_CALLBACK_URL = "http://localhost:8080/login/oauth/google/callback";
-    private final String GOOGLE_SNS_CLIENT_SECRET = "k64ajtdh7iPfaEkW_TjbwiGm";
-    private final String GOOGLE_SNS_TOKEN_BASE_URL = "https://oauth2.googleapis.com/token";
-    private final String GOOGLE_SNS_ACCESS_USERINFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
+    private final String GITHUB_SNS_BASE_URL = "https://github.com/login/oauth/authorize";
+    private final String GITHUB_SNS_CLIENT_ID = "9bc5902314cd6dbcb181";
+    private final String GITHUB_SNS_CALLBACK_URL = "http://localhost:8080/login/oauth/github/callback";
+    private final String GITHUB_SNS_CLIENT_SECRET = "546cd1a7649e1b134d6c8651d486609493984e25";
+    private final String GITHUB_SNS_TOKEN_BASE_URL = "https://github.com/login/oauth/access_token";
+    private final String GITHUB_SNS_ACCESS_USERINFO_URL = "https://api.github.com/user";
     private final ObjectMapper objectMapper;
 
     @Override
     public String getOAuthRedirectURL() {
         Map<String, Object> params = new HashMap<>();
-        params.put("scope", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile");
-        params.put("response_type", "code");
-        params.put("client_id", GOOGLE_SNS_CLIENT_ID);
-        params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
+        params.put("scope", "read:user%20user:email");
+        params.put("client_id", GITHUB_SNS_CLIENT_ID);
+        params.put("redirect_uri", GITHUB_SNS_CALLBACK_URL);
 
-        String parameterString = params.entrySet().stream()
+        String queryString = params.entrySet().stream()
                 .map(x -> x.getKey() + "=" + x.getValue())
                 .collect(Collectors.joining("&"));
 
-        return GOOGLE_SNS_BASE_URL + "?" + parameterString;
-    }
-
-    @Override
-    public Map<String, String> requestLogin(String code) {
-        String accessToken = requestAccessToken(code);
-        String userInfo = requestUserInfo(accessToken);
-        return convertStringToMap(userInfo);
+        return GITHUB_SNS_BASE_URL + "?" + queryString;
     }
 
     @Override
@@ -51,13 +43,15 @@ public class GoogleOAuth implements SocialOAuth {
 
         Map<String, Object> params = new HashMap<>();
         params.put("code", code);
-        params.put("client_id", GOOGLE_SNS_CLIENT_ID);
-        params.put("client_secret", GOOGLE_SNS_CLIENT_SECRET);
-        params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
-        params.put("grant_type", "authorization_code");
+        params.put("client_id", GITHUB_SNS_CLIENT_ID);
+        params.put("client_secret", GITHUB_SNS_CLIENT_SECRET);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", "application/json");
+        HttpEntity entity = new HttpEntity(params, headers);
 
         ResponseEntity<String> responseEntity =
-                restTemplate.postForEntity(GOOGLE_SNS_TOKEN_BASE_URL, params, String.class);
+                restTemplate.postForEntity(GITHUB_SNS_TOKEN_BASE_URL, entity, String.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             return responseEntity.getBody();
@@ -73,12 +67,12 @@ public class GoogleOAuth implements SocialOAuth {
         String getAccessToken = map.get("access_token");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + getAccessToken);
+        headers.set("Authorization", "token " + getAccessToken);
         HttpEntity entity = new HttpEntity(headers);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate
-                .exchange(GOOGLE_SNS_ACCESS_USERINFO_URL, HttpMethod.GET, entity, String.class);
+                .exchange(GITHUB_SNS_ACCESS_USERINFO_URL, HttpMethod.GET, entity, String.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             return responseEntity.getBody();
@@ -95,5 +89,12 @@ public class GoogleOAuth implements SocialOAuth {
             e.printStackTrace();
         }
         return map;
+    }
+
+    @Override
+    public Map<String, String> requestLogin(String code) {
+        String accessToken = requestAccessToken(code);
+        String userInfo = requestUserInfo(accessToken);
+        return convertStringToMap(userInfo);
     }
 }
