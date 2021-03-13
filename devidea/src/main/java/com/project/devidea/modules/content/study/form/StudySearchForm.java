@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StudyRequestForm {
+public class StudySearchForm {
 
     private String keyword; //keyword
 
@@ -23,7 +23,7 @@ public class StudyRequestForm {
 
     private Integer pageSize;
 
-    private String localNameOfCity; ////서울특별시
+    private String city; ////서울특별시
 
     private String province; //송파구
 

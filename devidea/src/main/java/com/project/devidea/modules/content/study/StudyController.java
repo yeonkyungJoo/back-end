@@ -2,6 +2,7 @@
 //
 //import com.project.devidea.modules.content.study.form.SearchCondition;
 //import com.project.devidea.modules.content.study.repository.StudyRepository;
+//import com.project.devidea.modules.content.study.repository.StudySearchConditions;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.RequestBody;
@@ -14,16 +15,15 @@
 //@RestController
 //public class StudyController {
 //    StudyService studyService;
-//    StudyRepository studyRepository;
 //
 //    @GetMapping("/study")
-//    public String search(@Valid SearchCondition searchCondition) {
+//    public String search(@Valid StudySearchConditions searchCondition) {
 //
 //
 //    }
 //
 //    @GetMapping("/study/{id}")
-//    public String search() {
+//    public String detailSearch() {
 //
 //    }
 //

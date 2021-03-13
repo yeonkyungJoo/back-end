@@ -23,8 +23,6 @@ public class QZone extends EntityPathBase<Zone> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath localNameOfCity = createString("localNameOfCity");
-
     public final StringPath province = createString("province");
 
     public QZone(String variable) {

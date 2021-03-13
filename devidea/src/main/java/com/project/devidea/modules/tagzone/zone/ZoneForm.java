@@ -15,13 +15,8 @@ public class ZoneForm {
         return zoneName.substring(zoneName.indexOf("/") + 1);
     }
 
-    public String getLocalNameOfCity() {
-        return zoneName.substring(zoneName.indexOf("(") + 1, zoneName.indexOf(")"));
-    }
-
     public Zone getZone() {
         return Zone.builder().city(this.getCityName())
-                .localNameOfCity(this.getLocalNameOfCity())
                 .province(this.getProvinceName()).build();
     }
 

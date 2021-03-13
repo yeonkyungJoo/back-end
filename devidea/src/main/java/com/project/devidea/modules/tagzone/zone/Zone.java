@@ -8,8 +8,9 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(of = "id")
 @Builder
-@AllArgsConstructor @NoArgsConstructor
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"city", "province"}))
+@AllArgsConstructor
+@NoArgsConstructor
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"city", "province"}))
 public class Zone {
     @Id
     @GeneratedValue
@@ -19,12 +20,10 @@ public class Zone {
     private String city;
 
     @Column(nullable = false)
-    private String localNameOfCity;
-
-    @Column(nullable = true)
     private String province;
+
     @Override
     public String toString() {
-        return String.format("%s(%s)/%s", city, localNameOfCity, province);
+        return String.format("%s(%s)/%s", city, province);
     }
 }

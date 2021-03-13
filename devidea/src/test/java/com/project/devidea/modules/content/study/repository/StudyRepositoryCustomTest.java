@@ -4,25 +4,14 @@ import com.project.devidea.infra.aop.annotation.LogExecutionTime;
 import com.project.devidea.modules.content.study.Study;
 import com.project.devidea.modules.content.study.StudySampleGenerator;
 import com.project.devidea.modules.content.study.form.StudyListForm;
-import com.project.devidea.modules.content.study.form.StudyRequestForm;
-import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.content.study.form.StudySearchForm;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,50 +29,50 @@ class StudyRepositoryCustomTest {
     @Autowired
     StudySampleGenerator studySampleGenerator;
 
-    final String LOCAL_CITY_NAME = "서울특별시";
+    final String CITY = "서울특별시";
     final String PROVINCE = "송파구";
-    final String KEYWORD = "spring";
+    final String KEYWORD = "하둡";
     final List<String> TAGS = Arrays.asList("spring", "hadoop", "java", "ai", "웹개발", "백앤드");
 
-    StudyRequestForm BASE_REQUEST;
-    StudyRequestForm KEYWORD_REQUEST;
-    StudyRequestForm TAG_REQUEST;
-    StudyRequestForm ZONE_REQUEST;
-    StudyRequestForm RECRUITING_REQUEST;
-    StudyRequestForm TOTAL_REQUEST;
+    StudySearchForm BASE_REQUEST;
+    StudySearchForm KEYWORD_REQUEST;
+    StudySearchForm TAG_REQUEST;
+    StudySearchForm ZONE_REQUEST;
+    StudySearchForm RECRUITING_REQUEST;
+    StudySearchForm TOTAL_REQUEST;
 
     @DisplayName("셋팅_given")
     @PostConstruct
     public void 셋팅() {
 
         //given
-        BASE_REQUEST = new StudyRequestForm().builder()
+        BASE_REQUEST = new StudySearchForm().builder()
                 .pageSize(MAX_DATA_SIZE).build();
 
-        KEYWORD_REQUEST = new StudyRequestForm().builder()
+        KEYWORD_REQUEST = new StudySearchForm().builder()
                 .keyword(KEYWORD)
                 .pageSize(MAX_DATA_SIZE)
                 .build();
 
-        TAG_REQUEST = new StudyRequestForm().builder()
+        TAG_REQUEST = new StudySearchForm().builder()
                 .tags(TAGS)
                 .pageSize(MAX_DATA_SIZE)
                 .build();
 
-        ZONE_REQUEST = new StudyRequestForm().builder()
-                .localNameOfCity(LOCAL_CITY_NAME)
+        ZONE_REQUEST = new StudySearchForm().builder()
+                .city(CITY)
                 .province(PROVINCE)
                 .pageSize(MAX_DATA_SIZE)
                 .build();
-        RECRUITING_REQUEST = new StudyRequestForm().builder()
+        RECRUITING_REQUEST = new StudySearchForm().builder()
                 .recruiting(true)
                 .pageSize(MAX_DATA_SIZE)
                 .build();
-        TOTAL_REQUEST = new StudyRequestForm().builder()
+        TOTAL_REQUEST = new StudySearchForm().builder()
                 .keyword(KEYWORD)
                 .tags(TAGS)
                 .pageSize(20)
-                .localNameOfCity(LOCAL_CITY_NAME)
+                .city(CITY)
                 .recruiting(true)
                 .build();
     }
@@ -100,7 +89,7 @@ class StudyRepositoryCustomTest {
     @Transactional
     void 기본검색_테스트() {
         //when
-        List<StudyListForm> studyList = studyRepository.findByCondition(BASE_REQUEST);
+        List<Study> studyList = studyRepository.findByCondition(BASE_REQUEST);
         //then
         assertAll(
                 () -> assertEquals(studyList.size(), MAX_DATA_SIZE)
@@ -112,13 +101,13 @@ class StudyRepositoryCustomTest {
     @LogExecutionTime
     void 키워드검색_테스트() {
         //when
-        List<StudyListForm> listFormList = studyRepository.findByCondition(KEYWORD_REQUEST);
+        List<Study> studies = studyRepository.findByCondition(KEYWORD_REQUEST);
         //then
-        listFormList.stream().forEach(studyListForm -> {
-            assert (studyListForm.getTitle().contains(KEYWORD)) || (
-                    studyListForm.getTags().contains(KEYWORD)) ||
-                    studyListForm.getProvince().contains(KEYWORD) ||
-                    studyListForm.getLocalNameOfCity().contains(KEYWORD);
+        studies.stream().forEach(study -> {
+            assert (study.getTitle().contains(KEYWORD)) || (
+                    study.getTags().contains(KEYWORD)) ||
+                    study.getLocation().getProvince().contains(KEYWORD) ||
+                    study.getLocation().getCity().contains(KEYWORD);
         });
     }
 
@@ -127,10 +116,10 @@ class StudyRepositoryCustomTest {
     @LogExecutionTime
     void 태그검색_테스트() {
         //when
-        List<StudyListForm> listFormList = studyRepository.findByCondition(TAG_REQUEST);
+        List<Study> studies = studyRepository.findByCondition(TAG_REQUEST);
         //then
-        listFormList.stream().forEach(studyListForm -> {
-            Assertions.assertNotNull(studyListForm.getTags().stream()
+        studies.stream().forEach(study -> {
+            Assertions.assertNotNull(study.getTags().stream()
                             .distinct()
                             .filter(TAGS::contains)
                             .collect(Collectors.toSet()),
@@ -144,11 +133,11 @@ class StudyRepositoryCustomTest {
     @LogExecutionTime
     void 지역_검색_테스트() {
         //when
-        List<StudyListForm> listFormList = studyRepository.findByCondition(ZONE_REQUEST);
+        List<Study> studies = studyRepository.findByCondition(ZONE_REQUEST);
         //then
-        listFormList.stream().forEach(studyListForm -> {
-            assert studyListForm.getLocalNameOfCity().equals(LOCAL_CITY_NAME);
-            assert studyListForm.getProvince().equals(PROVINCE);
+        studies.stream().forEach(study -> {
+            assert study.getLocation().getCity().equals(CITY);
+            assert study.getLocation().getProvince().equals(PROVINCE);
         });
     }
 
@@ -157,10 +146,10 @@ class StudyRepositoryCustomTest {
     @LogExecutionTime
     void 모집중인_스터디_검색_테스트() {
         //when
-        List<StudyListForm> listFormList = studyRepository.findByCondition(RECRUITING_REQUEST);
+        List<Study> studies = studyRepository.findByCondition(RECRUITING_REQUEST);
         //then
-        listFormList.stream().forEach(studyListForm -> {
-            assert studyListForm.isRecruiting() == true;
+        studies.stream().forEach(study -> {
+            assert study.isRecruiting() == true;
         });
     }
 
@@ -169,16 +158,16 @@ class StudyRepositoryCustomTest {
     @LogExecutionTime
     void 통합_스터디_검색_테스트() {
         //when
-        List<StudyListForm> listFormList = studyRepository.findByCondition(TOTAL_REQUEST);
+        List<Study> studies = studyRepository.findByCondition(TOTAL_REQUEST);
         //then
-        listFormList.stream().forEach(studyListForm -> {
+        studies.stream().forEach(study -> {
             assertAll(
-                    () -> assertEquals(studyListForm.isRecruiting(), true),
-                    () -> assertEquals(studyListForm.getLocalNameOfCity(), LOCAL_CITY_NAME),
-                    () -> assertEquals(studyListForm.getTitle().contains(KEYWORD) || (
-                            studyListForm.getTags().contains(KEYWORD)) ||
-                            studyListForm.getProvince().contains(KEYWORD) || studyListForm.getLocalNameOfCity().contains(KEYWORD), true),
-                    () -> assertNotNull(studyListForm.getTags().stream()
+                    () -> assertEquals(study.isRecruiting(), true),
+                    () -> assertEquals(study.getLocation().getCity(), CITY),
+                    () -> assertEquals(study.getTitle().contains(KEYWORD) || (
+                            study.getTags().contains(KEYWORD)) ||
+                            study.getLocation().getProvince().contains(KEYWORD) || study.getLocation().getCity().contains(KEYWORD), true),
+                    () -> assertNotNull(study.getTags().stream()
                             .distinct()
                             .filter(TAGS::contains)
                             .collect(Collectors.toSet()))

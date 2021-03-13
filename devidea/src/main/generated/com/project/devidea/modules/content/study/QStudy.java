@@ -22,6 +22,8 @@ public class QStudy extends EntityPathBase<Study> {
 
     public static final QStudy study = new QStudy("study");
 
+    public final com.project.devidea.modules.account.QAccount admin;
+
     public final NumberPath<Integer> counts = createNumber("counts", Integer.class);
 
     public final StringPath fullDescription = createString("fullDescription");
@@ -72,6 +74,7 @@ public class QStudy extends EntityPathBase<Study> {
 
     public QStudy(Class<? extends Study> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.admin = inits.isInitialized("admin") ? new com.project.devidea.modules.account.QAccount(forProperty("admin")) : null;
         this.location = inits.isInitialized("location") ? new com.project.devidea.modules.tagzone.zone.QZone(forProperty("location")) : null;
     }
 
