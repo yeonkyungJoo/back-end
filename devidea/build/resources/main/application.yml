@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=mysql;
+    platform: h2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+
+  jpa: #띄어쓰기 2칸
+    database-platform : org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop #띄어쓰기 6칸
+    properties: #띄어쓰기 4칸
+      hibernate: #뛰어쓰기 6칸
+        show_sql: true
+        format_sql: true #띄어쓰기 8칸
+        default_batch_fetch_size: 1000
+logging.level: #띄어쓰기 없음
+      #  org.hibernate.SQL: debug #띄어쓰기 2칸
+  org.hibernate.type.descriptor.sql: trace
+  root: info
