@@ -27,4 +27,11 @@ public class Notification {
 
     private LocalDateTime createdDateTime;
     private LocalDateTime checkedDateTime;
+
+    public void markAsRead() {
+        if(!this.checked) {
+            this.checked = true;
+            checkedDateTime = LocalDateTime.now();
+        }
+    }
 }

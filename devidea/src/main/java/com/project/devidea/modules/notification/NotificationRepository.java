@@ -8,8 +8,12 @@ import java.util.List;
 
 
 
+@Transactional(readOnly = true)
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    int countByAccountAndChecked(Account account, boolean checked);
+
+    List<Notification> findByAccountAndCheckedOrderByCreatedDateTimeDesc(Account account, boolean checked);
 
     @Transactional
-    List<Notification> findByAccountAndCheckedOrderByCreatedDateTimeDesc(Account account, boolean checked);
+    void deleteByAccountAndChecked(Account account, boolean checked);
 }
