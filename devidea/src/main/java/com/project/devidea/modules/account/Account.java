@@ -84,6 +84,7 @@ public class Account implements UserDetails {
         return this.email;
     }
 
+    public String getNickName() { return this.nickname; }
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -102,6 +103,11 @@ public class Account implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString(){
+        return nickname;
     }
 }
 
