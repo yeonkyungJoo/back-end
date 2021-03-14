@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 public class StudyDetailForm extends StudyBaseForm{
     String admin;
-    Set<String> UserName = new HashSet<>();
+    Set<String> members = new HashSet<>();
     String fullDescription;
     boolean open; //공개여부
     String question;

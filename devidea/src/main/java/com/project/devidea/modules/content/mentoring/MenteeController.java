@@ -1,7 +1,6 @@
 package com.project.devidea.modules.content.mentoring;
-
-import com.project.devidea.modules.tag.Tag;
-import com.project.devidea.modules.zone.Zone;
+import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.zone.Zone;
 import com.sun.mail.iap.Response;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

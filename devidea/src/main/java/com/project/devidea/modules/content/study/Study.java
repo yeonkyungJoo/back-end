@@ -97,4 +97,8 @@ public class Study implements Serializable {
         this.open=open;
         this.recruiting=recruiting;
     }
+    @Override
+    public String toString() {
+    return this.title;
+    }
 }

@@ -37,7 +37,7 @@ public class DaangnCrawling extends Crawling{
     }
 
     @Override
-    @Scheduled( cron="${crawling.Scheduled}")
+ //   @Scheduled( cron="${crawling.Scheduled}")
     void executeCrawling() {
         connect();
 

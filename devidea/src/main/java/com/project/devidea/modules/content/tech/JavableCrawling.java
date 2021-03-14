@@ -42,7 +42,7 @@ public class JavableCrawling extends Crawling{
     }
 
 	@Override
-	@Scheduled( cron="${crawling.Scheduled}")
+//	@Scheduled( cron="${crawling.Scheduled}")
     public void executeCrawling() {
 		connect();
         Elements document = doc.select("main#site-main>div.css-6ada2o");

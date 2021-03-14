@@ -11,20 +11,20 @@ public class StudyApplyForm {
     Long id; //studyid
 
     @NotBlank
-    String userName;
+    String account;
 
     @NotBlank
-    String studyName;
+    String study;
 
     String answer;
 
     String etc;
 
-    public void setUserName(Account account) {
-        userName=account.getUserName();
-    }
-
-    public void setStudy(Study study) {
-        studyName=study.getTitle();
-    }
+//    public void setUserName(Account account) {
+//        userName=account.get();
+//    }
+//
+//    public void setStudy(Study study) {
+//        studyName=study.getTitle();
+//    }
 }
