@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors
-                        .basePackage("com.project.devidea.modules.content.study"))
+                        .basePackage("com.project.devidea"))
                 .paths(PathSelectors.any()).build()
                 .apiInfo(apiInfo());
     }
