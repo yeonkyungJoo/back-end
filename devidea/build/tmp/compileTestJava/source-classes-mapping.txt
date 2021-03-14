@@ -1,13 +1,27 @@
-com/project/devidea/DevideaApplicationTests.java
- com.project.devidea.DevideaApplicationTests
-com/project/devidea/modules/content/study/modelmapper/StudyMapperImplTest.java
- com.project.devidea.modules.content.study.modelmapper.StudyMapperImplTest
-com/project/devidea/infra/MockMvcTest.java
- com.project.devidea.infra.MockMvcTest
 com/project/devidea/modules/tagzone/zone/ZoneServiceTest.java
  com.project.devidea.modules.tagzone.zone.ZoneServiceTest
 com/project/devidea/modules/notification/NotificationControllerTest.java
  com.project.devidea.modules.notification.NotificationControllerTest
+com/project/devidea/modules/notification/NotificationServiceTest.java
+ com.project.devidea.modules.notification.NotificationServiceTest
+com/project/devidea/modules/account/AccountRepositoryTest.java
+ com.project.devidea.modules.account.AccountRepositoryTest
+com/project/devidea/modules/content/tech/DaangnCrawlingTest.java
+ com.project.devidea.modules.content.tech.DaangnCrawlingTest
+com/project/devidea/DevideaApplicationTests.java
+ com.project.devidea.DevideaApplicationTests
+com/project/devidea/modules/account/AccountControllerTest.java
+ com.project.devidea.modules.account.AccountControllerTest
+com/project/devidea/infra/MockMvcTest.java
+ com.project.devidea.infra.MockMvcTest
+com/project/devidea/modules/content/tech/JavableCrawlingTest.java
+ com.project.devidea.modules.content.tech.JavableCrawlingTest
+com/project/devidea/modules/content/tech/kakaoCrawlingTest.java
+ com.project.devidea.modules.content.tech.kakaoCrawlingTest
+com/project/devidea/modules/content/tech/LineCrawlingTest.java
+ com.project.devidea.modules.content.tech.LineCrawlingTest
+com/project/devidea/modules/content/study/modelmapper/StudyMapperImplTest.java
+ com.project.devidea.modules.content.study.modelmapper.StudyMapperImplTest
 com/project/devidea/modules/tagzone/tag/TagServiceTest.java
  com.project.devidea.modules.tagzone.tag.TagServiceTest
 com/project/devidea/modules/content/study/repository/StudyRepositoryCustomTest.java

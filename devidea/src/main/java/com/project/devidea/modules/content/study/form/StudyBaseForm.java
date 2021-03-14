@@ -11,8 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 @Data
 public class StudyBaseForm {
-    @NotBlank
-    private Long id;
+
     @NotBlank
     private String title;
 
@@ -22,15 +21,9 @@ public class StudyBaseForm {
     private Set<String> tags=new HashSet<>();
 
     private int counts;
-
     @NotBlank
-    private String City;
+    private String location;
 
-    @NotBlank
-    private String province;
-
-    @NotBlank
-    private LocalDateTime PublishedDateTime;
     @NotBlank
     private int Likes;
     @NotBlank
@@ -43,13 +36,4 @@ public class StudyBaseForm {
     @NotBlank
     private Boolean mentoRecruiting;
 
-    public void setTags(Set<Tag> tagSet){
-        tagSet.stream().forEach(
-                tag -> tags.add(tag.getFirstName())
-        );
-    }
-    public void setLocations(Zone location){
-        City=location.getCity();
-        province=location.getProvince();
-    }
 }

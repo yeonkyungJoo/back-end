@@ -10,8 +10,6 @@ import java.util.Optional;
 
 @Transactional
 public interface StudyRepository extends JpaRepository<Study, Long>, StudyRepositoryCustom{
-    @EntityGraph(attributePaths = {"location", "tags"}, type = EntityGraph.EntityGraphType.LOAD)
-    List<Study> findStudyOrderByLikes();
     @EntityGraph(attributePaths = {"tags", "zones", "managers", "members"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<Study> findById(Long id);
 

@@ -1,8 +1,6 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.content.study.Study;
-import com.project.devidea.modules.tag.Tag;
-import com.project.devidea.modules.zone.Zone;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -86,6 +84,7 @@ public class Account implements UserDetails {
         return this.email;
     }
 
+    public String getNickName() { return this.nickname; }
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -104,6 +103,11 @@ public class Account implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString(){
+        return nickname;
     }
 }
 

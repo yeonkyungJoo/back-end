@@ -27,7 +27,7 @@ public class StudyController {
 
     @PostMapping("/study/mystudy")
     public List<StudyListForm> 내스터디(Account account) {
-        return studyService.myStudy(account.getUserName());
+        return studyService.myStudy(account.getNickName());
     }
 
     @GetMapping("/study/{id}")

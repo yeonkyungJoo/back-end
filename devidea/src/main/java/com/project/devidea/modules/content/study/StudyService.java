@@ -7,13 +7,13 @@ import com.project.devidea.modules.content.study.apply.StudyApplyForm;
 import com.project.devidea.modules.content.study.apply.StudyApplyListForm;
 import com.project.devidea.modules.content.study.apply.StudyApplyRepository;
 import com.project.devidea.modules.content.study.form.*;
-import com.project.devidea.modules.content.study.modelmapper.StudyMapper;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import com.project.devidea.modules.tagzone.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class StudyService {
-    private final StudyMapper studyMapper;
+    private final ModelMapper studyMapper;
     private final StudyRepository studyRepository;
     private final ZoneRepository zoneRepository;
     private final TagRepository tagRepository;
@@ -37,27 +37,28 @@ public class StudyService {
     List<StudyListForm> searchByCondition(@Valid StudySearchForm studySearchForm) {
         List<Study> studyList=studyRepository.findByCondition(studySearchForm);
         return studyList.stream().map(study -> {
-            return studyMapper.StudyList().map(study, StudyListForm.class);
+            return studyMapper.map(study, StudyListForm.class);
         }).collect(Collectors.toList());
     }
     StudyDetailForm getDetailStudy(Long id){
-        return studyMapper.StudyDetail().map(studyRepository.findById(id), StudyDetailForm.class);
+        return studyMapper.map(studyRepository.findById(id), StudyDetailForm.class);
     }
     StudyDetailForm makingStudy(@Valid StudyMakingForm studyMakingForm) { //study만들기
-        Study study = studyMapper.StudyMaking().map(studyMakingForm, Study.class);
-        Zone zone = zoneRepository.findByCityAndProvince(studyMakingForm.getCity(), studyMakingForm.getProvince());
+        Study study = studyMapper.map(studyMakingForm, Study.class);
+        String[] locations=studyMakingForm.getLocation().split("/");
+        Zone zone = zoneRepository.findByCityAndProvince(locations[0], locations[1]);
         Set<Tag> tagsSet = studyMakingForm.getTags().stream().map(tag -> {
             return tagRepository.findByFirstName(tag);
         }).collect(Collectors.toSet());
-        study.setAdmin(accountRepository.findByUserName(studyMakingForm.getAdmin()));
+        study.setAdmin(accountRepository.findByNickname(studyMakingForm.getAdmin()));
         study.setLocation(zone);
         study.setTags(tagsSet);
         studyRepository.save(study);
-        return studyMapper.StudyDetail().map(study, StudyDetailForm.class);
+        return studyMapper.map(study, StudyDetailForm.class);
     }
 
     String applyStudy(@Valid StudyApplyForm studyApplyForm) {
-        Account account = accountRepository.findByUserName(studyApplyForm.getUserName());
+        Account account = accountRepository.findByNickname(studyApplyForm.getAccount());
         Study study = studyRepository.findById(studyApplyForm.getId()).get();
         if (study == null) return "study 존재하지 않음";
         //알람 넣기
@@ -72,7 +73,7 @@ public class StudyService {
     }
 
     public String decideJoin(@Valid StudyApplyForm studyApplyForm, Boolean accept) {
-        Account account = accountRepository.findByUserName(studyApplyForm.getUserName());
+        Account account = accountRepository.findByNickname(studyApplyForm.getAccount());
         Study study = studyRepository.findById(studyApplyForm.getId()).get();
         StudyApply studyApply = studyApplyRepository.findByAccountAndStudy(account, study);
         if (account == null || study == null || studyApply == null) {
@@ -89,7 +90,7 @@ public class StudyService {
     List<StudyApplyForm> getApplyForm(Long id) { //해당 스터디 가입신청 리스트 보기
         return studyApplyRepository.findById(id).stream()
                 .map(studyApply -> {
-                    return studyMapper.StudyApply().map(studyApply, StudyApplyForm.class);
+                    return studyMapper.map(studyApply, StudyApplyForm.class);
                 }).collect(Collectors.toList());
     }
 
@@ -102,28 +103,28 @@ public class StudyService {
 
     String leaveStudy(String userName,Long study_id) {
         Study study=studyRepository.findById(study_id).get();
-        study.removeMember(accountRepository.findByUserName(userName));
+        study.removeMember(accountRepository.findByNickname(userName));
         return "스터디를 떠났습니다.";
     }
 
     List<StudyListForm> myStudy(String userName) {
-        Account account=accountRepository.findByUserName(userName);
+        Account account=accountRepository.findByNickname(userName);
         List<Study> studyList=studyRepository.findByMember(account);
         return studyList.stream().map(study->{
-            return studyMapper.StudyList().map(study,StudyListForm.class);
+            return studyMapper.map(study,StudyListForm.class);
         }).collect(Collectors.toList());
     }
 
     public List<StudyApplyListForm> getApplyList(Long id) {
         return studyApplyRepository.findByStudy_Id(id).stream().map(
                 studyApply->{
-                    return studyMapper.StudyApplyList().map(studyApply,StudyApplyListForm.class);
+                    return studyMapper.map(studyApply,StudyApplyListForm.class);
                 }
         ).collect(Collectors.toList());
     }
 
     public StudyApplyForm getApplyDetail(Long id) {
-        return studyMapper.StudyDetail().map(studyApplyRepository.findById(id),StudyApplyForm.class);
+        return studyMapper.map(studyApplyRepository.findById(id),StudyApplyForm.class);
     }
 
     public OpenRecruitForm getOpenRecruitForm(Long id) {
