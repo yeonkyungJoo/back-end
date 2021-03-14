@@ -19,9 +19,41 @@ public class QAccount extends EntityPathBase<Account> {
 
     public static final QAccount account = new QAccount("account");
 
+    public final StringPath bio = createString("bio");
+
+    public final StringPath email = createString("email");
+
+    public final StringPath emailCheckToken = createString("emailCheckToken");
+
+    public final StringPath gender = createString("gender");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath userName = createString("userName");
+    public final DateTimePath<java.time.LocalDateTime> joinedAt = createDateTime("joinedAt", java.time.LocalDateTime.class);
+
+    public final StringPath name = createString("name");
+
+    public final StringPath nickname = createString("nickname");
+
+    public final StringPath password = createString("password");
+
+    public final StringPath profileImage = createString("profileImage");
+
+    public final StringPath provider = createString("provider");
+
+    public final BooleanPath receiveMentoringNotification = createBoolean("receiveMentoringNotification");
+
+    public final BooleanPath receiveNotification = createBoolean("receiveNotification");
+
+    public final BooleanPath receiveRecruitingNotification = createBoolean("receiveRecruitingNotification");
+
+    public final BooleanPath receiveStudyNotification = createBoolean("receiveStudyNotification");
+
+    public final BooleanPath receiveTechNewsNotification = createBoolean("receiveTechNewsNotification");
+
+    public final StringPath roles = createString("roles");
+
+    public final StringPath url = createString("url");
 
     public QAccount(String variable) {
         super(Account.class, forVariable(variable));
