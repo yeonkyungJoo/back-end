@@ -12,22 +12,46 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=mysql;
+    url: jdbc:h2:mem:testdb
     platform: h2
     username: sa
     password:
     driverClassName: org.h2.Driver
-
-  jpa: #띄어쓰기 2칸
-    database-platform : org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop #띄어쓰기 6칸
-    properties: #띄어쓰기 4칸
-      hibernate: #뛰어쓰기 6칸
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
         show_sql: true
-        format_sql: true #띄어쓰기 8칸
         default_batch_fetch_size: 1000
 logging.level: #띄어쓰기 없음
       #  org.hibernate.SQL: debug #띄어쓰기 2칸
   org.hibernate.type.descriptor.sql: trace
   root: info
+jwt:
+  header: Authorization
+  secret: devidea
+  token-validity-in-seconds: 86400
+sns:
+  github:
+    url:
+    client:
+      id: 9bc5902314cd6dbcb181
+      secret: 546cd1a7649e1b134d6c8651d486609493984e25
+    callback:
+      url: http://localhost:8080/login/oauth/github/callback
+
+  google:
+    url: https://accounts.google.com/o/oauth2/v2/auth
+    client:
+      id: 9719839326-fnc7hcgbq8nit8qp6s3ip7vrfn01gche.apps.googleusercontent.com
+      secret: k64ajtdh7iPfaEkW_TjbwiGm
+    callback:
+      url: http://localhost:8080/login/oauth/google/callback
