@@ -18,7 +18,6 @@ public class Study extends Content {
     String fullDescription;
     @ManyToMany
     Set<Tag> tags;
-
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "locationid")
     Zone location;
