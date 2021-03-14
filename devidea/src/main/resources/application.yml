@@ -14,3 +14,6 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
+
+crawling:
+  Scheduled: '*/10 * * * * *'
