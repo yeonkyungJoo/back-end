@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,8 @@ public class NotificationController {
         // 시큐리티 적용전 임시
         Account account = new Account().builder().id(id).build();
         List<Notification> notifications = notificationRepository.findByAccountAndCheckedOrderByCreatedDateTimeDesc(account, false);
-        return new ResponseNotifications<>(notifications.size(), notifications);
+        int countOldNotifications = notificationRepository.countByAccountAndChecked(account, true);
+        return new ResponseNotifications(notifications.size(), countOldNotifications, notifications);
     }
 
     @GetMapping("/old")
@@ -32,7 +30,20 @@ public class NotificationController {
         // 시큐리티 적용전 임시
         Account account = new Account().builder().id(id).build();
         List<Notification> notifications = notificationRepository.findByAccountAndCheckedOrderByCreatedDateTimeDesc(account, true);
-        return new ResponseNotifications<>(notifications.size(), notifications);
+        int countNewNotifications = notificationRepository.countByAccountAndChecked(account, false);
+        return new ResponseNotifications(notifications.size(), countNewNotifications, notifications);
+    }
+
+    @PostMapping("/delete")
+    public void deleteAllOldNotifications(Long id) {
+        // 시큐리티 적용전 임시
+        Account account = new Account().builder().id(id).build();
+        notificationRepository.deleteByAccountAndChecked(account, true);
+    }
+
+    @PostMapping("/{id}/delete")
+    public void deleteNotification(@PathVariable("id") Long id) {
+        notificationRepository.deleteById(id);
     }
 
     @Data
@@ -40,6 +51,7 @@ public class NotificationController {
     @NoArgsConstructor
     static class ResponseNotifications<T> {
         private int count;
+        private int otherCount;
         private T notifications;
     }
 }
