@@ -1,8 +1,8 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.content.study.Study;
-import com.project.devidea.modules.tag.Tag;
-import com.project.devidea.modules.zone.Zone;
+import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,11 +48,11 @@ public class Account implements UserDetails {
 
     private String gender;
 
-//    private Set<Tag> tags;
+    private Set<Tag> tags;
 
 //    private Set<Resume> resume;
 
-//    private Set<Zone> locations;
+    private Set<Zone> locations;
 
 //    private Set<Study> studies;
 

@@ -21,7 +21,7 @@ public class StudyApplyForm {
     String etc;
 
     public void setUserName(Account account) {
-        userName=account.getUserName();
+        userName = account.getUsername();
     }
 
     public void setStudy(Study study) {

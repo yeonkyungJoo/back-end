@@ -2,7 +2,6 @@ package com.project.devidea.modules.account;
 
 
 import com.project.devidea.infra.config.jwt.JwtTokenUtil;
-import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
 import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import com.project.devidea.modules.account.form.SignUpResponseDto;
@@ -12,14 +11,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service

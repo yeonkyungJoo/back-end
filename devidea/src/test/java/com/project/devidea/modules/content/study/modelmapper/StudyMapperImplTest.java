@@ -43,10 +43,10 @@ class StudyMapperImplTest {
                 new Tag().builder().firstName("tag2")
                         .build()));
         account = new Account().builder().id(1L)
-                .userName("근우")
+                .email("근우")
                 .build();
         admin = new Account().builder().id(1L)
-                .userName("admin")
+                .email("admin")
                 .build();
         study = new Study().builder().publishedDateTime(LocalDateTime.now())
                 .title("title")

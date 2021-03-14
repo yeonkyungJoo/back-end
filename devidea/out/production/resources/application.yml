@@ -27,7 +27,11 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
         show_sql: true
-
+        default_batch_fetch_size: 1000
+logging.level: #띄어쓰기 없음
+      #  org.hibernate.SQL: debug #띄어쓰기 2칸
+  org.hibernate.type.descriptor.sql: trace
+  root: info
 jwt:
   header: Authorization
   secret: devidea
@@ -48,3 +52,6 @@ sns:
       secret: k64ajtdh7iPfaEkW_TjbwiGm
     callback:
       url: http://localhost:8080/login/oauth/google/callback
+
+crawling:
+  Scheduled: '*/10 * * * * *'
