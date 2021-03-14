@@ -1,30 +1,21 @@
 package com.project.devidea.modules.content.study.modelmapper;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.study.Study;
-import com.project.devidea.modules.content.study.StudySampleGenerator;
 import com.project.devidea.modules.content.study.apply.StudyApply;
 import com.project.devidea.modules.content.study.apply.StudyApplyForm;
 import com.project.devidea.modules.content.study.form.StudyDetailForm;
 import com.project.devidea.modules.content.study.form.StudyListForm;
 import com.project.devidea.modules.content.study.form.StudyMakingForm;
 import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.tag.TagRepository;
 import com.project.devidea.modules.tagzone.zone.Zone;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {StudyMapperImpl.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class StudyMapperImplTest {
@@ -81,25 +72,25 @@ class StudyMapperImplTest {
 
     @Test
     void getStudyListMapper() {
-        StudyListForm studyListForm = studyMapper.getStudyListMapper().map(study, StudyListForm.class);
+        StudyListForm studyListForm = studyMapper.StudyList().map(study, StudyListForm.class);
         System.out.println(studyListForm);
     }
 
     @Test
     void getStudyApplyMapper() {
-        StudyApplyForm studyApplyForm = studyMapper.getStudyApplyMapper().map(studyApply, StudyApplyForm.class);
+        StudyApplyForm studyApplyForm = studyMapper.StudyApply().map(studyApply, StudyApplyForm.class);
         System.out.println(studyApplyForm);
     }
 
     @Test
     void getStudyMakingMapper() {
-        StudyMakingForm studyMakingForm = studyMapper.getStudyMakingMapper().map(study, StudyMakingForm.class);
+        StudyMakingForm studyMakingForm = studyMapper.StudyMaking().map(study, StudyMakingForm.class);
         System.out.println(studyMakingForm);
     }
 
     @Test
     void getStudyDetailMapper() {
-        StudyDetailForm studyDetailForm = studyMapper.getStudyDetailMapper().map(study, StudyDetailForm.class);
+        StudyDetailForm studyDetailForm = studyMapper.StudyDetail().map(study, StudyDetailForm.class);
         System.out.println(studyDetailForm);
     }
 }

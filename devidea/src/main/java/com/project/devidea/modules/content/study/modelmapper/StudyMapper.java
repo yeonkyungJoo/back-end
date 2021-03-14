@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 
 public interface StudyMapper {
 
-    public ModelMapper getStudyListMapper();
-    public ModelMapper getStudyApplyMapper();
-    public ModelMapper getStudyMakingMapper();
-    public ModelMapper getStudyDetailMapper();
+    public ModelMapper StudyList();
+    public ModelMapper StudyApply();
+    public ModelMapper StudyApplyList();
+    public ModelMapper StudyMaking();
+    public ModelMapper StudyDetail();
 }

@@ -92,4 +92,9 @@ public class Study implements Serializable {
     public void setLocation(Zone location) {
         this.location = location;
     }
+
+    public void setOpenAndRecruiting(boolean open, boolean recruiting) {
+        this.open=open;
+        this.recruiting=recruiting;
+    }
 }

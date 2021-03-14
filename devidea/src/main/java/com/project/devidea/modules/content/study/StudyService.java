@@ -4,14 +4,11 @@ import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountRepository;
 import com.project.devidea.modules.content.study.apply.StudyApply;
 import com.project.devidea.modules.content.study.apply.StudyApplyForm;
+import com.project.devidea.modules.content.study.apply.StudyApplyListForm;
 import com.project.devidea.modules.content.study.apply.StudyApplyRepository;
-import com.project.devidea.modules.content.study.form.StudyDetailForm;
-import com.project.devidea.modules.content.study.form.StudyListForm;
-import com.project.devidea.modules.content.study.form.StudyMakingForm;
-import com.project.devidea.modules.content.study.form.StudySearchForm;
+import com.project.devidea.modules.content.study.form.*;
 import com.project.devidea.modules.content.study.modelmapper.StudyMapper;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
-import com.project.devidea.modules.content.study.repository.StudySearchConditions;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
 import com.project.devidea.modules.tagzone.zone.Zone;
@@ -40,12 +37,14 @@ public class StudyService {
     List<StudyListForm> searchByCondition(@Valid StudySearchForm studySearchForm) {
         List<Study> studyList=studyRepository.findByCondition(studySearchForm);
         return studyList.stream().map(study -> {
-            return studyMapper.getStudyListMapper().map(study, StudyListForm.class);
+            return studyMapper.StudyList().map(study, StudyListForm.class);
         }).collect(Collectors.toList());
     }
-
+    StudyDetailForm getDetailStudy(Long id){
+        return studyMapper.StudyDetail().map(studyRepository.findById(id), StudyDetailForm.class);
+    }
     StudyDetailForm makingStudy(@Valid StudyMakingForm studyMakingForm) { //study만들기
-        Study study = studyMapper.getStudyMakingMapper().map(studyMakingForm, Study.class);
+        Study study = studyMapper.StudyMaking().map(studyMakingForm, Study.class);
         Zone zone = zoneRepository.findByCityAndProvince(studyMakingForm.getCity(), studyMakingForm.getProvince());
         Set<Tag> tagsSet = studyMakingForm.getTags().stream().map(tag -> {
             return tagRepository.findByFirstName(tag);
@@ -54,7 +53,7 @@ public class StudyService {
         study.setLocation(zone);
         study.setTags(tagsSet);
         studyRepository.save(study);
-        return studyMapper.getStudyDetailMapper().map(study, StudyDetailForm.class);
+        return studyMapper.StudyDetail().map(study, StudyDetailForm.class);
     }
 
     String applyStudy(@Valid StudyApplyForm studyApplyForm) {
@@ -90,7 +89,7 @@ public class StudyService {
     List<StudyApplyForm> getApplyForm(Long id) { //해당 스터디 가입신청 리스트 보기
         return studyApplyRepository.findById(id).stream()
                 .map(studyApply -> {
-                    return studyMapper.getStudyApplyMapper().map(studyApply, StudyApplyForm.class);
+                    return studyMapper.StudyApply().map(studyApply, StudyApplyForm.class);
                 }).collect(Collectors.toList());
     }
 
@@ -111,7 +110,39 @@ public class StudyService {
         Account account=accountRepository.findByUserName(userName);
         List<Study> studyList=studyRepository.findByMember(account);
         return studyList.stream().map(study->{
-            return studyMapper.getStudyListMapper().map(study,StudyListForm.class);
+            return studyMapper.StudyList().map(study,StudyListForm.class);
         }).collect(Collectors.toList());
+    }
+
+    public List<StudyApplyListForm> getApplyList(Long id) {
+        return studyApplyRepository.findByStudy_Id(id).stream().map(
+                studyApply->{
+                    return studyMapper.StudyApplyList().map(studyApply,StudyApplyListForm.class);
+                }
+        ).collect(Collectors.toList());
+    }
+
+    public StudyApplyForm getApplyDetail(Long id) {
+        return studyMapper.StudyDetail().map(studyApplyRepository.findById(id),StudyApplyForm.class);
+    }
+
+    public OpenRecruitForm getOpenRecruitForm(Long id) {
+        Study study=studyRepository.findById(id).get();
+        return new OpenRecruitForm(study.isOpen(),study.isRecruiting());
+    }
+
+    public TagZoneForm getTagandZone(Long id) {
+        Study study=studyRepository.findById(id).get();
+        return new TagZoneForm(study.getTags(),study.getLocation());
+    }
+
+    public void UpdateOpenRecruiting(Long id, OpenRecruitForm openRecruitForm) {
+        Study study=studyRepository.findById(id).get();
+        study.setOpenAndRecruiting(openRecruitForm.isOpen(),openRecruitForm.isRecruiting());
+    }
+
+    public void UpdateTagAndZOne(Long id, TagZoneForm tagZoneForm) {
+        Study study=studyRepository.findById(id).get();
+//        study.setTagAndZone(tagZoneForm.s,openRecruitForm.isRecruiting());
     }
 }
