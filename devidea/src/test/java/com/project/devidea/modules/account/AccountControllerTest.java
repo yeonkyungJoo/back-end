@@ -17,7 +17,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -109,21 +108,27 @@ class AccountControllerTest {
                 .andExpect(header().exists("Authorization")).andReturn().getResponse();
 
         String jwtToken = mockHttpServletResponse.getHeader("Authorization").substring(7);
-        System.out.println(jwtToken);
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         assertEquals(username, savedAccount.getEmail());
     }
+
+    @Test
+    @DisplayName("구글 로그인 redirect")
+    void googleLogin() throws Exception {
+
+        mockMvc.perform(get("/login/oauth/google"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&response_type=code&redirect_uri=http://localhost:8080/login/oauth/google/callback&client_id=9719839326-fnc7hcgbq8nit8qp6s3ip7vrfn01gche.apps.googleusercontent.com"));
+    }
+
+    @Test
+    @DisplayName("깃허브 로그인 redirect")
+    void githubLogin() throws Exception {
+
+        mockMvc.perform(get("/login/oauth/github"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("https://github.com/login/oauth/authorize?scope=read:user%20user:email&redirect_uri=http://localhost:8080/login/oauth/github/callback&client_id=9bc5902314cd6dbcb181"));
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

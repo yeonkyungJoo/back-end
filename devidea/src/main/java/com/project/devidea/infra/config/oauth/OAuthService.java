@@ -43,7 +43,9 @@ public class OAuthService {
     public Map<String, String> oauthLogin(SocialLoginType socialLoginType, String code) throws Exception {
         SocialOAuth socialOAuth = findSocialOAuthByType(socialLoginType);
         Map<String, String> userInfoMap = socialOAuth.requestLogin(code);
-        Account account = accountRepository.findByEmail(userInfoMap.get("email")).orElse(null);
+
+        String id = getUsernameSocialLoginType(socialLoginType);
+        Account account = accountRepository.findByEmail(userInfoMap.get(id)).orElse(null);
         if (account == null) {
             account = save(userInfoMap, socialLoginType);
         }
@@ -57,7 +59,15 @@ public class OAuthService {
         return jwtTokenUtil.createTokenMap(jwtToken);
     }
 
+    private String getUsernameSocialLoginType(SocialLoginType socialLoginType) {
+        if (socialLoginType.name().equals(SocialLoginType.GOOGLE)) {
+            return "email";
+        }
+        return "login";
+    }
+
     private Account save(Map<String, String> userInfoMap, SocialLoginType socialLoginType) {
+//        구글 로그인
         if (socialLoginType.equals(SocialLoginType.GOOGLE)) {
             return accountRepository.save(Account.builder()
                     .email(userInfoMap.get("email"))
@@ -69,20 +79,18 @@ public class OAuthService {
                     .profileImage(userInfoMap.get("picture"))
                     .provider(socialLoginType.name())
                     .build());
-        } else if (socialLoginType.equals(SocialLoginType.GITHUB)) {
-            return accountRepository.save(Account.builder()
-                    .email(userInfoMap.get("login"))
-                    .name(userInfoMap.get("login"))
-                    .password(passwordEncoder.encode(OAUTH_PASSWORD))
-                    .nickname(userInfoMap.get("login"))
-                    .roles("ROLE_USER")
-                    .joinedAt(LocalDateTime.now())
-                    .provider(socialLoginType.name())
-                    .url(userInfoMap.get("html_url"))
-                    .build());
-        } else {
-            return null;
         }
+//        깃허브 로그인
+        return accountRepository.save(Account.builder()
+                .email(userInfoMap.get("login"))
+                .name(userInfoMap.get("login"))
+                .password(passwordEncoder.encode(OAUTH_PASSWORD))
+                .nickname(userInfoMap.get("login"))
+                .roles("ROLE_USER")
+                .joinedAt(LocalDateTime.now())
+                .provider(socialLoginType.name())
+                .url(userInfoMap.get("html_url"))
+                .build());
     }
 
     private SocialOAuth findSocialOAuthByType(SocialLoginType socialLoginType) {
