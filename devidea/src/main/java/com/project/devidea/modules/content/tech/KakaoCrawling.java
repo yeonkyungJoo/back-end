@@ -37,7 +37,7 @@ public class KakaoCrawling extends Crawling{
     }
 
     @Override
-    @Scheduled( cron="${crawling.Scheduled}")
+    @Scheduled( cron="${project.crawling.Scheduled}")
     void executeCrawling() {
         connect();
         Elements document = doc.select("ul#post-list");

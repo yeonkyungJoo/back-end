@@ -8,6 +8,12 @@ server:
       force: true
 
 spring:
+  data:
+    mongodb:
+#      url: mongodb://mongodb2:27017/test
+      host: mongodb2
+      port: 27017
+      database: test
   h2:
     console:
       enabled: true
@@ -52,5 +58,7 @@ sns:
       secret: k64ajtdh7iPfaEkW_TjbwiGm
     callback:
       url: http://localhost:8080/login/oauth/google/callback
+
+project:
   crawling:
     Scheduled: '*/10 * * * * *'

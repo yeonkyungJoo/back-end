@@ -37,7 +37,7 @@ public class LineCrawling extends Crawling{
     }
 
     @Override
-    @Scheduled( cron="${crawling.Scheduled}")
+    @Scheduled( cron="${project.crawling.Scheduled}")
     public void executeCrawling() {
         connect();
         Elements document = doc.select("main#main");
