@@ -19,12 +19,4 @@ public class StudyApplyForm {
     String answer;
 
     String etc;
-
-//    public void setUserName(Account account) {
-//        userName=account.get();
-//    }
-//
-//    public void setStudy(Study study) {
-//        studyName=study.getTitle();
-//    }
 }

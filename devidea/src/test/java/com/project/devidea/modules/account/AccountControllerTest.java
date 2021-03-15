@@ -99,7 +99,7 @@ class AccountControllerTest {
         when(accountService.login(any())).thenReturn(map);
 
 //        when, then
-        MockHttpServletResponse mockHttpServletResponse = mockMvc.perform(get("/login")
+        MockHttpServletResponse mockHttpServletResponse = mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(LoginRequestDto.builder()
                         .email(savedAccount.getEmail()).password("123412341234").build())))

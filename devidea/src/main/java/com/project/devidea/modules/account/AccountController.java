@@ -1,5 +1,6 @@
 package com.project.devidea.modules.account;
 
+import com.project.devidea.infra.config.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.oauth.OAuthService;
 import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
 import com.project.devidea.modules.account.form.LoginRequestDto;
@@ -9,8 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -20,6 +26,7 @@ public class AccountController {
 
     private final AccountService accountService;
     private final OAuthService oAuthService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequestDto) throws Exception {
@@ -50,5 +57,14 @@ public class AccountController {
         Map<String, String> result = oAuthService.oauthLogin(socialLoginType, code);
         HttpHeaders headers = getHttpHeaders(result);
         return new ResponseEntity<>(headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/asdf")
+    public void loginConfirm(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String email = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        System.out.println();
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        System.out.println(authentication.getAuthorities().stream().);
     }
 }
