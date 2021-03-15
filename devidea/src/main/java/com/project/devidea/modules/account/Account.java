@@ -64,6 +64,9 @@ public class Account implements UserDetails {
 
 //    private Set<Like> likes;
 
+//    이메일 수신 동의
+    private boolean receiveEmail;
+
     private boolean receiveNotification;
 
     private boolean receiveTechNewsNotification;
