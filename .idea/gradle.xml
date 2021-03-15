@@ -4,14 +4,23 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="delegatedBuild" value="true" />
+        <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/devidea" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="11" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/devidea" />
+            <option value="$PROJECT_DIR$" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../devidea2" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../devidea2" />
           </set>
         </option>
       </GradleProjectSettings>

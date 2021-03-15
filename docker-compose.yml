@@ -8,7 +8,7 @@ services:
     container_name: "mongodb2"
 
   devidea:
-    build: .
+    build: devidea
     ports:
       - 8080:8080
     links:
