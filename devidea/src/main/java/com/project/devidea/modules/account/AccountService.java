@@ -2,6 +2,7 @@ package com.project.devidea.modules.account;
 
 
 import com.project.devidea.infra.config.jwt.JwtTokenUtil;
+import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
 import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import com.project.devidea.modules.account.form.SignUpResponseDto;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ public class AccountService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final ModelMapper modelMapper;
+    private final JwtUserDetailsService jwtUserDetailsService;
 
 //    회원가입
     public SignUpResponseDto save(SignUpRequestDto signUpRequestDto) {
@@ -35,7 +38,7 @@ public class AccountService {
                 Account.builder()
                         .email(signUpRequestDto.getEmail())
                         .name(signUpRequestDto.getName())
-                        .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
+                        .password("{bcrypt}" + passwordEncoder.encode(signUpRequestDto.getPassword()))
                         .nickname(signUpRequestDto.getNickname())
                         .roles("ROLE_USER")
                         .joinedAt(LocalDateTime.now())

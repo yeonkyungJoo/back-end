@@ -59,10 +59,6 @@ public class Tag implements Serializable {
 
     @Override
     public String toString() {
-        String result = "firstName:" + firstName +
-                ",secondName:" + secondName +
-                ",thirdName:" + thirdName +
-                ", parent:";
-        return result += parent != null ? parent.firstName : "null";
+        return firstName;
     }
 }

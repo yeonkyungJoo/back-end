@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -32,8 +31,6 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final DateTimePath<java.time.LocalDateTime> joinedAt = createDateTime("joinedAt", java.time.LocalDateTime.class);
 
-    public final SetPath<com.project.devidea.modules.tagzone.zone.Zone, com.project.devidea.modules.tagzone.zone.QZone> locations = this.<com.project.devidea.modules.tagzone.zone.Zone, com.project.devidea.modules.tagzone.zone.QZone>createSet("locations", com.project.devidea.modules.tagzone.zone.Zone.class, com.project.devidea.modules.tagzone.zone.QZone.class, PathInits.DIRECT2);
-
     public final StringPath name = createString("name");
 
     public final StringPath nickname = createString("nickname");
@@ -55,8 +52,6 @@ public class QAccount extends EntityPathBase<Account> {
     public final BooleanPath receiveTechNewsNotification = createBoolean("receiveTechNewsNotification");
 
     public final StringPath roles = createString("roles");
-
-    public final SetPath<com.project.devidea.modules.tagzone.tag.Tag, com.project.devidea.modules.tagzone.tag.QTag> tags = this.<com.project.devidea.modules.tagzone.tag.Tag, com.project.devidea.modules.tagzone.tag.QTag>createSet("tags", com.project.devidea.modules.tagzone.tag.Tag.class, com.project.devidea.modules.tagzone.tag.QTag.class, PathInits.DIRECT2);
 
     public final StringPath url = createString("url");
 

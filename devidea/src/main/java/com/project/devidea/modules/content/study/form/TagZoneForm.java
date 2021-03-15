@@ -8,13 +8,11 @@ import java.util.Set;
 @Data
 public class TagZoneForm {
     Set<String>  tags;
-    String city;
-    String province;
+    String location;
     public TagZoneForm(Set<Tag> tags, Zone location) {
         tags.stream().forEach(tag -> {
             this.tags.add(tag.getFirstName());
         });
-        city=location.getCity();
-        province=location.getProvince();
+        this.location=location.toString();
     }
 }

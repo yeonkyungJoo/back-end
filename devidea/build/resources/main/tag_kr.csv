@@ -39,6 +39,8 @@ parent,프레임워크,framework,null
 parent,etc,null,null
 etc,docker,도커,null
 etc,devops,데브옵스,null
+etc,infra,인프라,null
+etc,가상화,virtualization,null
 etc,kubernetes,쿠버네티스,null
 etc,algorithm,알고리즘,null
 etc,data-structure,자료구조,null

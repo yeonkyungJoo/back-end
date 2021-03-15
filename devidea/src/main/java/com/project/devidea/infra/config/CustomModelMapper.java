@@ -3,10 +3,13 @@ package com.project.devidea.infra.config;
 import lombok.Getter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
-@Getter
-public class CustomModelMapper {
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-    public static ModelMapper getModelMapper() {
+@Configuration
+public class CustomModelMapper {
+    @Bean
+    public ModelMapper ModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setDestinationNameTokenizer(NameTokenizers.UNDERSCORE)

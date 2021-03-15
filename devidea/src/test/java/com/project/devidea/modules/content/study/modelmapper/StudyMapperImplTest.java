@@ -1,5 +1,6 @@
 package com.project.devidea.modules.content.study.modelmapper;
 
+import com.project.devidea.infra.config.CustomModelMapper;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.study.Study;
 import com.project.devidea.modules.content.study.apply.StudyApply;
@@ -10,6 +11,7 @@ import com.project.devidea.modules.content.study.form.StudyMakingForm;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,10 +19,10 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@SpringBootTest(classes = {StudyMapperImpl.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = {CustomModelMapper.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class StudyMapperImplTest {
     @Autowired
-    StudyMapperImpl studyMapper;
+    ModelMapper modelMapper;
     Zone zone;
     Study study;
     StudyApply studyApply;
@@ -43,10 +45,10 @@ class StudyMapperImplTest {
                 new Tag().builder().firstName("tag2")
                         .build()));
         account = new Account().builder().id(1L)
-                .email("근우")
+                .nickname("근우")
                 .build();
         admin = new Account().builder().id(1L)
-                .email("admin")
+                .nickname("admin")
                 .build();
         study = new Study().builder().publishedDateTime(LocalDateTime.now())
                 .title("title")
@@ -72,25 +74,25 @@ class StudyMapperImplTest {
 
     @Test
     void getStudyListMapper() {
-        StudyListForm studyListForm = studyMapper.StudyList().map(study, StudyListForm.class);
+        StudyListForm studyListForm = modelMapper.map(study, StudyListForm.class);
         System.out.println(studyListForm);
     }
 
     @Test
     void getStudyApplyMapper() {
-        StudyApplyForm studyApplyForm = studyMapper.StudyApply().map(studyApply, StudyApplyForm.class);
+        StudyApplyForm studyApplyForm = modelMapper.map(studyApply, StudyApplyForm.class);
         System.out.println(studyApplyForm);
     }
 
     @Test
     void getStudyMakingMapper() {
-        StudyMakingForm studyMakingForm = studyMapper.StudyMaking().map(study, StudyMakingForm.class);
+        StudyMakingForm studyMakingForm = modelMapper.map(study, StudyMakingForm.class);
         System.out.println(studyMakingForm);
     }
 
     @Test
     void getStudyDetailMapper() {
-        StudyDetailForm studyDetailForm = studyMapper.StudyDetail().map(study, StudyDetailForm.class);
+        StudyDetailForm studyDetailForm = modelMapper.map(study, StudyDetailForm.class);
         System.out.println(studyDetailForm);
     }
 }
