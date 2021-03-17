@@ -15,12 +15,16 @@ public class SignUpRequestValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return SignUpRequestDto.class.isAssignableFrom(clazz);
+        return SignUpRequestDto.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         SignUpRequestDto request = (SignUpRequestDto) target;
+
+        if (!request.getPassword().equals(request.getPasswordConfirm())) {
+            errors.rejectValue("password", "invalid.password", "비밀번호가 일치하지 않습니다.");
+        }
 
         if (accountRepository.existsByEmail(request.getEmail())) {
             errors.rejectValue("email", "invalid.email", "이미 존재하는 이메일입니다.");
@@ -28,10 +32,6 @@ public class SignUpRequestValidator implements Validator {
 
         if (accountRepository.existsByNickname(request.getNickname())) {
             errors.rejectValue("nickname", "invalid.nickname", "이미 존재하는 닉네임입니다.");
-        }
-
-        if (!request.getPassword().equals(request.getPasswordConfirm())) {
-            errors.rejectValue("password", "invalid.password", "비밀번호가 일치하지 않습니다.");
         }
     }
 }
