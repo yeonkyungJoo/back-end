@@ -1,4 +1,4 @@
-#  back-end
+# back-end
 [기술 스택]
 - 커뮤니케이션 : Slack
 - 일정 관리 : trello (+ wbs 툴)
