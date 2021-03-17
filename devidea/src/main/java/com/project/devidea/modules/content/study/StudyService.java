@@ -7,6 +7,7 @@ import com.project.devidea.modules.content.study.apply.StudyApplyForm;
 import com.project.devidea.modules.content.study.apply.StudyApplyListForm;
 import com.project.devidea.modules.content.study.apply.StudyApplyRepository;
 import com.project.devidea.modules.content.study.form.*;
+import com.project.devidea.modules.content.study.repository.StudyMemberRepository;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,38 +35,51 @@ public class StudyService {
     private final TagRepository tagRepository;
     private final AccountRepository accountRepository;
     private final StudyApplyRepository studyApplyRepository;
+    private final StudyMemberRepository studyMemberRepository;
 
     List<StudyListForm> searchByCondition(@Valid StudySearchForm studySearchForm) {
-        List<Study> studyList=studyRepository.findByCondition(studySearchForm);
+        List<Study> studyList = studyRepository.findByCondition(studySearchForm);
         return studyList.stream().map(study -> {
             return studyMapper.map(study, StudyListForm.class);
         }).collect(Collectors.toList());
     }
-    StudyDetailForm getDetailStudy(Long id){
-        return studyMapper.map(studyRepository.findById(id), StudyDetailForm.class);
+
+    StudyDetailForm getDetailStudy(Long id) {
+        Study study = studyRepository.findById(id).orElseThrow();
+        return studyMapper.map(study, StudyDetailForm.class);
     }
-    StudyDetailForm makingStudy(@Valid StudyMakingForm studyMakingForm) { //study만들기
+
+    StudyDetailForm makingStudy(String NickName,@Valid StudyMakingForm studyMakingForm) { //study만들기
         Study study = studyMapper.map(studyMakingForm, Study.class);
-        String[] locations=studyMakingForm.getLocation().split("/");
+        String[] locations = studyMakingForm.getLocation().split("/");
         Zone zone = zoneRepository.findByCityAndProvince(locations[0], locations[1]);
         Set<Tag> tagsSet = studyMakingForm.getTags().stream().map(tag -> {
             return tagRepository.findByFirstName(tag);
         }).collect(Collectors.toSet());
-        study.setAdmin(accountRepository.findByNickname(studyMakingForm.getAdmin()));
         study.setLocation(zone);
         study.setTags(tagsSet);
+        study.setCounts(study.getCounts()+1);
+        Account admin=accountRepository.findByNickname(NickName);
         studyRepository.save(study);
+        studyMemberRepository.save(
+                StudyMember.builder()
+                        .study(study)
+                        .member(admin)
+                        .JoinDate(LocalDateTime.now())
+                        .role(Study_Role.팀장)
+                        .build()
+        );
         return studyMapper.map(study, StudyDetailForm.class);
     }
 
     String applyStudy(@Valid StudyApplyForm studyApplyForm) {
-        Account account = accountRepository.findByNickname(studyApplyForm.getAccount());
-        Study study = studyRepository.findById(studyApplyForm.getId()).get();
+        Account applicant = accountRepository.findByNickname(studyApplyForm.getApplicant());
+        Study study = studyRepository.findById(studyApplyForm.getId()).orElseThrow();
         if (study == null) return "study 존재하지 않음";
         //알람 넣기
         StudyApply studyApply = StudyApply.builder()
                 .study(study)
-                .account(account)
+                .applicant(applicant)
                 .answer(studyApplyForm.getAnswer())
                 .etc(studyApplyForm.getEtc())
                 .build();
@@ -73,18 +88,32 @@ public class StudyService {
     }
 
     public String decideJoin(@Valid StudyApplyForm studyApplyForm, Boolean accept) {
-        Account account = accountRepository.findByNickname(studyApplyForm.getAccount());
-        Study study = studyRepository.findById(studyApplyForm.getId()).get();
-        StudyApply studyApply = studyApplyRepository.findByAccountAndStudy(account, study);
-        if (account == null || study == null || studyApply == null) {
+        Account applicant = accountRepository.findByNickname(studyApplyForm.getApplicant());
+        Study study = studyRepository.findById(studyApplyForm.getId()).orElseThrow();
+        StudyApply studyApply = studyApplyRepository.findByApplicantAndStudy(applicant, study);
+        if (applicant == null || study == null || studyApply == null) {
             return "다음과 같은 사용자또는 스터디가 존재하지 않습니다";
         }
         studyApply.setAccpted(accept);
-        if (accept) {
-            if (study.addMember(account)) return "성공적";
-            else return "스터디인원이 꽉찼습니다.";
-        }
+        if (accept) { return addMember(applicant, study, Study_Role.회원); }
         else return "거절완료";
+    }
+
+    public String addMember(Account applicant, Study study, Study_Role role) {
+        if (study.getMembers().size() == study.getMaxCount()) return "꽉 찼습니다.";
+        StudyMember studyMember = studyMemberRepository.findByStudyAndMember(study, applicant);
+        if (studyMember != null) return "이미 있습니다.";
+        studyMember = new StudyMember().builder()
+                .member(applicant)
+                .study(study)
+                .role(role)
+                .JoinDate(LocalDateTime.now())
+                .build();
+        applicant.addStudy(studyMember);
+        study.addMember(studyMember);
+        studyMemberRepository.save(studyMember);
+
+        return "성공적으로 완료했습니다.";
     }
 
     List<StudyApplyForm> getApplyForm(Long id) { //해당 스터디 가입신청 리스트 보기
@@ -94,56 +123,71 @@ public class StudyService {
                 }).collect(Collectors.toList());
     }
 
-    String deleteStudy(Long id) { //해당 스터디 가입신청 리스트 보기
-        Optional<Study> study=studyRepository.findById(id);
-        if(study.isEmpty()) return "없는 스터디 입니다.";
-        studyRepository.delete(study.get());
-        return "삭제 하였습니다.";
-    }
+    String deleteStudy(String nickname,Long id) { //해당 스터디 가입신청 리스트 보기
+        Account account=accountRepository.findByEmail(nickname).orElse(
+                accountRepository.findByNickname(nickname));
+        Study study = studyRepository.findById(id).orElseThrow();
+        Study_Role member_role=studyMemberRepository.findByStudyAndMember(study,account).getRole();
+        if(member_role!=Study_Role.팀장) return "스터디 삭제 권한이 없습니다.";
+        List<StudyMember> studyMembers=studyMemberRepository.findByStudy(study);
+            studyMembers.stream().forEach(
+                    studyMember->{
+                        studyMember.getMember().getStudies().remove(studyMember);
+                    }
+            );
+            studyRepository.delete(study);
+            return "성공적으로 삭제하였습니다.";
+        }
 
-    String leaveStudy(String userName,Long study_id) {
-        Study study=studyRepository.findById(study_id).get();
-        study.removeMember(accountRepository.findByNickname(userName));
+    String leaveStudy(String nickName, Long study_id) {
+        Account account=accountRepository.findByNickname(nickName);
+        Study study = studyRepository.findById(study_id).orElseThrow();
+        StudyMember studyMember=studyMemberRepository.findByStudyAndMember(study,account);
+        study.removeMember(account);
+        account.getStudies().remove(studyMember);
+        studyMemberRepository.delete(studyMember);
         return "스터디를 떠났습니다.";
     }
 
-    List<StudyListForm> myStudy(String userName) {
-        Account account=accountRepository.findByNickname(userName);
-        List<Study> studyList=studyRepository.findByMember(account);
-        return studyList.stream().map(study->{
-            return studyMapper.map(study,StudyListForm.class);
+    List<StudyListForm> myStudy(String email) {
+        Account account = accountRepository.findByEmail(email).orElse(
+                accountRepository.findByNickname(email));
+        List<StudyMember> studyList = studyMemberRepository.findByMember(account);
+        return studyList.stream().map(study -> {
+            return studyMapper.map(study.getStudy(), StudyListForm.class);
         }).collect(Collectors.toList());
     }
 
     public List<StudyApplyListForm> getApplyList(Long id) {
         return studyApplyRepository.findByStudy_Id(id).stream().map(
-                studyApply->{
-                    return studyMapper.map(studyApply,StudyApplyListForm.class);
+                studyApply -> {
+                    return studyMapper.map(studyApply, StudyApplyListForm.class);
                 }
         ).collect(Collectors.toList());
     }
 
     public StudyApplyForm getApplyDetail(Long id) {
-        return studyMapper.map(studyApplyRepository.findById(id),StudyApplyForm.class);
+        return studyMapper.map(studyApplyRepository.findById(id), StudyApplyForm.class);
     }
 
     public OpenRecruitForm getOpenRecruitForm(Long id) {
-        Study study=studyRepository.findById(id).get();
-        return new OpenRecruitForm(study.isOpen(),study.isRecruiting());
+        Study study = studyRepository.findById(id).orElseThrow();
+        return new OpenRecruitForm(study.isOpen(), study.isRecruiting());
     }
 
     public TagZoneForm getTagandZone(Long id) {
-        Study study=studyRepository.findById(id).get();
-        return new TagZoneForm(study.getTags(),study.getLocation());
+        Study study = studyRepository.findById(id).orElseThrow();
+        return new TagZoneForm(study.getTags(), study.getLocation());
     }
 
-    public void UpdateOpenRecruiting(Long id, OpenRecruitForm openRecruitForm) {
-        Study study=studyRepository.findById(id).get();
-        study.setOpenAndRecruiting(openRecruitForm.isOpen(),openRecruitForm.isRecruiting());
+    public String UpdateOpenRecruiting(Long id, OpenRecruitForm openRecruitForm) {
+        Study study = studyRepository.findById(id).orElseThrow();
+        study.setOpenAndRecruiting(openRecruitForm.isOpen(), openRecruitForm.isRecruiting());
+        return "success";
     }
 
-    public void UpdateTagAndZOne(Long id, TagZoneForm tagZoneForm) {
-        Study study=studyRepository.findById(id).get();
-//        study.setTagAndZone(tagZoneForm.s,openRecruitForm.isRecruiting());
+    public String UpdateTagAndZOne(Long id, TagZoneForm tagZoneForm) {
+        Study study = studyRepository.findById(id).orElseThrow();
+        return "success";
     }
 }

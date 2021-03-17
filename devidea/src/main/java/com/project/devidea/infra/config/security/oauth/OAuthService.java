@@ -1,8 +1,9 @@
-package com.project.devidea.infra.config.oauth;
+package com.project.devidea.infra.config.security.oauth;
 
-import com.project.devidea.infra.config.jwt.JwtTokenUtil;
-import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
-import com.project.devidea.infra.config.oauth.provider.SocialOAuth;
+import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.infra.config.security.jwt.*;
+import com.project.devidea.infra.config.security.oauth.provider.SocialLoginType;
+import com.project.devidea.infra.config.security.oauth.provider.SocialOAuth;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,13 +50,13 @@ public class OAuthService {
         if (account == null) {
             account = save(userInfoMap, socialLoginType);
         }
-
+        LoginUser loginUser =new LoginUser(account);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(account, "", account.getAuthorities());
+                new UsernamePasswordAuthenticationToken(loginUser, "", loginUser.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-        String jwtToken = jwtTokenUtil.generateToken(account.getUsername());
+        String jwtToken = jwtTokenUtil.generateToken(loginUser.getUsername());
         return jwtTokenUtil.createTokenMap(jwtToken);
     }
 

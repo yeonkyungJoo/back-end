@@ -1,68 +1,72 @@
 package com.project.devidea.modules.content.study;
 
-import com.project.devidea.modules.account.Account;
+import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.content.study.apply.StudyApplyForm;
-import com.project.devidea.modules.content.study.apply.StudyApplyListForm;
 import com.project.devidea.modules.content.study.form.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RestController
+@RequiredArgsConstructor
 public class StudyController {
-    StudyService studyService;
+    private final StudyService studyService;
 
     @GetMapping("/study")
-    public List<StudyListForm> 조회(@Valid StudySearchForm searchForm) {
-        return studyService.searchByCondition(searchForm);
+    public ResponseEntity<?> 조회(@RequestBody @Valid StudySearchForm searchForm) {
+        return new ResponseEntity<>(studyService.searchByCondition(searchForm), HttpStatus.OK);
     }
 
     @PostMapping("/study")
-    public StudyDetailForm 등록(@Valid StudyMakingForm studyMakingForm) {
-        return studyService.makingStudy(studyMakingForm);
+    public ResponseEntity<?> 등록(@AuthenticationPrincipal LoginUser account, @RequestBody @Valid StudyMakingForm studyMakingForm) {
+        if(account.getNickName()==null) return new ResponseEntity<>("로그인 해주십쇼.", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(studyService.makingStudy(account.getNickName(),studyMakingForm), HttpStatus.OK);
     }
 
     @PostMapping("/study/mystudy")
-    public List<StudyListForm> 내스터디(Account account) {
-        return studyService.myStudy(account.getNickName());
+    public ResponseEntity<?> 내스터디(@AuthenticationPrincipal LoginUser account) {
+        return new ResponseEntity<>(studyService.myStudy(account.getNickName()), HttpStatus.OK);
     }
 
     @GetMapping("/study/{id}")
-    public StudyDetailForm 스터디_자세한정보(@PathVariable Long id) {
-        return studyService.getDetailStudy(id);
-    }
+    public ResponseEntity<?> 스터디_자세한정보(@PathVariable Long id){
+        return new ResponseEntity<>(studyService.getDetailStudy(id), HttpStatus.OK);
+}
 
     @PostMapping("/study/{id}/delete")
-    public String 스터디_삭제(@PathVariable Long id) {
-        return studyService.deleteStudy(id);
+    public ResponseEntity<?> 스터디_삭제(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
+        return new ResponseEntity<>(studyService.deleteStudy(account.getNickName(),id), HttpStatus.OK);
     }
 
     @PostMapping("/study/{id}/leave")
-    public String 스터디에서_나가기(String userName, @PathVariable Long id) {
-        return studyService.leaveStudy(userName, id);
+    public ResponseEntity<?> 스터디에서_나가기(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
+        return new ResponseEntity<>(studyService.leaveStudy(account.getNickName(), id), HttpStatus.OK);
     }
 
     @PostMapping("/study/apply/{applyId}/accept")
-    public String 스터디_승인(@Valid StudyApplyForm studyApplyForm) {
-        return studyService.decideJoin(studyApplyForm, true);
+    public ResponseEntity<?> 스터디_승인(@AuthenticationPrincipal LoginUser account, @Valid StudyApplyForm studyApplyForm) {
+        return new ResponseEntity<>(studyService.decideJoin(studyApplyForm, true), HttpStatus.OK);
     }
 
     @PostMapping("/study/apply/{applyId}/reject")
-    public String 스터디_거절(@Valid StudyApplyForm studyApplyForm) {
-        return studyService.decideJoin(studyApplyForm, false);
+    public ResponseEntity<?> 스터디_거절(@AuthenticationPrincipal LoginUser account, @Valid StudyApplyForm studyApplyForm) {
+        return new ResponseEntity<>(studyService.decideJoin(studyApplyForm, false), HttpStatus.OK);
     }
 
     @GetMapping("/study/{id}/apply/list")
-    public List<StudyApplyListForm> 가입_신청_리스트(@PathVariable Long id) {
-        return studyService.getApplyList(id);
+    public ResponseEntity<?> 가입_신청_리스트(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
+        return new ResponseEntity<>(studyService.getApplyList(id), HttpStatus.OK);
     }
 
     @GetMapping("/apply/{applyid}")
-    public StudyApplyForm 가입_신청_디테일(@PathVariable Long id) {
-        return studyService.getApplyDetail(id);
+    public ResponseEntity<?> 가입_신청_디테일_보기(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
+        return new ResponseEntity<>(studyService.getApplyDetail(id), HttpStatus.OK);
     }
 
 //    @GetMapping("/study/{id}/members") //미정
@@ -71,22 +75,24 @@ public class StudyController {
 //    }
 
     @GetMapping("/study/{id}/status")
-    public OpenRecruitForm 스터디_공개_및_모집여부_설정폼(@PathVariable Long id) {
-        return studyService.getOpenRecruitForm(id);
+    public ResponseEntity<?> 스터디_공개_및_모집여부_설정폼(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
+        return new ResponseEntity<>(studyService.getOpenRecruitForm(id), HttpStatus.OK);
     }
 
     @PostMapping("/study/{id}/open") //미정
-    public void 스터디_공개_및_모집여부_변경(@PathVariable Long id, OpenRecruitForm openRecruitForm) {
-        studyService.UpdateOpenRecruiting(id,openRecruitForm);
+    public ResponseEntity<?> 스터디_공개_및_모집여부_변경(@AuthenticationPrincipal LoginUser account, @PathVariable Long id, OpenRecruitForm openRecruitForm) {
+        return new ResponseEntity<>(studyService.UpdateOpenRecruiting(id, openRecruitForm), HttpStatus.OK);
     }
 
     @GetMapping("/study/{id}/tag_zone")
-    public TagZoneForm 지역_태그_설정폼(@PathVariable Long id) {
-        return studyService.getTagandZone(id);
+    public ResponseEntity<?> 지역_태그_설정폼(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
+        return new ResponseEntity<>(studyService.getTagandZone(id), HttpStatus.OK);
     }
 
     @PostMapping("/study/{id}/tag_zone")
-    public void 지역_태그_설정_변경(@PathVariable Long id, @Valid TagZoneForm tagZoneForm) {
-        studyService.UpdateTagAndZOne(id,tagZoneForm);
+    public ResponseEntity<?> 지역_태그_설정_변경(@AuthenticationPrincipal LoginUser account, @PathVariable Long id, @Valid TagZoneForm tagZoneForm) {
+        return new ResponseEntity<>(studyService.UpdateTagAndZOne(id, tagZoneForm), HttpStatus.OK);
     }
+
+
 }

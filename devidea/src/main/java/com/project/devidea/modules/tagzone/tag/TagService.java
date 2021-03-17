@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 @RequiredArgsConstructor
-@Service
+@Service("TagService")
 @Transactional
 public class TagService {
 

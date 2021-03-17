@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
 public class StudyListForm extends StudyBaseForm{
 
 }

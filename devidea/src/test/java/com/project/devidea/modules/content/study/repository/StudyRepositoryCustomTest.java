@@ -9,6 +9,7 @@ import com.project.devidea.modules.tagzone.tag.TagRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -17,8 +18,9 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest
 @Transactional
+@WithAnonymousUser
 class StudyRepositoryCustomTest {
     static int MAX_DATA_SIZE = 300;
 
@@ -80,7 +82,6 @@ class StudyRepositoryCustomTest {
     @BeforeEach
     void InitData() {
         studyRepository.saveAll(studySampleGenerator.generateDumy(MAX_DATA_SIZE));
-        List<Study> studyList = studyRepository.findAll();
     }
 
     @DisplayName("기본 검색 테스트")

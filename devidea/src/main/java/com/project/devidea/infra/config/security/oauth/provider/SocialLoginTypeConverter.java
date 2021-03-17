@@ -1,6 +1,5 @@
-package com.project.devidea.infra.config.oauth.provider;
+package com.project.devidea.infra.config.security.oauth.provider;
 
-import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 

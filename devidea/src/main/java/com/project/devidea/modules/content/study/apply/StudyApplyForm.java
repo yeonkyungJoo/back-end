@@ -11,7 +11,7 @@ public class StudyApplyForm {
     Long id; //studyid
 
     @NotBlank
-    String account;
+    String applicant; //지원자
 
     @NotBlank
     String study;

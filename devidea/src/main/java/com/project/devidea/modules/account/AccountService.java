@@ -1,8 +1,7 @@
 package com.project.devidea.modules.account;
 
 
-import com.project.devidea.infra.config.jwt.JwtTokenUtil;
-import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
+import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import com.project.devidea.modules.account.form.SignUpResponseDto;
@@ -12,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +28,9 @@ public class AccountService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final ModelMapper modelMapper;
-    private final JwtUserDetailsService jwtUserDetailsService;
 
-//    회원가입
-    public SignUpResponseDto save(SignUpRequestDto signUpRequestDto) {
+    //    회원가입
+    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
         Account savedAccount = accountRepository.save(
                 Account.builder()
                         .email(signUpRequestDto.getEmail())
@@ -50,6 +47,7 @@ public class AccountService {
 
     /**
      * 로그인 로직, 단순 로그인만 우선적으로 진행했습니다.
+     *
      * @param requestDto : 아이디, 비밀번호
      * @return
      */
@@ -60,7 +58,7 @@ public class AccountService {
         return jwtTokenUtil.createTokenMap(jwtToken);
     }
 
-    private void authenticate(String email, String password) throws Exception{
+    private void authenticate(String email, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (DisabledException e) {
@@ -69,5 +67,5 @@ public class AccountService {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-
 }
+

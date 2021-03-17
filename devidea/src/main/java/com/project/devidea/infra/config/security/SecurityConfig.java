@@ -1,21 +1,16 @@
-package com.project.devidea.infra.config;
+package com.project.devidea.infra.config.security;
 
-import com.project.devidea.infra.config.jwt.JwtAuthenticationEntryPoint;
-import com.project.devidea.infra.config.jwt.JwtRequestFilter;
-import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
-import com.project.devidea.modules.account.AccountRepository;
-import com.project.devidea.modules.account.AccountService;
 import lombok.RequiredArgsConstructor;
+import com.project.devidea.infra.config.security.jwt.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -25,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
@@ -33,9 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
 
     @Bean
     @Override
@@ -45,10 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/h2-console/**","/v2/**","/swagger-ui.html",
+        web.ignoring().antMatchers("/h2-console/**", "/v2/**", "/swagger-ui.html",
                 "/**");
     }
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -58,11 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/login/**", "/sign-up").permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers(HttpMethod.POST, "/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/login", "/sign-up").permitAll()
+                .anyRequest().permitAll()
                 .and()
-                    .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
-                    .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

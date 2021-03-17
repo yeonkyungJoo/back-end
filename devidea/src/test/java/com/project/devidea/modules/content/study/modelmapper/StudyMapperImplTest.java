@@ -1,6 +1,6 @@
 package com.project.devidea.modules.content.study.modelmapper;
 
-import com.project.devidea.infra.config.CustomModelMapper;
+import com.project.devidea.infra.config.AppConfig;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.study.Study;
 import com.project.devidea.modules.content.study.apply.StudyApply;
@@ -12,14 +12,19 @@ import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.util.SerializationUtils;
+import org.yaml.snakeyaml.introspector.PropertyUtils;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@SpringBootTest(classes = {CustomModelMapper.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = {ModelMapper.class
+,AppConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class StudyMapperImplTest {
     @Autowired
     ModelMapper modelMapper;
@@ -27,7 +32,7 @@ class StudyMapperImplTest {
     Study study;
     StudyApply studyApply;
     Account admin;
-    Account account;
+    Account applicant;
     Set<Tag> tags;
     static final Boolean OPEN = true;
     static final int MAX_COUNT = 5;
@@ -44,7 +49,7 @@ class StudyMapperImplTest {
                         .build(),
                 new Tag().builder().firstName("tag2")
                         .build()));
-        account = new Account().builder().id(1L)
+        applicant = new Account().builder().id(1L)
                 .nickname("근우")
                 .build();
         admin = new Account().builder().id(1L)
@@ -59,14 +64,14 @@ class StudyMapperImplTest {
                 .location(zone)
                 .tags(tags)
                 .shortDescription("shortDescription")
-                .admin(account)
                 .question("question")
                 .counts(COUNTS)
                 .fullDescription("fullDescription")
                 .build();
+        study.setAdmin(admin);
         studyApply= new StudyApply().builder()
                 .study(study)
-                .account(admin)
+                .applicant(applicant)
                 .answer("answer")
                 .etc("etc")
                 .build();
@@ -88,11 +93,16 @@ class StudyMapperImplTest {
     void getStudyMakingMapper() {
         StudyMakingForm studyMakingForm = modelMapper.map(study, StudyMakingForm.class);
         System.out.println(studyMakingForm);
+        Study study1 =studyMakingForm.toStudy();
+        System.out.println(study1);
+
     }
 
     @Test
     void getStudyDetailMapper() {
         StudyDetailForm studyDetailForm = modelMapper.map(study, StudyDetailForm.class);
+        System.out.println(studyDetailForm);
+        Study studyDetailForm1 = modelMapper.map(studyDetailForm, Study.class);
         System.out.println(studyDetailForm);
     }
 }

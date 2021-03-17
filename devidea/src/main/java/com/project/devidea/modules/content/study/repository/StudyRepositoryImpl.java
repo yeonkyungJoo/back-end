@@ -1,14 +1,11 @@
 package com.project.devidea.modules.content.study.repository;
 
-import com.project.devidea.modules.account.Account;
-import com.project.devidea.modules.account.QAccount;
 import com.project.devidea.modules.content.study.QStudy;
 import com.project.devidea.modules.content.study.Study;
 import com.project.devidea.modules.content.study.form.StudyListForm;
 import com.project.devidea.modules.content.study.form.StudySearchForm;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -29,22 +26,22 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                         , StudySearchConditions.eqCity(request.getCity())
                         , StudySearchConditions.eqProvince(request.getProvince())
                         , StudySearchConditions.eqRecruiting(request.getRecruiting())
+                        , StudySearchConditions.eqMentoRecruting(request.getMentorRecruiting())
                 )
                 .orderBy(qStudy.id.desc())
                 .limit(request.getPageSize())
-//                .offset(request.getPage())
+                .offset(request.getPage())
                 .fetch();
 
         return studyList;
     }
-
-    @Override
-    public List<Study> findByMember(Account account) {
-        QStudy qStudy = QStudy.study;
-        QAccount qAccount = QAccount.account;
-        return query.selectFrom(qStudy)
-                .innerJoin(qStudy.members, qAccount)
-                .fetchJoin()
-                .fetch();
-    }
+//
+//    @Override
+//    public List<Study> findByMember(Account account) {
+//        QStudy qStudy = QStudy.study;
+//        QAccount qAccount = QAccount.account;
+//        return query.selectFrom(qStudy).innerJoin(qStudy.members., qAccount)
+//                .fetchJoin()
+//                .fetch();
+//    }
 }

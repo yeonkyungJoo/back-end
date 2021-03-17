@@ -1,8 +1,4 @@
-package com.project.devidea.infra.config.oauth.provider;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.project.devidea.infra.config.oauth.provider.GoogleOAuth;
-import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
+package com.project.devidea.infra.config.security.oauth.provider;
 
 import java.util.Map;
 

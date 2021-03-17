@@ -1,8 +1,8 @@
 package com.project.devidea.modules.account;
-
-import com.project.devidea.infra.config.jwt.JwtTokenUtil;
-import com.project.devidea.infra.config.oauth.OAuthService;
-import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
+import com.project.devidea.infra.config.security.oauth.*;
+import com.project.devidea.infra.config.security.jwt.*;
+import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.infra.config.security.oauth.provider.SocialLoginType;
 import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -10,13 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -30,7 +26,7 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequestDto) throws Exception {
-        return new ResponseEntity<>(accountService.save(signUpRequestDto), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.signUp(signUpRequestDto), HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -59,12 +55,10 @@ public class AccountController {
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
-    @PostMapping("/asdf")
-    public void loginConfirm(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        String email = jwtTokenUtil.getUsernameFromToken(token.substring(7));
-        System.out.println();
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        System.out.println(authentication.getAuthorities().stream().);
+
+    @PostMapping("/me")
+    public ResponseEntity<?> all(@AuthenticationPrincipal LoginUser account) {
+        System.out.println(account);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 }

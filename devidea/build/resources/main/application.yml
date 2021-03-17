@@ -52,5 +52,6 @@ sns:
       secret: k64ajtdh7iPfaEkW_TjbwiGm
     callback:
       url: http://localhost:8080/login/oauth/google/callback
-  crawling:
-    Scheduled: '*/10 * * * * *'
+
+crawling:
+  Scheduled: '*/10 * * * * *'

@@ -11,15 +11,11 @@ public class StudyApplyListForm {
     Long id; //studyid
 
     @NotBlank
-    String userName;
+    String applicant;
 
     @NotBlank
     String studyName;
 
-
-    public void setUserName(Account account) {
-        userName=account.getUsername();
-    }
 
     public void setStudy(Study study) {
         studyName=study.getTitle();
