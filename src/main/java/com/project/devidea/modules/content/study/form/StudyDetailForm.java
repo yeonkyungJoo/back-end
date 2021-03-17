@@ -5,6 +5,7 @@ import com.project.devidea.modules.content.study.Level;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class StudyDetailForm extends StudyBaseForm{
     String admin;
     Set<String> members = new HashSet<>();
