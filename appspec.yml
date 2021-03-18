@@ -4,6 +4,9 @@ files:
   - source:  /
     destination: /home/ec2-user/app/project
 hooks:
+  BeforeInstall: #배포가 끝나면 아래 명령어를 실행
+    - location: scripts/remove-before.sh
+      timeout: 180
   AfterInstall: #배포가 끝나면 아래 명령어를 실행
-    - location: execute-deploy.sh
+    - location: scripts/execute-deploy.sh
       timeout: 180
