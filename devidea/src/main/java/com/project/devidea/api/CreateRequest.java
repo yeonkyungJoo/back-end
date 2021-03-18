@@ -5,8 +5,5 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-public class CreateRequest {
-int what;
+public abstract class CreateRequest {
 }
