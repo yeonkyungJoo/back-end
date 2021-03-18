@@ -16,7 +16,7 @@ public class StudyController {
     StudyService studyService;
 
     @GetMapping("/study")
-    public List<StudyListForm> 조회3(@Valid StudySearchForm searchForm) {
+    public List<StudyListForm> 조회4(@Valid StudySearchForm searchForm) {
         return studyService.searchByCondition(searchForm);
     }
 
