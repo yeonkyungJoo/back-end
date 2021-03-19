@@ -3,6 +3,7 @@ package com.project.devidea.modules.content.study.modelmapper;
 import com.project.devidea.infra.config.AppConfig;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.study.Study;
+import com.project.devidea.modules.content.study.StudyMember;
 import com.project.devidea.modules.content.study.apply.StudyApply;
 import com.project.devidea.modules.content.study.apply.StudyApplyForm;
 import com.project.devidea.modules.content.study.form.StudyDetailForm;
@@ -68,7 +69,6 @@ class StudyMapperImplTest {
                 .counts(COUNTS)
                 .fullDescription("fullDescription")
                 .build();
-        study.setAdmin(admin);
         studyApply= new StudyApply().builder()
                 .study(study)
                 .applicant(applicant)

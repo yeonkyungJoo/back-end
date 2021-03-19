@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+
 @Transactional
 public interface StudyMemberRepository extends JpaRepository<StudyMember,Long> {
 
@@ -18,7 +19,9 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember,Long> {
     @EntityGraph(attributePaths = {"study"}, type = EntityGraph.EntityGraphType.LOAD)
     List<StudyMember> findByMember(Account member);
 
-    StudyMember findByStudyAndMember(Study study,Account member);
 
+    StudyMember findByStudyAndMember(Study study,Account member);
+    StudyMember findByStudy_IdAndMember_Nickname(Long studyId,String nickName);
     void deleteById(Long id);
+    void deleteByStudyAndMember(Study study,Account member);
 }

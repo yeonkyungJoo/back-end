@@ -30,6 +30,7 @@ public class StudySampleGenerator {
                 .title(title)
                 .shortDescription("스프링 스터디입니다")
                 .location(zone)
+                .members(new HashSet<>())
                 .fullDescription("fullDescription")
                 .shortDescription("fullDescription")
                 .recruiting(isRecruiting)
@@ -38,7 +39,6 @@ public class StudySampleGenerator {
                 .maxCount(6)
                 .tags(tags)
                 .build();
-        study.setAdmin(admin);
         return study;
     }
     public List<Study> generateDumy(int number){

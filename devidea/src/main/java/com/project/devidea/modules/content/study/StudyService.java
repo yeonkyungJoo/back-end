@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,19 +36,19 @@ public class StudyService {
     private final StudyApplyRepository studyApplyRepository;
     private final StudyMemberRepository studyMemberRepository;
 
-    List<StudyListForm> searchByCondition(@Valid StudySearchForm studySearchForm) {
+    public List<StudyListForm> searchByCondition(@Valid StudySearchForm studySearchForm) {
         List<Study> studyList = studyRepository.findByCondition(studySearchForm);
         return studyList.stream().map(study -> {
             return studyMapper.map(study, StudyListForm.class);
         }).collect(Collectors.toList());
     }
 
-    StudyDetailForm getDetailStudy(Long id) {
+    public StudyDetailForm getDetailStudy(Long id) {
         Study study = studyRepository.findById(id).orElseThrow();
         return studyMapper.map(study, StudyDetailForm.class);
     }
 
-    StudyDetailForm makingStudy(String NickName,@Valid StudyMakingForm studyMakingForm) { //study만들기
+    public StudyDetailForm makingStudy(String NickName, @Valid StudyMakingForm studyMakingForm) { //study만들기
         Study study = studyMapper.map(studyMakingForm, Study.class);
         String[] locations = studyMakingForm.getLocation().split("/");
         Zone zone = zoneRepository.findByCityAndProvince(locations[0], locations[1]);
@@ -58,8 +57,8 @@ public class StudyService {
         }).collect(Collectors.toSet());
         study.setLocation(zone);
         study.setTags(tagsSet);
-        study.setCounts(study.getCounts()+1);
-        Account admin=accountRepository.findByNickname(NickName);
+        study.setCounts(study.getCounts() + 1);
+        Account admin = accountRepository.findByNickname(NickName);
         studyRepository.save(study);
         studyMemberRepository.save(
                 StudyMember.builder()
@@ -74,7 +73,7 @@ public class StudyService {
 
     String applyStudy(@Valid StudyApplyForm studyApplyForm) {
         Account applicant = accountRepository.findByNickname(studyApplyForm.getApplicant());
-        Study study = studyRepository.findById(studyApplyForm.getId()).orElseThrow();
+        Study study = studyRepository.findById(studyApplyForm.getStudyId()).orElseThrow();
         if (study == null) return "study 존재하지 않음";
         //알람 넣기
         StudyApply studyApply = StudyApply.builder()
@@ -87,20 +86,21 @@ public class StudyService {
         return "Yes";//완료 메시지 미완성
     }
 
-    public String decideJoin(@Valid StudyApplyForm studyApplyForm, Boolean accept) {
-        Account applicant = accountRepository.findByNickname(studyApplyForm.getApplicant());
-        Study study = studyRepository.findById(studyApplyForm.getId()).orElseThrow();
-        StudyApply studyApply = studyApplyRepository.findByApplicantAndStudy(applicant, study);
+    public String decideJoin(Long id, Boolean accept) {
+        StudyApply studyApply = studyApplyRepository.findById(id).orElseThrow();
+        Account applicant = studyApply.getApplicant();
+        Study study = studyApply.getStudy();
         if (applicant == null || study == null || studyApply == null) {
             return "다음과 같은 사용자또는 스터디가 존재하지 않습니다";
         }
         studyApply.setAccpted(accept);
-        if (accept) { return addMember(applicant, study, Study_Role.회원); }
-        else return "거절완료";
+        if (accept) {
+            return addMember(applicant, study, Study_Role.회원);
+        } else return "거절완료";
     }
 
     public String addMember(Account applicant, Study study, Study_Role role) {
-        if (study.getMembers().size() == study.getMaxCount()) return "꽉 찼습니다.";
+        if (study.getCounts() == study.getMaxCount()) return "꽉 찼습니다.";
         StudyMember studyMember = studyMemberRepository.findByStudyAndMember(study, applicant);
         if (studyMember != null) return "이미 있습니다.";
         studyMember = new StudyMember().builder()
@@ -109,10 +109,9 @@ public class StudyService {
                 .role(role)
                 .JoinDate(LocalDateTime.now())
                 .build();
-        applicant.addStudy(studyMember);
-        study.addMember(studyMember);
+        study.setCounts(study.getCounts() + 1); //더하기
+        studyRepository.save(study);
         studyMemberRepository.save(studyMember);
-
         return "성공적으로 완료했습니다.";
     }
 
@@ -123,33 +122,25 @@ public class StudyService {
                 }).collect(Collectors.toList());
     }
 
-    String deleteStudy(String nickname,Long id) { //해당 스터디 가입신청 리스트 보기
-        Account account=accountRepository.findByEmail(nickname).orElse(
+    public String deleteStudy(String nickname, Long id) { //해당 스터디 가입신청 리스트 보기
+        Account account = accountRepository.findByEmail(nickname).orElse(
                 accountRepository.findByNickname(nickname));
         Study study = studyRepository.findById(id).orElseThrow();
-        Study_Role member_role=studyMemberRepository.findByStudyAndMember(study,account).getRole();
-        if(member_role!=Study_Role.팀장) return "스터디 삭제 권한이 없습니다.";
-        List<StudyMember> studyMembers=studyMemberRepository.findByStudy(study);
-            studyMembers.stream().forEach(
-                    studyMember->{
-                        studyMember.getMember().getStudies().remove(studyMember);
-                    }
-            );
-            studyRepository.delete(study);
-            return "성공적으로 삭제하였습니다.";
-        }
+        Study_Role member_role = studyMemberRepository.findByStudyAndMember(study, account).getRole();
+        if (member_role != Study_Role.팀장) return "스터디 삭제 권한이 없습니다.";
+        studyRepository.delete(study);
+        return "성공적으로 삭제하였습니다.";
+    }
 
-    String leaveStudy(String nickName, Long study_id) {
-        Account account=accountRepository.findByNickname(nickName);
+    public String leaveStudy(String nickName, Long study_id) {
+        Account account = accountRepository.findByNickname(nickName);
         Study study = studyRepository.findById(study_id).orElseThrow();
-        StudyMember studyMember=studyMemberRepository.findByStudyAndMember(study,account);
-        study.removeMember(account);
-        account.getStudies().remove(studyMember);
-        studyMemberRepository.delete(studyMember);
+        studyMemberRepository.deleteByStudyAndMember(study, account);
+        study.setCounts(study.getCounts() - 1); //더하기
         return "스터디를 떠났습니다.";
     }
 
-    List<StudyListForm> myStudy(String email) {
+    public List<StudyListForm> myStudy(String email) {
         Account account = accountRepository.findByEmail(email).orElse(
                 accountRepository.findByNickname(email));
         List<StudyMember> studyList = studyMemberRepository.findByMember(account);
@@ -189,5 +180,17 @@ public class StudyService {
     public String UpdateTagAndZOne(Long id, TagZoneForm tagZoneForm) {
         Study study = studyRepository.findById(id).orElseThrow();
         return "success";
+    }
+
+    public StudyApplyForm makeStudyForm(Long id) {
+        Study study = studyRepository.findById(id).orElseThrow();
+        StudyApplyForm studyApplyForm=new StudyApplyForm()
+                .builder()
+                .studyId(study.id)
+                .study(study.getTitle())
+                .answer(study.getQuestion())
+                .applicant("")
+                .build();
+        return studyApplyForm;
     }
 }

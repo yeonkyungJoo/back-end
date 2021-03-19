@@ -23,7 +23,6 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-@JsonIgnoreType
 public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

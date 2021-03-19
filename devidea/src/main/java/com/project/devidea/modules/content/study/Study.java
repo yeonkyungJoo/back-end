@@ -29,8 +29,8 @@ public class Study implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     Long id;
-    @OneToMany(mappedBy = "study", cascade ={CascadeType.ALL,CascadeType.REMOVE,CascadeType.REFRESH}) //여기 스터디가 삭제되면 studymember에도 영향끼침
-    private Set<StudyMember> members = new HashSet<StudyMember>();
+    @OneToMany(mappedBy = "study", cascade =CascadeType.ALL) //여기 스터디가 삭제되면 studymember에도 영향끼침
+    private Set<StudyMember> members = new HashSet<>();
     private String title;
 
     private String shortDescription;
@@ -64,83 +64,11 @@ public class Study implements Serializable {
     private String question;
 
 
-    public Boolean ContainsKeyword(String Keyword) {
-        for (Tag tag : tags) if (tag.contains(Keyword)) return true;
-        return false;
-    }
-
-    public void addMember(StudyMember member) {
-        if(members==null) members=new HashSet<>();
-      members.add(member);
-      counts++;
-    }
-    public boolean addMember(Account member,Study_Role role) {
-        if(counts==maxCount) return false;
-        StudyMember study=generateMember(member,role);
-        member.addStudy(study);
-        members.add(study);
-        return true;
-    }
-    public void removeMember(Account account) {
-        for (Iterator<StudyMember> iterator = members.iterator();
-             iterator.hasNext(); ) {
-            account.getStudies().remove(this);
-            members.remove(account);
-            StudyMember studyMember = iterator.next();
-
-            if (studyMember.getStudy().equals(this) &&
-                    studyMember.getMember().equals(account)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    public void setAdmin(Account account) {
-        if(this.members==null) members=new HashSet<>();
-        if(account==null) return;
-        members.add(generateMember(account, Study_Role.팀장));
-
-    }
-
-    public void ChangeRole(Account member, Study_Role role) {
-        for (StudyMember member1 : members) {
-            if (member1.equals(member)) {
-                member1.setRole(role);
-                break;
-            }
-        }
-    }
-
-    public List<Account> getMember() {
-        return members.stream().map(
-                member -> {
-                    return member.getMember();
-                }
-        ).collect(Collectors.toList());
-    }
-
-    public List<Account> getManager() {
-        return members.stream().filter(
-                member -> !member.getRole().equals(Study_Role.회원) &&
-                        !member.getRole().equals(Study_Role.멘토)
-        ).map(member -> {
-            return member.getMember();
-        }).collect(Collectors.toList());
-    }
-
     public void setOpenAndRecruiting(boolean open, boolean recruiting) {
         this.open = open;
         this.recruiting = recruiting;
     }
 
-    public StudyMember generateMember(Account member, Study_Role role) {
-        return new StudyMember().builder()
-                .role(role)
-                .member(member)
-                .study(this)
-                .JoinDate(LocalDateTime.now())
-                .build();
-    }
 
     @Override
     public String toString() {
