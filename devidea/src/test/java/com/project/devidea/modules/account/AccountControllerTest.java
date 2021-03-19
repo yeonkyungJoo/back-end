@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -66,7 +68,7 @@ class AccountControllerTest {
     void save() throws Exception {
 
 //        given
-        SignUpRequestDto request = SignUpRequestDto.builder().name("고범석").nickname("고범석").email("ko@naver.com")
+        SignUpRequestDto request = SignUpRequestDto.builder().name("고범떡").nickname("고범떡").email("kob@naver.com")
                 .password("123412341234").passwordConfirm("123412341234").gender("male").build();
         SignUpResponseDto response = SignUpResponseDto.builder().id("1").name(request.getName())
                 .nickname(request.getNickname()).email(request.getEmail()).gender(request.getGender()).build();
@@ -79,10 +81,49 @@ class AccountControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("1")))
-                .andExpect(jsonPath("$.name", is("고범석")))
-                .andExpect(jsonPath("$.nickname", is("고범석")))
-                .andExpect(jsonPath("$.email", is("ko@naver.com")))
+                .andExpect(jsonPath("$.name", is("고범떡")))
+                .andExpect(jsonPath("$.nickname", is("고범떡")))
+                .andExpect(jsonPath("$.email", is("kob@naver.com")))
                 .andExpect(jsonPath("$.gender", is("male")));
+    }
+
+    @Test
+    @DisplayName("회원가입 validation - 입력값 확인하기")
+    void confirmJoinValidation() throws Exception {
+
+//        given
+        SignUpRequestDto request = SignUpRequestDto.builder()
+                .email("1234").gender("male").password("123").passwordConfirm("12").nickname("고").name("고").build();
+
+//        when, then
+        mockMvc.perform(post("/sign-up")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode", is(400)))
+                .andExpect(jsonPath("$.errorFieldAndMessageList", hasSize(5)));
+    }
+
+    @Test
+    @DisplayName("회원가입 validation - 닉네임과 이메일 중복")
+    void confirmMultipleNicknameAndEmail() throws Exception {
+
+//        given
+        accountRepository.save(Account.builder().email("ko@naver.com").password("123123123").name("고범석")
+                .nickname("고범석").build());
+        SignUpRequestDto request = SignUpRequestDto.builder()
+                .email("ko@naver.com").gender("male").password("123123123").passwordConfirm("123123123")
+                .nickname("고범석").name("고범석").build();
+
+//        when, then
+        mockMvc.perform(post("/sign-up")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode", is(400)))
+                .andExpect(jsonPath("$.errorFieldAndMessageList", hasSize(2)));
     }
 
     @Test
@@ -110,6 +151,28 @@ class AccountControllerTest {
         String jwtToken = mockHttpServletResponse.getHeader("Authorization").substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         assertEquals(username, savedAccount.getEmail());
+    }
+
+    @Test
+    @DisplayName("비밀번호가 틀렸을 경우, BadCredential Exception 확인하기")
+    void confirmBadCredentialException() throws Exception {
+
+//        given
+        accountRepository.save(Account.builder().email("ko@naver.com").password("123123123").name("고범석")
+                .nickname("고범석").build());
+        LoginRequestDto login = LoginRequestDto.builder()
+                .email("ko@naver.com").password("1111")
+                .build();
+        when(accountService.login(any())).thenThrow(BadCredentialsException.class);
+
+//        when, then
+        mockMvc.perform(post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(login)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode", is(400)))
+                .andExpect(jsonPath("$.description", is("회원의 아이디와 비밀번호가 일치하지 않습니다.")));
     }
 
     @Test
