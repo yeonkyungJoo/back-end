@@ -32,18 +32,23 @@ public class Resume {
 
     // 일대다 단방향
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_id")
     private List<Career> careers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_id")
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_id")
     private List<Education> educations = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_id")
     private List<Award> awards = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_id")
     private List<Activity> activites = new ArrayList<>();
 
 }

@@ -34,7 +34,4 @@ public class Career {
     private String detail;
     private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resume_id")
-    private Resume resume;
 }

@@ -21,7 +21,4 @@ public class Award {
     private String link;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resume_id")
-    private Resume resume;
 }

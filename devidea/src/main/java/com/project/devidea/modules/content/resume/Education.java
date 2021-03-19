@@ -23,7 +23,4 @@ public class Education {
     private double score;
     private String degree;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resume_id")
-    private Resume resume;
 }

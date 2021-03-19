@@ -34,7 +34,4 @@ public class Project {
     private String url;
     private boolean open;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resume_id")
-    private Resume resume;
 }

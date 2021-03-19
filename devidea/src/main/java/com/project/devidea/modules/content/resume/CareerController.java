@@ -3,6 +3,8 @@ package com.project.devidea.modules.content.resume;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.mentoring.Mentor;
 import com.project.devidea.modules.content.mentoring.MentorRepository;
+import com.project.devidea.modules.content.resume.form.CreateCareerRequest;
+import com.project.devidea.modules.content.resume.form.UpdateCareerRequest;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.sun.mail.iap.Response;
 import lombok.Data;
@@ -10,25 +12,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/resume/career")
 public class CareerController {
 
     private final MentorRepository mentorRepository;
     private final CareerRepository careerRepository;
+    private final CareerService careerService;
 
-    @GetMapping("/resume/careers")
+    @GetMapping("/")
     public ResponseEntity getCareers(@AuthenticationPrincipal Account account) {
 
         // @CurrentUser OR checkIsAuthenticated();
@@ -50,9 +54,9 @@ public class CareerController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    @GetMapping("resume/careers/{careerId}")
+    @GetMapping("/{id}")
     public ResponseEntity getCareer(@AuthenticationPrincipal Account account,
-                                        @PathVariable("careerId") Long careerId) {
+                                        @PathVariable("id") Long careerId) {
 
         // checkIsAuthenticated()
 
@@ -63,19 +67,48 @@ public class CareerController {
             // 예외 처리
         }
 
+        // OR careerId로 바로 조회
+        // careerRepository.findById(careerId);
+        Career career = findMentor.getResume().getCareers()
+                .stream().filter(c -> c.getId().equals(careerId)).findAny()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid careerId"));
 
-
-
+        return new ResponseEntity(new CareerDto(career), HttpStatus.OK);
     }
 
-    public ResponseEntity newCareer() {
+    @PostMapping("/")
+    public ResponseEntity newCareer(@RequestBody @Valid CreateCareerRequest request, Errors errors) {
+        if (errors.hasErrors()) {
+            // 예외 처리
+        }
 
+        // TODO - validator
+        // - startDate와 endDate 비교
+        // - endDate, present 비교
+
+        Career career = Career.builder()
+                .companyName(request.getCompanyName())
+                .duty(request.getDuty())
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
+                .present(request.isPresent())
+                .tags(request.getTags())
+                .detail(request.getDetail())
+                .url(request.getUrl())
+                .build();
+        Long careerId = careerService.save(career);
+        return new ResponseEntity(careerId, HttpStatus.CREATED);
     }
 
-    public ResponseEntity editCareer() {
-
+    @PostMapping("/{id}/edit")
+    public ResponseEntity editCareer(@RequestBody @Valid UpdateCareerRequest request, Errors errors,
+                                        @PathVariable("id") Long careerId) {
+        
+        // TODO - validator
+        
     }
 
+    @PostMapping("/{id}/delete")
     public ResponseEntity deleteCareer() {
 
     }
