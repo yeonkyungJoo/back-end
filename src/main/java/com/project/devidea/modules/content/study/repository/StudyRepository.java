@@ -21,7 +21,7 @@ public interface StudyRepository extends JpaRepository<Study, Long>, StudyReposi
 
     //스터디 좋아요 표시
     @Modifying
-    @Query("update Study s set s.Likes =s.Likes+1 where s.id=:studyId")
+    @Query("update Study s set s.likes =s.likes+1 where s.id=:studyId")
     void LikeStudyById(@Param("studyId") Long studyId);
 
     //스터디 떠났을떄

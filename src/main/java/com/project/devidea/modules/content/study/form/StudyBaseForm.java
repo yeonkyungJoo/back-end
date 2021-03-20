@@ -27,7 +27,7 @@ public class StudyBaseForm implements Serializable {
     private String location;
 
 
-    private int Likes;
+    private int likes;
     @DecimalMax(value="6")
     @DecimalMin(value="2")
     private int maxCount;
@@ -46,7 +46,7 @@ public class StudyBaseForm implements Serializable {
                 .title(this.title)
                 .shortDescription(this.shortDescription)
                 .counts(this.counts)
-                .likes(this.Likes)
+                .likes(this.likes)
                 .maxCount(this.maxCount)
                 .level(this.level)
                 .recruiting(this.recruiting)
