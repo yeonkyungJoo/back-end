@@ -13,6 +13,6 @@ public interface StudyRepositoryCustom {
    @EntityGraph(attributePaths = {"tags", "location"})
     List<Study> findByCondition(StudySearchForm searchCondition);
 
-   @EntityGraph(attributePaths = {"members"})
-    List<Study> findByMember(Account account);
+//   @EntityGraph(attributePaths = {"members"})
+//    List<Study> findByMember(Account account);
 }

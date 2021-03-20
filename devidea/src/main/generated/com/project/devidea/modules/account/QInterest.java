@@ -46,7 +46,7 @@ public class QInterest extends EntityPathBase<Interest> {
 
     public QInterest(Class<? extends Interest> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.account = inits.isInitialized("account") ? new QAccount(forProperty("account"), inits.get("account")) : null;
+        this.account = inits.isInitialized("account") ? new QAccount(forProperty("account")) : null;
         this.tag = inits.isInitialized("tag") ? new com.project.devidea.modules.tagzone.tag.QTag(forProperty("tag"), inits.get("tag")) : null;
     }
 

@@ -22,8 +22,6 @@ public class QStudy extends EntityPathBase<Study> {
 
     public static final QStudy study = new QStudy("study");
 
-    public final com.project.devidea.modules.account.QAccount admin;
-
     public final NumberPath<Integer> counts = createNumber("counts", Integer.class);
 
     public final StringPath fullDescription = createString("fullDescription");
@@ -38,7 +36,7 @@ public class QStudy extends EntityPathBase<Study> {
 
     public final NumberPath<Integer> maxCount = createNumber("maxCount", Integer.class);
 
-    public final SetPath<com.project.devidea.modules.account.Account, com.project.devidea.modules.account.QAccount> members = this.<com.project.devidea.modules.account.Account, com.project.devidea.modules.account.QAccount>createSet("members", com.project.devidea.modules.account.Account.class, com.project.devidea.modules.account.QAccount.class, PathInits.DIRECT2);
+    public final SetPath<StudyMember, QStudyMember> members = this.<StudyMember, QStudyMember>createSet("members", StudyMember.class, QStudyMember.class, PathInits.DIRECT2);
 
     public final BooleanPath mentoRecruiting = createBoolean("mentoRecruiting");
 
@@ -74,7 +72,6 @@ public class QStudy extends EntityPathBase<Study> {
 
     public QStudy(Class<? extends Study> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.admin = inits.isInitialized("admin") ? new com.project.devidea.modules.account.QAccount(forProperty("admin")) : null;
         this.location = inits.isInitialized("location") ? new com.project.devidea.modules.tagzone.zone.QZone(forProperty("location")) : null;
     }
 

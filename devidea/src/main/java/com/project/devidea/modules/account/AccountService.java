@@ -1,7 +1,6 @@
 package com.project.devidea.modules.account;
 
-
-import com.project.devidea.infra.config.jwt.JwtTokenUtil;
+import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpDetailRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
@@ -41,8 +40,8 @@ public class AccountService {
     private final InterestRepository interestRepository;
     private final MainActivityZoneRepository mainActivityZoneRepository;
 
-//    회원가입
-    public SignUpResponseDto save(SignUpRequestDto signUpRequestDto) {
+    //    회원가입
+    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
         Account savedAccount = accountRepository.save(
                 Account.builder()
                         .email(signUpRequestDto.getEmail())
@@ -59,6 +58,7 @@ public class AccountService {
 
     /**
      * 로그인 로직, 단순 로그인만 우선적으로 진행했습니다.
+     *
      * @param requestDto : 아이디, 비밀번호
      * @return
      */
@@ -69,7 +69,7 @@ public class AccountService {
         return jwtTokenUtil.createTokenMap(jwtToken);
     }
 
-    private void authenticate(String email, String password) throws Exception{
+    private void authenticate(String email, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (DisabledException e) {
@@ -115,3 +115,4 @@ public class AccountService {
         return interests;
     }
 }
+

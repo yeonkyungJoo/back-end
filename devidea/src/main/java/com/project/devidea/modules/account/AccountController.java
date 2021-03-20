@@ -1,7 +1,7 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.infra.config.oauth.OAuthService;
-import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
+import com.project.devidea.infra.config.security.oauth.OAuthService;
+import com.project.devidea.infra.config.security.oauth.provider.SocialLoginType;
 import com.project.devidea.modules.account.exception.AccountRequestNotValidException;
 import com.project.devidea.modules.account.exception.AccountResponse;
 import com.project.devidea.modules.account.form.LoginRequestDto;
@@ -41,7 +41,7 @@ public class AccountController {
             throw new AccountRequestNotValidException("회원가입 폼의 입력값을 확인해주세요.", errors);
         }
 
-        return new ResponseEntity<>(accountService.save(signUpRequestDto), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.signUp(signUpRequestDto), HttpStatus.OK);
     }
 
     @PostMapping("/login")

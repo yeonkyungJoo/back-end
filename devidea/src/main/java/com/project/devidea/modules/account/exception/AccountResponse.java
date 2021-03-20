@@ -46,6 +46,7 @@ public class AccountResponse {
                 .description(exception.getMsg())
                 .build();
     }
+
     public static AccountResponse badCredentialsResponse(BadCredentialsException exception) {
         return AccountResponse.builder()
                 .time(LocalDateTime.now())

@@ -46,7 +46,7 @@ public class QMainActivityZone extends EntityPathBase<MainActivityZone> {
 
     public QMainActivityZone(Class<? extends MainActivityZone> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.account = inits.isInitialized("account") ? new QAccount(forProperty("account"), inits.get("account")) : null;
+        this.account = inits.isInitialized("account") ? new QAccount(forProperty("account")) : null;
         this.zone = inits.isInitialized("zone") ? new com.project.devidea.modules.tagzone.zone.QZone(forProperty("zone")) : null;
     }
 

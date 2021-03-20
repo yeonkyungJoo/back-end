@@ -4,6 +4,7 @@ import com.project.devidea.modules.content.study.QStudy;
 import com.project.devidea.modules.tagzone.tag.QTag;
 import com.project.devidea.modules.tagzone.zone.QZone;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import org.springframework.data.domain.Sort;
@@ -52,7 +53,7 @@ public class StudySearchConditions {
         return city!=null?qStudy.location.city.containsIgnoreCase(city):null;
     }
     public static BooleanExpression eqProvince(String province) {
-        return province!=null?qStudy.location.city.containsIgnoreCase(province):null;
+        return province!=null?qStudy.location.province.containsIgnoreCase(province):null;
     }
     private static BooleanExpression eqMentorRecruiting(Boolean mentorRecruiting) {
         return mentorRecruiting != null ? qStudy.mentoRecruiting.eq(mentorRecruiting) : null;
@@ -60,6 +61,10 @@ public class StudySearchConditions {
 
     public static BooleanExpression eqRecruiting(Boolean recruiting) {
         return recruiting != null ? qStudy.recruiting.eq(recruiting) : null;
+    }
+
+    public static Predicate eqMentoRecruting(Boolean mentorRecruiting) {
+        return mentorRecruiting != null ? qStudy.mentoRecruiting.eq(mentorRecruiting) : null;
     }
 
 //    private static List<StudySpecifier> getOrderSpecifier(Sort sort) {

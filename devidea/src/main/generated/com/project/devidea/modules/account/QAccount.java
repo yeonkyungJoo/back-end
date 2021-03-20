@@ -64,6 +64,8 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final StringPath roles = createString("roles");
 
+    public final SetPath<com.project.devidea.modules.content.study.StudyMember, com.project.devidea.modules.content.study.QStudyMember> studies = this.<com.project.devidea.modules.content.study.StudyMember, com.project.devidea.modules.content.study.QStudyMember>createSet("studies", com.project.devidea.modules.content.study.StudyMember.class, com.project.devidea.modules.content.study.QStudyMember.class, PathInits.DIRECT2);
+
     public final StringPath techStacks = createString("techStacks");
 
     public final StringPath url = createString("url");

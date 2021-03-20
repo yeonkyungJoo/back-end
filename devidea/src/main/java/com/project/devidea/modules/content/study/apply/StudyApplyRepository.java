@@ -10,14 +10,14 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface StudyApplyRepository extends JpaRepository<StudyApply,Long> {
-    @EntityGraph(attributePaths = {"account", "study"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"applicant", "study"}, type = EntityGraph.EntityGraphType.LOAD)
     List<StudyApply> findAll();
-    @EntityGraph(attributePaths = {"account", "study"}, type = EntityGraph.EntityGraphType.LOAD)
-    StudyApply findByAccountAndStudy(Account account,Study study);
+    @EntityGraph(attributePaths = {"applicant", "study"}, type = EntityGraph.EntityGraphType.LOAD)
+    StudyApply findByApplicantAndStudy(Account applicant, Study study);
     @EntityGraph(attributePaths = {"study"}, type = EntityGraph.EntityGraphType.LOAD)
-    List<StudyApply> findByAccount(Account account);
-    @EntityGraph(attributePaths = {"account"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<StudyApply> findByApplicant(Account account);
+    @EntityGraph(attributePaths = {"applicant"}, type = EntityGraph.EntityGraphType.LOAD)
     List<StudyApply> findByStudy(Study study);
-    @EntityGraph(attributePaths = {"account"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"applicant"}, type = EntityGraph.EntityGraphType.LOAD)
     List<StudyApply> findByStudy_Id(Long id);
 }

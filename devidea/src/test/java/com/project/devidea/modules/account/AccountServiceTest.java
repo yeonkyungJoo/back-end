@@ -1,10 +1,11 @@
 //package com.project.devidea.modules.account;
 //
-//import com.project.devidea.infra.config.jwt.JwtTokenUtil;
-//import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
+//import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
+//import com.project.devidea.infra.config.security.CustomUserDetailService;
 //import com.project.devidea.modules.account.form.LoginRequestDto;
 //import com.project.devidea.modules.account.form.SignUpRequestDto;
 //import com.project.devidea.modules.account.form.SignUpResponseDto;
+//import com.project.devidea.modules.account.repository.AccountRepository;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
@@ -14,8 +15,6 @@
 //import org.mockito.junit.jupiter.MockitoExtension;
 //import org.modelmapper.ModelMapper;
 //import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //
 //import java.time.LocalDateTime;
@@ -34,7 +33,7 @@
 //    @Mock
 //    AuthenticationManager authenticationManager;
 //    @Mock
-//    JwtUserDetailsService jwtUserDetailsService;
+//    CustomUserDetailService customUserDetailService;
 //    @Mock
 //    JwtTokenUtil jwtTokenUtil;
 //    @InjectMocks
@@ -87,7 +86,7 @@
 //                .thenReturn(response);
 //
 ////        when
-//        SignUpResponseDto responseDto = accountService.save(request);
+//        SignUpResponseDto responseDto = accountService.signUp(request);
 //
 ////        then
 //        verify(modelMapper).map(account, SignUpResponseDto.class);
