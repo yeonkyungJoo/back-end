@@ -12,8 +12,6 @@ import java.util.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @EqualsAndHashCode(of = "id")
 public class Account{
     @Id
@@ -112,6 +110,35 @@ public class Account{
 
         this.interests.addAll(interests);
         this.mainActivityZones.addAll(mainActivityZones);
+    }
+
+    @Builder
+    public Account(Long id, String email, String password, String name, String nickname, String emailCheckToken, String roles, LocalDateTime joinedAt, String bio, String profileImage, String url, String gender, String job, int careerYears, String techStacks, Set<Interest> interests, Set<MainActivityZone> mainActivityZones, Set<StudyMember> studies, String provider, boolean receiveEmail, boolean receiveNotification, boolean receiveTechNewsNotification, boolean receiveMentoringNotification, boolean receiveStudyNotification, boolean receiveRecruitingNotification) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.nickname = nickname;
+        this.emailCheckToken = emailCheckToken;
+        this.roles = roles;
+        this.joinedAt = joinedAt;
+        this.bio = bio;
+        this.profileImage = profileImage;
+        this.url = url;
+        this.gender = gender;
+        this.job = job;
+        this.careerYears = careerYears;
+        this.techStacks = techStacks;
+        this.interests = interests;
+        this.mainActivityZones = mainActivityZones;
+        this.studies = studies;
+        this.provider = provider;
+        this.receiveEmail = receiveEmail;
+        this.receiveNotification = receiveNotification;
+        this.receiveTechNewsNotification = receiveTechNewsNotification;
+        this.receiveMentoringNotification = receiveMentoringNotification;
+        this.receiveStudyNotification = receiveStudyNotification;
+        this.receiveRecruitingNotification = receiveRecruitingNotification;
     }
 }
 

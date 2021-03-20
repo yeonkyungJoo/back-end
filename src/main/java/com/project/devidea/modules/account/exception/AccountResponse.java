@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class AccountResponse {
 
     private int statusCode;

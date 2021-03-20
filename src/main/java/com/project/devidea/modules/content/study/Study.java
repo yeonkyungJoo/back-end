@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(indexes = @Index(name = "location", columnList = "location_id"))
 @EqualsAndHashCode(of = "id")
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
