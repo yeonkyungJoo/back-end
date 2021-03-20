@@ -1,7 +1,7 @@
 package com.project.devidea.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.devidea.infra.config.jwt.JwtTokenUtil;
+import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.modules.account.form.LoginRequestDto;
 import com.project.devidea.modules.account.form.SignUpRequestDto;
 import com.project.devidea.modules.account.form.SignUpResponseDto;
@@ -72,7 +72,7 @@ class AccountControllerTest {
                 .password("123412341234").passwordConfirm("123412341234").gender("male").build();
         SignUpResponseDto response = SignUpResponseDto.builder().id("1").name(request.getName())
                 .nickname(request.getNickname()).email(request.getEmail()).gender(request.getGender()).build();
-        when(accountService.save(any())).thenReturn(response);
+        when(accountService.signUp(any())).thenReturn(response);
 
 //        when, then
         mockMvc.perform(post("/sign-up")

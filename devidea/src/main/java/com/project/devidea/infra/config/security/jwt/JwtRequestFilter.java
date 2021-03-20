@@ -1,5 +1,6 @@
-package com.project.devidea.infra.config.jwt;
+package com.project.devidea.infra.config.security.jwt;
 
+import com.project.devidea.infra.config.security.CustomUserDetailService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final JwtUserDetailsService jwtUserDetailsService;
+    private final CustomUserDetailService customUserDetailService;
     private final JwtTokenUtil jwtTokenUtil;
 
     @Override
@@ -45,7 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email);
+            UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =

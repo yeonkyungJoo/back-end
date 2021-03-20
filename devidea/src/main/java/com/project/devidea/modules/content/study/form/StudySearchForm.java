@@ -16,8 +16,7 @@ public class StudySearchForm {
 
     private String keyword; //keyword
 
-    @NotBlank
-    private Long page; //page
+    private int page=0; //page
 
     private List<String> tags;
 
@@ -32,6 +31,6 @@ public class StudySearchForm {
 
     private Boolean mentorRecruiting; //멘토 있는 스터디
 
-    private Boolean like; //좋아요 순으로
+    private Boolean Likes; //좋아요 순으로
 
 }

@@ -1,4 +1,4 @@
-package com.project.devidea.infra.config.jwt;
+package com.project.devidea.infra.config.security.jwt;
 
 
 import io.jsonwebtoken.Claims;

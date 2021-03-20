@@ -22,11 +22,11 @@ public class QStudyApply extends EntityPathBase<StudyApply> {
 
     public static final QStudyApply studyApply = new QStudyApply("studyApply");
 
-    public final com.project.devidea.modules.account.QAccount account;
-
     public final BooleanPath accpted = createBoolean("accpted");
 
     public final StringPath answer = createString("answer");
+
+    public final com.project.devidea.modules.account.QAccount applicant;
 
     public final DateTimePath<java.time.LocalDateTime> CreationDateTime = createDateTime("CreationDateTime", java.time.LocalDateTime.class);
 
@@ -54,7 +54,7 @@ public class QStudyApply extends EntityPathBase<StudyApply> {
 
     public QStudyApply(Class<? extends StudyApply> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.account = inits.isInitialized("account") ? new com.project.devidea.modules.account.QAccount(forProperty("account")) : null;
+        this.applicant = inits.isInitialized("applicant") ? new com.project.devidea.modules.account.QAccount(forProperty("applicant")) : null;
         this.study = inits.isInitialized("study") ? new com.project.devidea.modules.content.study.QStudy(forProperty("study"), inits.get("study")) : null;
     }
 

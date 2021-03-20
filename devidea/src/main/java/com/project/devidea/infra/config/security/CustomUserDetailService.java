@@ -1,29 +1,28 @@
-package com.project.devidea.infra.config.jwt;
+package com.project.devidea.infra.config.security;
 
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountRepository;
-import com.project.devidea.modules.account.form.LoginRequestDto;
-import com.project.devidea.modules.account.form.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class JwtUserDetailsService implements UserDetailsService {
+public class CustomUserDetailService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
+    @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return accountRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+    public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
+        System.out.println(" loadUserByUsername=" + emailOrNickname);
+        Account account = accountRepository.findByEmail(emailOrNickname).orElse(
+                accountRepository.findByNickname(emailOrNickname)
+        );
+        return new LoginUser(account);
     }
 }

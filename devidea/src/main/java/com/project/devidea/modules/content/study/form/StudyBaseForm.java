@@ -1,39 +1,57 @@
 package com.project.devidea.modules.content.study.form;
 
 import com.project.devidea.modules.content.study.Level;
+import com.project.devidea.modules.content.study.Study;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 @Data
-public class StudyBaseForm {
+public class StudyBaseForm implements Serializable {
 
-    @NotBlank
+    @NotEmpty
     private String title;
 
     private String shortDescription;
 
-    @NotBlank
+    //@NotEmpty
     private Set<String> tags=new HashSet<>();
 
     private int counts;
-    @NotBlank
+    //@NotEmpty
     private String location;
 
-    @NotBlank
+
     private int Likes;
-    @NotBlank
+    @DecimalMax(value="6")
+    @DecimalMin(value="2")
     private int maxCount;
-    @NotBlank
+
+    //@NotNull
     private Level level;
 
-    private boolean recruiting; //모집하고 있는 스터디
-
-    @NotBlank
+    //@NotNull
+    private Boolean recruiting; //모집하고 있는 스터디
+    //@NotNull
     private Boolean mentoRecruiting;
+
+
+    public Study toStudy(){
+        return new Study().builder()
+                .title(this.title)
+                .shortDescription(this.shortDescription)
+                .counts(this.counts)
+                .Likes(this.Likes)
+                .maxCount(this.maxCount)
+                .level(this.level)
+                .recruiting(this.recruiting)
+                .mentoRecruiting(this.mentoRecruiting)
+                .build();
+    }
 
 }

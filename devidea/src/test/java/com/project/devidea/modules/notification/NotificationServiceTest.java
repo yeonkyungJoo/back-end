@@ -4,6 +4,7 @@ import com.project.devidea.infra.MockMvcTest;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @MockMvcTest
 public class NotificationServiceTest {
+
 
     @Autowired
     NotificationRepository notificationRepository;

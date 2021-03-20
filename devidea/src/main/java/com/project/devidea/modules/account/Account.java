@@ -1,9 +1,14 @@
 package com.project.devidea.modules.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.devidea.modules.content.study.Study;
+import com.project.devidea.modules.content.study.StudyMember;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,9 +22,11 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Account implements UserDetails {
+@EqualsAndHashCode(of = "id")
+public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="account_id")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -54,8 +61,13 @@ public class Account implements UserDetails {
 
 //    private Set<Zone> locations;
 
-//    private Set<Study> studies;
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.ALL}) //여기 어카운트가 삭제되면 studymember에도 영향끼침
+    private Set<StudyMember> studies = new HashSet<>();
 
+    public void addStudy(StudyMember studyMember){
+        if(studies==null ) studies = new HashSet<>();
+        studies.add(studyMember);
+    }
 //    private List<Apply> applies;
 
 //    private List<Career> careers;
@@ -78,41 +90,8 @@ public class Account implements UserDetails {
     private boolean receiveRecruitingNotification;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        Arrays.asList(roles.split(", ")).forEach(r -> authorities.add(new SimpleGrantedAuthority(r)));
-        return authorities;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    public String getNickName() { return this.nickname; }
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
     public String toString(){
-        return nickname;
+        return getNickname();
     }
 }
 

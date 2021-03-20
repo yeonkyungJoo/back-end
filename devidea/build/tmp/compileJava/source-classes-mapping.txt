@@ -6,18 +6,21 @@ com/project/devidea/modules/tagzone/zone/Zone.java
  com.project.devidea.modules.tagzone.zone.Zone$ZoneBuilder
 com/project/devidea/modules/content/study/Level.java
  com.project.devidea.modules.content.study.Level
-com/project/devidea/infra/config/jwt/JwtRequestFilter.java
- com.project.devidea.infra.config.jwt.JwtRequestFilter
+com/project/devidea/infra/config/security/jwt/JwtTokenUtil.java
+ com.project.devidea.infra.config.security.jwt.JwtTokenUtil
 com/project/devidea/modules/content/study/apply/StudyApplyForm.java
  com.project.devidea.modules.content.study.apply.StudyApplyForm
-com/project/devidea/infra/config/oauth/OAuthService.java
- com.project.devidea.infra.config.oauth.OAuthService
+ com.project.devidea.modules.content.study.apply.StudyApplyForm$StudyApplyFormBuilder
+com/project/devidea/infra/config/security/SecurityConfig.java
+ com.project.devidea.infra.config.security.SecurityConfig
 com/project/devidea/modules/content/tech/Crawling.java
  com.project.devidea.modules.content.tech.Crawling
+com/project/devidea/modules/account/exception/SignUpRequestNotValidException.java
+ com.project.devidea.modules.account.exception.SignUpRequestNotValidException
+com/project/devidea/modules/content/study/controller/StudyAdminController.java
+ com.project.devidea.modules.content.study.controller.StudyAdminController
 com/project/devidea/modules/notification/NotificationRepository.java
  com.project.devidea.modules.notification.NotificationRepository
-com/project/devidea/infra/config/oauth/provider/SocialOAuth.java
- com.project.devidea.infra.config.oauth.provider.SocialOAuth
 com/project/devidea/modules/account/AccountController.java
  com.project.devidea.modules.account.AccountController
 com/project/devidea/modules/tagzone/zone/ZoneForm.java
@@ -40,14 +43,10 @@ com/project/devidea/modules/content/study/apply/QStudyApply.java
  com.project.devidea.modules.content.study.apply.QStudyApply
 com/project/devidea/modules/content/study/form/StudyBaseForm.java
  com.project.devidea.modules.content.study.form.StudyBaseForm
-com/project/devidea/infra/config/oauth/provider/SocialLoginType.java
- com.project.devidea.infra.config.oauth.provider.SocialLoginType
 com/project/devidea/modules/event/form/BasicForm.java
  com.project.devidea.modules.event.form.BasicForm
-com/project/devidea/infra/config/oauth/provider/GoogleOAuth.java
- com.project.devidea.infra.config.oauth.provider.GoogleOAuth
-com/project/devidea/infra/config/SecurityConfig.java
- com.project.devidea.infra.config.SecurityConfig
+com/project/devidea/infra/eventHandler/GlobalExceptionHandler.java
+ com.project.devidea.infra.eventHandler.GlobalExceptionHandler
 com/project/devidea/modules/tagzone/zone/ZoneRepository.java
  com.project.devidea.modules.tagzone.zone.ZoneRepository
 com/project/devidea/modules/content/mentoring/MentorService.java
@@ -59,13 +58,15 @@ com/project/devidea/modules/notification/NotificationController.java
  com.project.devidea.modules.notification.NotificationController$ResponseNotifications
 com/project/devidea/modules/content/study/apply/StudyApplyListForm.java
  com.project.devidea.modules.content.study.apply.StudyApplyListForm
+com/project/devidea/modules/account/AccountControllerAdvice.java
+ com.project.devidea.modules.account.AccountControllerAdvice
 com/project/devidea/modules/content/tech/TechBlogRepository.java
  com.project.devidea.modules.content.tech.TechBlogRepository
 com/project/devidea/modules/account/form/SignUpResponseDto.java
  com.project.devidea.modules.account.form.SignUpResponseDto
  com.project.devidea.modules.account.form.SignUpResponseDto$SignUpResponseDtoBuilder
-com/project/devidea/infra/config/oauth/provider/GithubOAuth.java
- com.project.devidea.infra.config.oauth.provider.GithubOAuth
+com/project/devidea/modules/content/study/aop/StudyAuthorityAop.java
+ com.project.devidea.modules.content.study.aop.StudyAuthorityAop
 com/project/devidea/modules/account/AccountRepository.java
  com.project.devidea.modules.account.AccountRepository
 com/project/devidea/modules/content/mentoring/CreateMentorRequest.java
@@ -81,24 +82,39 @@ com/project/devidea/api/CreateRequest.java
 com/project/devidea/modules/account/form/LoginRequestDto.java
  com.project.devidea.modules.account.form.LoginRequestDto
  com.project.devidea.modules.account.form.LoginRequestDto$LoginRequestDtoBuilder
+com/project/devidea/modules/account/exception/AccountErrorMessage.java
+ com.project.devidea.modules.account.exception.AccountErrorMessage
+ com.project.devidea.modules.account.exception.AccountErrorMessage$AccountErrorMessageBuilder
 com/project/devidea/modules/content/study/QStudy.java
  com.project.devidea.modules.content.study.QStudy
-com/project/devidea/infra/config/jwt/JwtAuthenticationEntryPoint.java
- com.project.devidea.infra.config.jwt.JwtAuthenticationEntryPoint
+com/project/devidea/infra/config/security/LoginUser.java
+ com.project.devidea.infra.config.security.LoginUser
 com/project/devidea/modules/tagzone/tag/TagService.java
  com.project.devidea.modules.tagzone.tag.TagService
+com/project/devidea/modules/content/study/repository/StudyMemberRepository.java
+ com.project.devidea.modules.content.study.repository.StudyMemberRepository
 com/project/devidea/modules/content/recruit/validator/BasicValidator.java
  com.project.devidea.modules.content.recruit.validator.BasicValidator
 com/project/devidea/modules/content/mentoring/QMentee.java
  com.project.devidea.modules.content.mentoring.QMentee
 com/project/devidea/modules/content/tech/JavableCrawling.java
  com.project.devidea.modules.content.tech.JavableCrawling
+com/project/devidea/infra/config/security/oauth/provider/SocialLoginTypeConverter.java
+ com.project.devidea.infra.config.security.oauth.provider.SocialLoginTypeConverter
+com/project/devidea/infra/config/security/oauth/provider/SocialOAuth.java
+ com.project.devidea.infra.config.security.oauth.provider.SocialOAuth
 com/project/devidea/modules/event/validator/BasicValidator.java
  com.project.devidea.modules.event.validator.BasicValidator
 com/project/devidea/modules/content/study/repository/StudyRepositoryImpl.java
  com.project.devidea.modules.content.study.repository.StudyRepositoryImpl
+com/project/devidea/infra/config/security/jwt/JwtRequestFilter.java
+ com.project.devidea.infra.config.security.jwt.JwtRequestFilter
 com/project/devidea/modules/content/mentoring/form/BasicForm.java
  com.project.devidea.modules.content.mentoring.form.BasicForm
+com/project/devidea/infra/config/security/oauth/provider/GithubOAuth.java
+ com.project.devidea.infra.config.security.oauth.provider.GithubOAuth
+com/project/devidea/infra/config/security/jwt/JwtAuthenticationEntryPoint.java
+ com.project.devidea.infra.config.security.jwt.JwtAuthenticationEntryPoint
 com/project/devidea/modules/content/tech/KakaoCrawling.java
  com.project.devidea.modules.content.tech.KakaoCrawling
 com/project/devidea/modules/content/resume/QResume.java
@@ -109,16 +125,23 @@ com/project/devidea/modules/content/mentoring/form/validator/BasicValidator.java
  com.project.devidea.modules.content.mentoring.form.validator.BasicValidator
 com/project/devidea/modules/account/AccountService.java
  com.project.devidea.modules.account.AccountService
-com/project/devidea/infra/config/jwt/JwtUserDetailsService.java
- com.project.devidea.infra.config.jwt.JwtUserDetailsService
+com/project/devidea/infra/config/security/oauth/provider/SocialLoginType.java
+ com.project.devidea.infra.config.security.oauth.provider.SocialLoginType
 com/project/devidea/modules/content/mentoring/MentorRepository.java
  com.project.devidea.modules.content.mentoring.MentorRepository
 com/project/devidea/modules/content/study/form/StudyDetailForm.java
  com.project.devidea.modules.content.study.form.StudyDetailForm
 com/project/devidea/infra/config/QuerydslConfig.java
  com.project.devidea.infra.config.QuerydslConfig
+com/project/devidea/infra/config/security/CustomUserDetailService.java
+ com.project.devidea.infra.config.security.CustomUserDetailService
+com/project/devidea/modules/account/exception/ErrorFieldAndMessage.java
+ com.project.devidea.modules.account.exception.ErrorFieldAndMessage
+ com.project.devidea.modules.account.exception.ErrorFieldAndMessage$ErrorFieldAndMessageBuilder
 com/project/devidea/infra/config/SwaggerConfig.java
  com.project.devidea.infra.config.SwaggerConfig
+com/project/devidea/modules/content/study/aop/스터디설정권한.java
+ com.project.devidea.modules.content.study.aop.스터디설정권한
 com/project/devidea/modules/main/form/BasicForm.java
  com.project.devidea.modules.main.form.BasicForm
 com/project/devidea/modules/content/study/Study.java
@@ -133,16 +156,22 @@ com/project/devidea/modules/content/mentoring/UpdateMentorRequest.java
  com.project.devidea.modules.content.mentoring.UpdateMentorRequest
 com/project/devidea/infra/aop/LoggingAspect.java
  com.project.devidea.infra.aop.LoggingAspect
+com/project/devidea/modules/content/study/aop/스터디신청서권한.java
+ com.project.devidea.modules.content.study.aop.스터디신청서권한
 com/project/devidea/modules/tagzone/tag/BasicForm.java
  com.project.devidea.modules.tagzone.tag.BasicForm
-com/project/devidea/infra/config/jwt/JwtTokenUtil.java
- com.project.devidea.infra.config.jwt.JwtTokenUtil
+com/project/devidea/modules/content/study/controller/StudyBasicController.java
+ com.project.devidea.modules.content.study.controller.StudyBasicController
+com/project/devidea/infra/config/security/oauth/OAuthService.java
+ com.project.devidea.infra.config.security.oauth.OAuthService
 com/project/devidea/modules/content/study/apply/StudyApplyRepository.java
  com.project.devidea.modules.content.study.apply.StudyApplyRepository
 com/project/devidea/modules/like/validator/BasicValidator.java
  com.project.devidea.modules.like.validator.BasicValidator
 com/project/devidea/modules/notification/NotificationService.java
  com.project.devidea.modules.notification.NotificationService
+com/project/devidea/modules/content/study/QStudyMember.java
+ com.project.devidea.modules.content.study.QStudyMember
 com/project/devidea/modules/content/tech/BasicForm.java
  com.project.devidea.modules.content.tech.BasicForm
 com/project/devidea/modules/account/QAccount.java
@@ -156,13 +185,11 @@ com/project/devidea/modules/notification/Notification.java
  com.project.devidea.modules.notification.Notification$NotificationBuilder
 com/project/devidea/modules/content/tech/DaangnCrawling.java
  com.project.devidea.modules.content.tech.DaangnCrawling
-com/project/devidea/infra/config/oauth/provider/SocialLoginTypeConverter.java
- com.project.devidea.infra.config.oauth.provider.SocialLoginTypeConverter
+com/project/devidea/modules/InitService.java
+ com.project.devidea.modules.InitService
 com/project/devidea/modules/content/tech/TechBlog.java
  com.project.devidea.modules.content.tech.TechBlog
  com.project.devidea.modules.content.tech.TechBlog$TechBlogBuilder
-com/project/devidea/infra/config/CustomModelMapper.java
- com.project.devidea.infra.config.CustomModelMapper
 com/project/devidea/modules/account/form/SignUpRequestDto.java
  com.project.devidea.modules.account.form.SignUpRequestDto
  com.project.devidea.modules.account.form.SignUpRequestDto$SignUpRequestDtoBuilder
@@ -170,20 +197,27 @@ com/project/devidea/modules/content/study/form/StudyMakingForm.java
  com.project.devidea.modules.content.study.form.StudyMakingForm
 com/project/devidea/modules/content/study/repository/StudyRepositoryCustom.java
  com.project.devidea.modules.content.study.repository.StudyRepositoryCustom
-com/project/devidea/modules/account/adapter/AccountAdapter.java
- com.project.devidea.modules.account.adapter.AccountAdapter
+com/project/devidea/modules/content/study/Study_Role.java
+ com.project.devidea.modules.content.study.Study_Role
+com/project/devidea/infra/config/security/oauth/provider/GoogleOAuth.java
+ com.project.devidea.infra.config.security.oauth.provider.GoogleOAuth
+com/project/devidea/modules/content/study/StudyMember.java
+ com.project.devidea.modules.content.study.StudyMember
+ com.project.devidea.modules.content.study.StudyMember$StudyMemberBuilder
 com/project/devidea/modules/content/mentoring/QMentor.java
  com.project.devidea.modules.content.mentoring.QMentor
 com/project/devidea/modules/content/mentoring/Mentor.java
  com.project.devidea.modules.content.mentoring.Mentor
-com/project/devidea/modules/content/study/StudyController.java
- com.project.devidea.modules.content.study.StudyController
 com/project/devidea/modules/content/study/StudyService.java
  com.project.devidea.modules.content.study.StudyService
+com/project/devidea/modules/content/study/controller/StudyControllerAdvice.java
+ com.project.devidea.modules.content.study.controller.StudyControllerAdvice
 com/project/devidea/modules/account/validator/SignUpRequestValidator.java
  com.project.devidea.modules.account.validator.SignUpRequestValidator
 com/project/devidea/modules/content/study/form/TagZoneForm.java
  com.project.devidea.modules.content.study.form.TagZoneForm
+com/project/devidea/modules/content/study/controller/StudyManagerController.java
+ com.project.devidea.modules.content.study.controller.StudyManagerController
 com/project/devidea/modules/content/study/form/StudyListForm.java
  com.project.devidea.modules.content.study.form.StudyListForm
 com/project/devidea/modules/content/mentoring/Mentee.java
