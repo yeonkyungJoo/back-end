@@ -46,7 +46,7 @@ public class StudyBaseForm implements Serializable {
                 .title(this.title)
                 .shortDescription(this.shortDescription)
                 .counts(this.counts)
-                .Likes(this.Likes)
+                .likes(this.Likes)
                 .maxCount(this.maxCount)
                 .level(this.level)
                 .recruiting(this.recruiting)

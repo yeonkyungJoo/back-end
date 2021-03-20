@@ -55,12 +55,12 @@ public class Account{
     private String techStacks;
 
 //    관심분야, 일대다 다대일로 풂
-    @Builder.Default
+//    @Builder.Default
     @OneToMany(mappedBy = "account")
     private Set<Interest> interests = new HashSet<>();
 
 //    주요 활동지역, 일대다 다대일로 풂
-    @Builder.Default
+//    @Builder.Default
     @OneToMany(mappedBy = "account")
     private Set<MainActivityZone> mainActivityZones = new HashSet<>();
 

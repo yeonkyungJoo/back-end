@@ -26,7 +26,7 @@ public class StudySampleGenerator {
     public Study generate(String title, Set<Tag> tags,Zone zone, Boolean isRecruiting) {
         List<Zone> zones = zoneRepository.findAll();
         Study study = new Study().builder()
-                .Likes(0)
+                .likes(0)
                 .title(title)
                 .shortDescription("스프링 스터디입니다")
                 .location(zone)
