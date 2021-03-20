@@ -197,8 +197,6 @@ com/project/devidea/modules/content/tech/DaangnCrawling.java
 com/project/devidea/modules/account/exception/AccountResponse.java
  com.project.devidea.modules.account.exception.AccountResponse
  com.project.devidea.modules.account.exception.AccountResponse$AccountResponseBuilder
-com/project/devidea/modules/InitService.java
- com.project.devidea.modules.InitService
 com/project/devidea/modules/content/tech/TechBlog.java
  com.project.devidea.modules.content.tech.TechBlog
  com.project.devidea.modules.content.tech.TechBlog$TechBlogBuilder

@@ -30,7 +30,7 @@ public class QStudy extends EntityPathBase<Study> {
 
     public final EnumPath<Level> level = createEnum("level", Level.class);
 
-    public final NumberPath<Integer> Likes = createNumber("Likes", Integer.class);
+    public final NumberPath<Integer> likes = createNumber("likes", Integer.class);
 
     public final com.project.devidea.modules.tagzone.zone.QZone location;
 
