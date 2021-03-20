@@ -15,6 +15,8 @@ com/project/devidea/infra/config/security/SecurityConfig.java
  com.project.devidea.infra.config.security.SecurityConfig
 com/project/devidea/modules/content/tech/Crawling.java
  com.project.devidea.modules.content.tech.Crawling
+com/project/devidea/modules/account/exception/SignUpRequestNotValidException.java
+ com.project.devidea.modules.account.exception.SignUpRequestNotValidException
 com/project/devidea/modules/content/study/controller/StudyAdminController.java
  com.project.devidea.modules.content.study.controller.StudyAdminController
 com/project/devidea/modules/notification/NotificationRepository.java
@@ -56,13 +58,15 @@ com/project/devidea/modules/notification/NotificationController.java
  com.project.devidea.modules.notification.NotificationController$ResponseNotifications
 com/project/devidea/modules/content/study/apply/StudyApplyListForm.java
  com.project.devidea.modules.content.study.apply.StudyApplyListForm
+com/project/devidea/modules/account/AccountControllerAdvice.java
+ com.project.devidea.modules.account.AccountControllerAdvice
 com/project/devidea/modules/content/tech/TechBlogRepository.java
  com.project.devidea.modules.content.tech.TechBlogRepository
 com/project/devidea/modules/account/form/SignUpResponseDto.java
  com.project.devidea.modules.account.form.SignUpResponseDto
  com.project.devidea.modules.account.form.SignUpResponseDto$SignUpResponseDtoBuilder
-com/project/devidea/modules/account/form/AccountForm.java
- com.project.devidea.modules.account.form.AccountForm
+com/project/devidea/modules/content/study/aop/StudyAuthorityAop.java
+ com.project.devidea.modules.content.study.aop.StudyAuthorityAop
 com/project/devidea/modules/account/AccountRepository.java
  com.project.devidea.modules.account.AccountRepository
 com/project/devidea/modules/content/mentoring/CreateMentorRequest.java
@@ -78,6 +82,9 @@ com/project/devidea/api/CreateRequest.java
 com/project/devidea/modules/account/form/LoginRequestDto.java
  com.project.devidea.modules.account.form.LoginRequestDto
  com.project.devidea.modules.account.form.LoginRequestDto$LoginRequestDtoBuilder
+com/project/devidea/modules/account/exception/AccountErrorMessage.java
+ com.project.devidea.modules.account.exception.AccountErrorMessage
+ com.project.devidea.modules.account.exception.AccountErrorMessage$AccountErrorMessageBuilder
 com/project/devidea/modules/content/study/QStudy.java
  com.project.devidea.modules.content.study.QStudy
 com/project/devidea/infra/config/security/LoginUser.java
@@ -108,8 +115,6 @@ com/project/devidea/infra/config/security/oauth/provider/GithubOAuth.java
  com.project.devidea.infra.config.security.oauth.provider.GithubOAuth
 com/project/devidea/infra/config/security/jwt/JwtAuthenticationEntryPoint.java
  com.project.devidea.infra.config.security.jwt.JwtAuthenticationEntryPoint
-com/project/devidea/modules/content/study/aop/CheckAuthroityAop.java
- com.project.devidea.modules.content.study.aop.CheckAuthroityAop
 com/project/devidea/modules/content/tech/KakaoCrawling.java
  com.project.devidea.modules.content.tech.KakaoCrawling
 com/project/devidea/modules/content/resume/QResume.java
@@ -130,6 +135,9 @@ com/project/devidea/infra/config/QuerydslConfig.java
  com.project.devidea.infra.config.QuerydslConfig
 com/project/devidea/infra/config/security/CustomUserDetailService.java
  com.project.devidea.infra.config.security.CustomUserDetailService
+com/project/devidea/modules/account/exception/ErrorFieldAndMessage.java
+ com.project.devidea.modules.account.exception.ErrorFieldAndMessage
+ com.project.devidea.modules.account.exception.ErrorFieldAndMessage$ErrorFieldAndMessageBuilder
 com/project/devidea/infra/config/SwaggerConfig.java
  com.project.devidea.infra.config.SwaggerConfig
 com/project/devidea/modules/content/study/aop/스터디설정권한.java
@@ -202,6 +210,8 @@ com/project/devidea/modules/content/mentoring/Mentor.java
  com.project.devidea.modules.content.mentoring.Mentor
 com/project/devidea/modules/content/study/StudyService.java
  com.project.devidea.modules.content.study.StudyService
+com/project/devidea/modules/content/study/controller/StudyControllerAdvice.java
+ com.project.devidea.modules.content.study.controller.StudyControllerAdvice
 com/project/devidea/modules/account/validator/SignUpRequestValidator.java
  com.project.devidea.modules.account.validator.SignUpRequestValidator
 com/project/devidea/modules/content/study/form/TagZoneForm.java

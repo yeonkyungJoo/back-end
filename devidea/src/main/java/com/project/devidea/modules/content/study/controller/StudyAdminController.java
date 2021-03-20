@@ -26,31 +26,26 @@ public class StudyAdminController {
     private final StudyMemberRepository studyMemberRepository;
 
     @GetMapping("/study/{id}/status")
-    @스터디설정권한
     public ResponseEntity<?> 스터디_공개_및_모집여부_설정폼(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
         return new ResponseEntity<>(studyService.getOpenRecruitForm(id), HttpStatus.OK);
     }
 
     @PostMapping("/study/{id}/open") //미정
-    @스터디설정권한
     public ResponseEntity<?> 스터디_공개_및_모집여부_변경(@AuthenticationPrincipal LoginUser account, @PathVariable Long id, OpenRecruitForm openRecruitForm) {
         return new ResponseEntity<>(studyService.UpdateOpenRecruiting(id, openRecruitForm), HttpStatus.OK);
     }
 
     @GetMapping("/study/{id}/tag_zone")
-    @스터디설정권한
     public ResponseEntity<?> 지역_태그_설정폼(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
         return new ResponseEntity<>(studyService.getTagandZone(id), HttpStatus.OK);
     }
 
     @PostMapping("/study/{id}/tag_zone")
-    @스터디설정권한
     public ResponseEntity<?> 지역_태그_설정_변경(@AuthenticationPrincipal LoginUser account, @PathVariable Long id, @Valid TagZoneForm tagZoneForm) {
         return new ResponseEntity<>(studyService.UpdateTagAndZOne(id, tagZoneForm), HttpStatus.OK);
     }
 
     @PostMapping("/study/{id}/delete")
-    @스터디설정권한
     public ResponseEntity<?> 스터디_삭제(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
         return new ResponseEntity<>(studyService.deleteStudy(account.getNickName(),id), HttpStatus.OK);
     }

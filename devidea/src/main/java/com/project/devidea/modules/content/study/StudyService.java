@@ -134,9 +134,8 @@ public class StudyService {
 
     public String leaveStudy(String nickName, Long study_id) {
         Account account = accountRepository.findByNickname(nickName);
-        Study study = studyRepository.findById(study_id).orElseThrow();
-        studyMemberRepository.deleteByStudyAndMember(study, account);
-        study.setCounts(study.getCounts() - 1); //더하기
+        studyMemberRepository.deleteByStudy_IdAndMember_Id(study_id,account.getId());
+        studyRepository.LeaveStudy(study_id);
         return "스터디를 떠났습니다.";
     }
 
