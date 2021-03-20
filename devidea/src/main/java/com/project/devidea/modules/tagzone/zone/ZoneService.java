@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,5 +37,16 @@ public class ZoneService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public ZonesResponseDto findAll() {
+        List<Zone> zones = zoneRepository.findAll();
+        ZonesResponseDto dto = new ZonesResponseDto();
 
+        zones.forEach(zone -> {
+            dto.getCities().add(zone.getCity());
+            dto.getProvinces().computeIfAbsent(zone.getCity(), k -> new ArrayList<>());
+            dto.getProvinces().get(zone.getCity()).add(zone.getProvince());
+        });
+        return dto;
+    }
 }

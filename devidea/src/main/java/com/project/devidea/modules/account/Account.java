@@ -1,17 +1,9 @@
 package com.project.devidea.modules.account;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.devidea.modules.content.study.Study;
+import com.project.devidea.modules.account.form.SignUpDetailRequestDto;
 import com.project.devidea.modules.content.study.StudyMember;
-import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.apache.tomcat.util.buf.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -55,11 +47,26 @@ public class Account{
 
     private String gender;
 
-//    private Set<Tag> tags;
+//    현재 직업
+    private String job;
+
+//    현재 분야 경력
+    private int careerYears;
+
+//    테크 스택, 문자열로 구분자 지어주기
+    private String techStacks;
+
+//    관심분야, 일대다 다대일로 풂
+    @Builder.Default
+    @OneToMany(mappedBy = "account")
+    private Set<Interest> interests = new HashSet<>();
+
+//    주요 활동지역, 일대다 다대일로 풂
+    @Builder.Default
+    @OneToMany(mappedBy = "account")
+    private Set<MainActivityZone> mainActivityZones = new HashSet<>();
 
 //    private Set<Resume> resume;
-
-//    private Set<Zone> locations;
 
     @OneToMany(mappedBy = "member", cascade = {CascadeType.ALL}) //여기 어카운트가 삭제되면 studymember에도 영향끼침
     private Set<StudyMember> studies = new HashSet<>();
@@ -92,6 +99,19 @@ public class Account{
     @Override
     public String toString(){
         return getNickname();
+    }
+
+//    편의 메서드 : 회원가입 디테일 여기서부터 시작하기!
+    public void saveSignUpDetail(SignUpDetailRequestDto req, Set<MainActivityZone> mainActivityZones, Set<Interest> interests) {
+
+        this.profileImage = req.getProfileImage();
+        this.receiveEmail = req.isReceiveEmail();
+        this.careerYears = req.getCareerYears();
+        this.job = req.getJobField();
+        this.techStacks = StringUtils.join(req.getTechStacks(), '/');
+
+        this.interests.addAll(interests);
+        this.mainActivityZones.addAll(mainActivityZones);
     }
 }
 

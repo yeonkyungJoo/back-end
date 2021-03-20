@@ -1,8 +1,8 @@
 package com.project.devidea.modules.content.study.controller;
 
-import com.project.devidea.modules.account.exception.AccountErrorMessage;
+import com.project.devidea.modules.account.exception.AccountRequestNotValidException;
+import com.project.devidea.modules.account.exception.AccountResponse;
 import com.project.devidea.modules.account.exception.ErrorFieldAndMessage;
-import com.project.devidea.modules.account.exception.SignUpRequestNotValidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 @RestControllerAdvice(basePackages = "com.project.devidea.modules.study")
 public class StudyControllerAdvice {
 
-    @ExceptionHandler(SignUpRequestNotValidException.class)
-    public ResponseEntity<AccountErrorMessage> signUp(SignUpRequestNotValidException signUpRequestNotValidException) {
+    @ExceptionHandler(AccountRequestNotValidException.class)
+    public ResponseEntity<AccountResponse> signUp(AccountRequestNotValidException signUpRequestNotValidException) {
 
-        AccountErrorMessage errorMessage = AccountErrorMessage.builder()
+        AccountResponse errorMessage = AccountResponse.builder()
                 .time(LocalDateTime.now())
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .errorFieldAndMessageList(signUpRequestNotValidException.getErrors().getFieldErrors()
@@ -35,9 +35,9 @@ public class StudyControllerAdvice {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<AccountErrorMessage> login(BadCredentialsException badCredentialsException) {
+    public ResponseEntity<AccountResponse> login(BadCredentialsException badCredentialsException) {
 
-        AccountErrorMessage errorMessage = AccountErrorMessage.builder()
+        AccountResponse errorMessage = AccountResponse.builder()
                 .time(LocalDateTime.now())
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .description("회원의 아이디와 비밀번호가 일치하지 않습니다.")

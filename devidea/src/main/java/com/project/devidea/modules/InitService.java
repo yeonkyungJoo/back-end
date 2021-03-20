@@ -1,15 +1,11 @@
 package com.project.devidea.modules;
 
 import com.project.devidea.modules.account.Account;
-import com.project.devidea.modules.account.AccountRepository;
-import com.project.devidea.modules.content.study.Study;
+import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.study.StudySampleGenerator;
 import com.project.devidea.modules.content.study.StudyService;
 import com.project.devidea.modules.content.study.Study_Role;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
-import com.project.devidea.modules.tagzone.tag.TagService;
-import com.project.devidea.modules.tagzone.zone.ZoneService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
