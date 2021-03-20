@@ -1,5 +1,6 @@
-package com.project.devidea.modules.account;
+package com.project.devidea.modules.account.repository;
 
+import com.project.devidea.modules.account.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

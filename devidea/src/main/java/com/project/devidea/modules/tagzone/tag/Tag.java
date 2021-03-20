@@ -20,7 +20,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Tag implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TAG_ID")
     private Long id;
 
     @NotNull

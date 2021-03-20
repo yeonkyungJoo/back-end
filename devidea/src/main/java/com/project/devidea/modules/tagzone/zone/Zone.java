@@ -13,7 +13,8 @@ import javax.persistence.*;
 //@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"city", "province"}))
 public class Zone {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ZONE_ID")
     private Long id;
 
     @Column(nullable = false)

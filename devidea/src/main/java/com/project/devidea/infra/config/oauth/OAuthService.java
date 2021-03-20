@@ -4,7 +4,7 @@ import com.project.devidea.infra.config.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.oauth.provider.SocialLoginType;
 import com.project.devidea.infra.config.oauth.provider.SocialOAuth;
 import com.project.devidea.modules.account.Account;
-import com.project.devidea.modules.account.AccountRepository;
+import com.project.devidea.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

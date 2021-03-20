@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -21,6 +22,8 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final StringPath bio = createString("bio");
 
+    public final NumberPath<Integer> careerYears = createNumber("careerYears", Integer.class);
+
     public final StringPath email = createString("email");
 
     public final StringPath emailCheckToken = createString("emailCheckToken");
@@ -29,7 +32,13 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final SetPath<Interest, QInterest> interests = this.<Interest, QInterest>createSet("interests", Interest.class, QInterest.class, PathInits.DIRECT2);
+
+    public final StringPath job = createString("job");
+
     public final DateTimePath<java.time.LocalDateTime> joinedAt = createDateTime("joinedAt", java.time.LocalDateTime.class);
+
+    public final SetPath<MainActivityZone, QMainActivityZone> mainActivityZones = this.<MainActivityZone, QMainActivityZone>createSet("mainActivityZones", MainActivityZone.class, QMainActivityZone.class, PathInits.DIRECT2);
 
     public final StringPath name = createString("name");
 
@@ -54,6 +63,8 @@ public class QAccount extends EntityPathBase<Account> {
     public final BooleanPath receiveTechNewsNotification = createBoolean("receiveTechNewsNotification");
 
     public final StringPath roles = createString("roles");
+
+    public final StringPath techStacks = createString("techStacks");
 
     public final StringPath url = createString("url");
 

@@ -1,7 +1,7 @@
 package com.project.devidea.modules.content.study;
 
 import com.project.devidea.modules.account.Account;
-import com.project.devidea.modules.account.AccountRepository;
+import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.study.apply.StudyApply;
 import com.project.devidea.modules.content.study.apply.StudyApplyForm;
 import com.project.devidea.modules.content.study.apply.StudyApplyListForm;

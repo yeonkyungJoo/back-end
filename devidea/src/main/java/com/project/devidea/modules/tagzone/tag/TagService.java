@@ -10,6 +10,9 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -37,5 +40,22 @@ public class TagService {
                         tagRepository.save(tag);
                     });
         }
+    }
+
+    @Transactional(readOnly = true)
+    public TagsResponseDto findAll() {
+        List<Tag> tags = tagRepository.findAll();
+
+        TagsResponseDto dto = new TagsResponseDto();
+        tags.forEach(tag -> {
+            if (tag.getParent() == null) {
+                dto.getParent().add(tag.getFirstName());
+            } else {
+                dto.getChildren().computeIfAbsent(tag.getParent().toString(), k -> new ArrayList<>());
+                dto.getChildren().get(tag.getParent().getFirstName()).add(tag.getFirstName());
+            }
+        });
+
+        return dto;
     }
 }

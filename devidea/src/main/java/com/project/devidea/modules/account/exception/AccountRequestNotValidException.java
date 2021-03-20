@@ -6,13 +6,14 @@ import org.springframework.validation.Errors;
 
 @Getter
 @Setter
-public class SignUpRequestNotValidException extends RuntimeException{
+public class AccountRequestNotValidException extends RuntimeException{
 
     private Errors errors;
     private String msg;
 
-    public SignUpRequestNotValidException(String msg, Errors errors) {
+    public AccountRequestNotValidException(String msg, Errors errors) {
         super(msg);
+        this.msg = msg;
         this.errors = errors;
     }
 }

@@ -3,8 +3,6 @@ package com.project.devidea.infra.config;
 import com.project.devidea.infra.config.jwt.JwtAuthenticationEntryPoint;
 import com.project.devidea.infra.config.jwt.JwtRequestFilter;
 import com.project.devidea.infra.config.jwt.JwtUserDetailsService;
-import com.project.devidea.modules.account.AccountRepository;
-import com.project.devidea.modules.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 

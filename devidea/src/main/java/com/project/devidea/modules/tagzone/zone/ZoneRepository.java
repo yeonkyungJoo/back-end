@@ -8,5 +8,6 @@ public interface ZoneRepository extends JpaRepository<Zone, Long> {
     List<Zone> findAll();
     Zone findByCityAndProvince(String cityName, String provinceName);
 
+    List<Zone> findByCityInAndProvinceIn(List<String> cities, List<String> provinces);
 }
 
