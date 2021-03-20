@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(indexes = @Index(name = "location", columnList = "location_id"))
 @EqualsAndHashCode(of = "id")
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -51,7 +50,7 @@ public class Study implements Serializable {
     private LocalDateTime publishedDateTime;
     private boolean open; //공개여부
 
-    private int Likes = 0;
+    private int likes = 0;
 
     private int counts = 0;
     private int maxCount;
@@ -73,5 +72,25 @@ public class Study implements Serializable {
     @Override
     public String toString() {
         return this.title;
+    }
+
+    @Builder
+    public Study(Long id, Set<StudyMember> members, String title, String shortDescription, String fullDescription, Set<Tag> tags, Zone location, boolean recruiting, LocalDateTime publishedDateTime, boolean open, int likes, int counts, int maxCount, Level level, Boolean mentoRecruiting, String question) {
+        this.id = id;
+        this.members = members;
+        this.title = title;
+        this.shortDescription = shortDescription;
+        this.fullDescription = fullDescription;
+        this.tags = tags;
+        this.location = location;
+        this.recruiting = recruiting;
+        this.publishedDateTime = publishedDateTime;
+        this.open = open;
+        this.likes = likes;
+        this.counts = counts;
+        this.maxCount = maxCount;
+        this.level = level;
+        this.mentoRecruiting = mentoRecruiting;
+        this.question = question;
     }
 }

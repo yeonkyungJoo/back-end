@@ -62,7 +62,7 @@ class TagRepositoryTest {
 //        then
         assertEquals(tags.size(), 62);
         for (Tag tag : tags) {
-            log.info("tag = {}", tag);
+//            log.info("tag = {}", tag);
         }
     }
 

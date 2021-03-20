@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class AccountResponse {
 
     private int statusCode;
@@ -53,5 +52,13 @@ public class AccountResponse {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .description("회원의 아이디와 비밀번호가 일치하지 않습니다.")
                 .build();
+    }
+
+    @Builder
+    public AccountResponse(int statusCode, LocalDateTime time, List<ErrorFieldAndMessage> errorFieldAndMessageList, String description) {
+        this.statusCode = statusCode;
+        this.time = time;
+        this.errorFieldAndMessageList = errorFieldAndMessageList;
+        this.description = description;
     }
 }

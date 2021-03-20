@@ -55,7 +55,7 @@ class ZoneRepositoryTest {
 //        then
         assertEquals(zones.size(), 360);
         for (Zone zone : zones) {
-            log.info("city, province = {} {}", zone.getCity(), zone.getProvince());
+//            log.info("city, province = {} {}", zone.getCity(), zone.getProvince());
         }
     }
 

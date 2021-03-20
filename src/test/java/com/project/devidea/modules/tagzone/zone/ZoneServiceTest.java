@@ -47,8 +47,8 @@ public class ZoneServiceTest {
         assertEquals(provinces.keySet().size(), 17);
 
 //        print
-        cities.forEach(str -> log.info("cities = {}", str));
-        log.info("==============================구분===================================");
-        provinces.forEach((key, value) -> log.info("{} = {}", key, value));
+//        cities.forEach(str -> log.info("cities = {}", str));
+//        log.info("==============================구분===================================");
+//        provinces.forEach((key, value) -> log.info("{} = {}", key, value));
     }
 }

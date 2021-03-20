@@ -47,8 +47,8 @@ public class TagServiceTest {
         assertEquals(children.keySet().size(), 4);
 
 //        print
-        parent.forEach(str -> log.info("parent : {}", str));
-        log.info("==============================구분===================================");
-        children.entrySet().forEach(str -> log.info("children : {}", str));
+//        parent.forEach(str -> log.info("parent : {}", str));
+//        log.info("==============================구분===================================");
+//        children.entrySet().forEach(str -> log.info("children : {}", str));
     }
 }
