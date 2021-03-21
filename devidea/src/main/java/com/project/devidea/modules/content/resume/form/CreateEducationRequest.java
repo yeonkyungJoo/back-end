@@ -1,7 +1,6 @@
 package com.project.devidea.modules.content.resume.form;
 
-import com.project.devidea.api.CreateRequest;
-import lombok.Builder;
+import com.project.devidea.api.Request;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,9 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
-public class CreateEducationRequest extends CreateRequest {
+public class CreateEducationRequest extends Request {
 
     @NotEmpty
     private String schoolName;

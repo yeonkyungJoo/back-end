@@ -29,23 +29,16 @@ import java.util.stream.Collectors;
 public class CareerController {
 
     private final MentorRepository mentorRepository;
-    private final CareerRepository careerRepository;
-    private final CareerService careerService;
 
     @GetMapping("/")
     public ResponseEntity getCareers(@AuthenticationPrincipal Account account) {
 
-        // @CurrentUser OR checkIsAuthenticated();
+        // OR @CurrentUser
         if(account == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
-        // checkIsMentor(Long accountId);
-        Long accountId = account.getId();
-        Mentor findMentor = mentorRepository.findByAccountId(accountId);
-        if (findMentor == null) {
-            // 예외 처리
-        }
+        Mentor findMentor = checkIsMentor(account.getId());
 
         List<Career> careers = findMentor.getResume().getCareers();
         List<CareerDto> collect = careers.stream()
@@ -54,21 +47,19 @@ public class CareerController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity getCareer(@AuthenticationPrincipal Account account,
-                                        @PathVariable("id") Long careerId) {
-
-        // checkIsAuthenticated()
-
-        // checkIsMentor(Long accountId);
-        Long accountId = account.getId();
+    private Mentor checkIsMentor(Long accountId) {
         Mentor findMentor = mentorRepository.findByAccountId(accountId);
         if (findMentor == null) {
             // 예외 처리
         }
+        return findMentor;
+    }
 
-        // OR careerId로 바로 조회
-        // careerRepository.findById(careerId);
+    @GetMapping("/{id}")
+    public ResponseEntity getCareer(@AuthenticationPrincipal Account account,
+                                        @PathVariable("id") Long careerId) {
+
+        Mentor findMentor = checkIsMentor(account.getId());
         Career career = findMentor.getResume().getCareers()
                 .stream().filter(c -> c.getId().equals(careerId)).findAny()
                 .orElseThrow(() -> new IllegalArgumentException("Invalid careerId"));
@@ -76,42 +67,18 @@ public class CareerController {
         return new ResponseEntity(new CareerDto(career), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity newCareer(@RequestBody @Valid CreateCareerRequest request, Errors errors) {
-        if (errors.hasErrors()) {
-            // 예외 처리
-        }
-
-        // TODO - validator
-        // - startDate와 endDate 비교
-        // - endDate, present 비교
-
-        Career career = Career.builder()
-                .companyName(request.getCompanyName())
-                .duty(request.getDuty())
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
-                .present(request.isPresent())
-                .tags(request.getTags())
-                .detail(request.getDetail())
-                .url(request.getUrl())
-                .build();
-        Long careerId = careerService.save(career);
-        return new ResponseEntity(careerId, HttpStatus.CREATED);
-    }
-
+/*
     @PostMapping("/{id}/edit")
     public ResponseEntity editCareer(@RequestBody @Valid UpdateCareerRequest request, Errors errors,
                                         @PathVariable("id") Long careerId) {
-        
-        // TODO - validator
-        
+        return null;
     }
 
     @PostMapping("/{id}/delete")
-    public ResponseEntity deleteCareer() {
-
+    public ResponseEntity deleteCareer(@PathVariable("id") Long careerId) {
+        return null;
     }
+*/
 
     @Data
     public class CareerDto {

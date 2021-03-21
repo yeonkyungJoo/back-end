@@ -5,4 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 public interface MenteeRepository extends JpaRepository<Mentee, Long> {
+
+    Mentee findByAccountId(Long accountId);
 }

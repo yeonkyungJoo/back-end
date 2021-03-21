@@ -1,7 +1,7 @@
 package com.project.devidea.modules.content.resume.form;
 
+import com.project.devidea.api.Request;
 import com.project.devidea.modules.tagzone.tag.Tag;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,8 +12,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@Builder
-public class UpdateCareerRequest {
+public class UpdateCareerRequest extends Request {
 
     @NotEmpty
     private String companyName;

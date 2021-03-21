@@ -14,13 +14,4 @@ public class AppConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
-
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setDestinationNameTokenizer(NameTokenizers.CAMEL_CASE)
-                .setSourceNameTokenizer(NameTokenizers.CAMEL_CASE);
-        return modelMapper;
-    }
 }

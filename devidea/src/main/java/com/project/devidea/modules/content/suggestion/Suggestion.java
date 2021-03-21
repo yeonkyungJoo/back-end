@@ -1,10 +1,7 @@
 package com.project.devidea.modules.content.suggestion;
 
 import com.project.devidea.modules.account.Account;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Suggestion {
 
     @Id @GeneratedValue
@@ -21,13 +19,13 @@ public class Suggestion {
 
     private LocalDateTime date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+/*    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
     private Account from;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Account to;
+    @JoinColumn(name = "account_id")
+    private Account to;*/
 
     private String message;
 }

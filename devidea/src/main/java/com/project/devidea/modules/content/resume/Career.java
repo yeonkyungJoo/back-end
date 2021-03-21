@@ -1,6 +1,7 @@
 package com.project.devidea.modules.content.resume;
 
 import com.project.devidea.modules.tagzone.tag.Tag;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Career {
 
@@ -33,5 +35,33 @@ public class Career {
 
     private String detail;
     private String url;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resume_id")
+    private Resume resume;
+
+    public void setResume(Resume resume) {
+        this.resume = resume;
+    }
+
+    public static Career createCareer(String companyName, String duty,
+              LocalDateTime startDate, LocalDateTime endDate, boolean present, Set<Tag> tags, String detail, String url) {
+
+        // TODO - validate
+        // - startDate와 endDate 비교
+        // - endDate, present 비교
+
+        Career career = Career.builder()
+                .companyName(companyName)
+                .duty(duty)
+                .startDate(startDate)
+                .endDate(endDate)
+                .present(present)
+                .tags(tags)
+                .detail(detail)
+                .url(url)
+                .build();
+        return career;
+    }
 
 }
