@@ -2,9 +2,9 @@ package com.project.devidea.modules.content.mentoring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devidea.infra.MockMvcTest;
-import com.project.devidea.infra.WithAccount;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.repository.AccountRepository;
+import com.project.devidea.modules.content.mentoring.account.WithAccount;
 import com.project.devidea.modules.content.mentoring.form.CreateMenteeRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +34,7 @@ class MenteeControllerTest {
 
     @Test
     @DisplayName("멘티 등록 - 인증된 사용자")
-    @WithAccount(NickName ="yk")
+    @WithAccount("yk")
     public void newMentee() throws Exception {
         // Given
         // When, Then
@@ -95,7 +95,7 @@ class MenteeControllerTest {
 
     @Test
     @DisplayName("멘티 수정")
-    @WithAccount(NickName = "yk")
+    @WithAccount("yk")
     public void editMentee() throws Exception {
         // Given
         Long menteeId = createMentee("yk");
@@ -125,7 +125,7 @@ class MenteeControllerTest {
 
     @Test
     @DisplayName("멘티 삭제")
-    @WithAccount(NickName = "yk")
+    @WithAccount("yk")
     public void quitMentee() throws Exception {
         // Given
         Long menteeId = createMentee("yk");
@@ -144,7 +144,7 @@ class MenteeControllerTest {
 
     @Test
     @DisplayName("멘티 삭제 - 실패")
-    @WithAccount(NickName = "yk")
+    @WithAccount("yk")
     public void quitMentee_withoutAccount() throws Exception {
         // Given
         Long menteeId = createMentee("yk");

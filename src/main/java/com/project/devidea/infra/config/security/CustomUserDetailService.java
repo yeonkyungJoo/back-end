@@ -17,7 +17,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
-    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         System.out.println(" loadUserByUsername=" + emailOrNickname);

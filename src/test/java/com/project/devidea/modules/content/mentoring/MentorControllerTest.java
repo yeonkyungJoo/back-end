@@ -1,7 +1,7 @@
 package com.project.devidea.modules.content.mentoring;
 
 import com.project.devidea.infra.MockMvcTest;
-import com.project.devidea.modules.account.WithAccount;
+import com.project.devidea.modules.content.mentoring.account.WithAccount;
 import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
 import org.junit.jupiter.api.DisplayName;

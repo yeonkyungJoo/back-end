@@ -37,18 +37,23 @@ public class Resume {
 
     private String blog;
 
+    // @Builder.Default
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     private List<Career> careers = new ArrayList<>();
 
+    // @Builder.Default
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     private List<Project> projects = new ArrayList<>();
 
+    // @Builder.Default
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     private List<Education> educations = new ArrayList<>();
 
+    // @Builder.Default
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     private List<Award> awards = new ArrayList<>();
 
+    // @Builder.Default
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     private List<Activity> activites = new ArrayList<>();
 

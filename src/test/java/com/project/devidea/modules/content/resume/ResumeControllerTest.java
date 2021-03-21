@@ -2,9 +2,9 @@ package com.project.devidea.modules.content.resume;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devidea.infra.MockMvcTest;
-import com.project.devidea.infra.WithAccount;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.repository.AccountRepository;
+import com.project.devidea.modules.content.mentoring.account.WithAccount;
 import com.project.devidea.modules.content.resume.form.CreateResumeRequest;
 import com.project.devidea.modules.content.resume.form.UpdateResumeRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +39,7 @@ class ResumeControllerTest {
 
     @Test
     @DisplayName("이력서 등록")
-    @WithAccount(NickName="yk")
+    @WithAccount("yk")
     public void newResume() throws Exception {
         // Given
         // When, Then
@@ -87,7 +87,7 @@ class ResumeControllerTest {
 
     @Test
     @DisplayName("이력서 수정")
-    @WithAccount(NickName="yk")
+    @WithAccount("yk")
     public void editResume() throws Exception {
         // Given
         Long resumeId = createResume("yk");
@@ -118,7 +118,7 @@ class ResumeControllerTest {
 
     @Test
     @DisplayName("이력서 수정 실패 - withoutAccount로 unauthorized")
-    @WithAccount(NickName="yk")
+    @WithAccount("yk")
     public void editResume_withoutAccount() throws Exception {
         // Given
         Long resumeId = createResume("yk");
@@ -152,7 +152,7 @@ class ResumeControllerTest {
 
     @Test
     @DisplayName("이력서 삭제")
-    @WithAccount(NickName="yk")
+    @WithAccount("yk")
     public void deleteResume() throws Exception {
         // Given
         Long resumeId = createResume("yk");
@@ -166,7 +166,7 @@ class ResumeControllerTest {
 
     @Test
     @DisplayName("이력서 삭제 실패")
-    @WithAccount(NickName="yk")
+    @WithAccount("yk")
     public void deleteResume_withoutAccount() throws Exception {
         // Given
         Long resumeId = createResume("yk");
