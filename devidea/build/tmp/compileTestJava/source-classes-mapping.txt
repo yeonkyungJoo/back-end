@@ -1,7 +1,5 @@
-com/project/devidea/infra/WithAccountFactory.java
- com.project.devidea.infra.WithAccountFactory
-com/project/devidea/modules/content/study/StudyServiceTest.java
- com.project.devidea.modules.content.study.StudyServiceTest
+com/project/devidea/modules/notification/NotificationServiceTest.java
+ com.project.devidea.modules.notification.NotificationServiceTest
 com/project/devidea/modules/tagzone/zone/ZoneServiceTest.java
  com.project.devidea.modules.tagzone.zone.ZoneServiceTest
 com/project/devidea/modules/notification/NotificationControllerTest.java
@@ -12,14 +10,6 @@ com/project/devidea/modules/account/AccountRepositoryTest.java
  com.project.devidea.modules.account.AccountRepositoryTest
 com/project/devidea/modules/account/AccountControllerTest.java
  com.project.devidea.modules.account.AccountControllerTest
-com/project/devidea/modules/account/AccountServiceTest.java
- com.project.devidea.modules.account.AccountServiceTest
-com/project/devidea/infra/WithAccount.java
- com.project.devidea.infra.WithAccount
-com/project/devidea/modules/content/study/StudyControllerTest.java
- com.project.devidea.modules.content.study.StudyControllerTest
- com.project.devidea.modules.content.study.StudyControllerTest$1
- com.project.devidea.modules.content.study.StudyControllerTest$2
 com/project/devidea/modules/content/tech/DaangnCrawlingTest.java
  com.project.devidea.modules.content.tech.DaangnCrawlingTest
 com/project/devidea/DevideaApplicationTests.java
@@ -32,11 +22,17 @@ com/project/devidea/modules/content/tech/JavableCrawlingTest.java
  com.project.devidea.modules.content.tech.JavableCrawlingTest
 com/project/devidea/modules/content/tech/kakaoCrawlingTest.java
  com.project.devidea.modules.content.tech.kakaoCrawlingTest
+com/project/devidea/modules/account/WithAccountSecurityContextFactory.java
+ com.project.devidea.modules.account.WithAccountSecurityContextFactory
 com/project/devidea/modules/content/tech/LineCrawlingTest.java
  com.project.devidea.modules.content.tech.LineCrawlingTest
 com/project/devidea/modules/tagzone/tag/TagServiceTest.java
  com.project.devidea.modules.tagzone.tag.TagServiceTest
-com/project/devidea/modules/notification/NotificationServiceTest.java
- com.project.devidea.modules.notification.NotificationServiceTest
-com/project/devidea/modules/content/study/aop/CheckAuthroityAopTest.java
- com.project.devidea.modules.content.study.aop.CheckAuthroityAopTest
+com/project/devidea/modules/account/WithAccount.java
+ com.project.devidea.modules.account.WithAccount
+com/project/devidea/modules/content/resume/ResumeControllerTest.java
+ com.project.devidea.modules.content.resume.ResumeControllerTest
+com/project/devidea/modules/content/mentoring/MentorControllerTest.java
+ com.project.devidea.modules.content.mentoring.MentorControllerTest
+com/project/devidea/modules/content/mentoring/MenteeControllerTest.java
+ com.project.devidea.modules.content.mentoring.MenteeControllerTest

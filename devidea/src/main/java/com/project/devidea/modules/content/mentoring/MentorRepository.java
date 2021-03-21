@@ -5,4 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 public interface MentorRepository extends JpaRepository<Mentor, Long> {
+
+    Mentor findByAccountId(Long accountId);
 }
