@@ -1,6 +1,8 @@
 package com.project.devidea.modules.tagzone.zone;
 
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 
@@ -10,10 +12,12 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"city", "province"}))
+@NaturalIdCache
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Zone {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ZONE_ID")
     private Long id;
 
     @Column(nullable = false)

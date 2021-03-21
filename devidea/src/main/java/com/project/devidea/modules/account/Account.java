@@ -1,12 +1,9 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.content.study.Study;
-import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.zone.Zone;
+import com.project.devidea.modules.account.form.SignUpDetailRequestDto;
+import com.project.devidea.modules.content.study.StudyMember;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.apache.tomcat.util.buf.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,9 +14,11 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Account implements UserDetails {
+@EqualsAndHashCode(of = "id")
+public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="account_id")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -48,14 +47,34 @@ public class Account implements UserDetails {
 
     private String gender;
 
-//    private Set<Tag> tags;
+//    현재 직업
+    private String job;
+
+//    현재 분야 경력
+    private int careerYears;
+
+//    테크 스택, 문자열로 구분자 지어주기
+    private String techStacks;
+
+//    관심분야, 일대다 다대일로 풂
+    @Builder.Default
+    @OneToMany(mappedBy = "account")
+    private Set<Interest> interests = new HashSet<>();
+
+//    주요 활동지역, 일대다 다대일로 풂
+    @Builder.Default
+    @OneToMany(mappedBy = "account")
+    private Set<MainActivityZone> mainActivityZones = new HashSet<>();
 
 //    private Set<Resume> resume;
 
-//    private Set<Zone> locations;
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.ALL}) //여기 어카운트가 삭제되면 studymember에도 영향끼침
+    private Set<StudyMember> studies = new HashSet<>();
 
-//    private Set<Study> studies;
-
+    public void addStudy(StudyMember studyMember){
+        if(studies==null ) studies = new HashSet<>();
+        studies.add(studyMember);
+    }
 //    private List<Apply> applies;
 
 //    private List<Career> careers;
@@ -78,41 +97,21 @@ public class Account implements UserDetails {
     private boolean receiveRecruitingNotification;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        Arrays.asList(roles.split(", ")).forEach(r -> authorities.add(new SimpleGrantedAuthority(r)));
-        return authorities;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    public String getNickName() { return this.nickname; }
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
     public String toString(){
-        return nickname;
+        return getNickname();
+    }
+
+//    편의 메서드 : 회원가입 디테일 여기서부터 시작하기!
+    public void saveSignUpDetail(SignUpDetailRequestDto req, Set<MainActivityZone> mainActivityZones, Set<Interest> interests) {
+
+        this.profileImage = req.getProfileImage();
+        this.receiveEmail = req.isReceiveEmail();
+        this.careerYears = req.getCareerYears();
+        this.job = req.getJobField();
+        this.techStacks = StringUtils.join(req.getTechStacks(), '/');
+
+        this.interests.addAll(interests);
+        this.mainActivityZones.addAll(mainActivityZones);
     }
 }
 

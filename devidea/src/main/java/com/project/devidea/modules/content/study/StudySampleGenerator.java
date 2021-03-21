@@ -1,5 +1,6 @@
 package com.project.devidea.modules.content.study;
 
+import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
@@ -16,9 +17,12 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class StudySampleGenerator {
+    private static Account admin;
     private final TagRepository tagRepository;
     private final ZoneRepository zoneRepository;
-
+    public void setAdmin(Account admin){
+        this.admin=admin;
+    }
     public Study generate(String title, Set<Tag> tags,Zone zone, Boolean isRecruiting) {
         List<Zone> zones = zoneRepository.findAll();
         Study study = new Study().builder()
@@ -26,10 +30,13 @@ public class StudySampleGenerator {
                 .title(title)
                 .shortDescription("스프링 스터디입니다")
                 .location(zone)
+                .members(new HashSet<>())
+                .fullDescription("fullDescription")
+                .shortDescription("fullDescription")
                 .recruiting(isRecruiting)
                 .publishedDateTime(LocalDateTime.now())
                 .open(true)
-                .maxCount(3)
+                .maxCount(6)
                 .tags(tags)
                 .build();
         return study;

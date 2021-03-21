@@ -24,7 +24,7 @@ public class StudyApply {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
-    Account account; //보내는 사람
+    Account applicant; //보내는 사람
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
