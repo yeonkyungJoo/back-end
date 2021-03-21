@@ -34,6 +34,10 @@
         <module name="devidea.test" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="11">
+      <module name="com.project.devidea" target="11" />
+      <module name="com.project.devidea.main" target="11" />
+      <module name="com.project.devidea.test" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
