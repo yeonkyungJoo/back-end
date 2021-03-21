@@ -3,17 +3,12 @@ package com.project.devidea.modules.content.mentoring.form;
 import com.project.devidea.api.Request;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
 public class UpdateMenteeRequest extends Request {
 
     private String description;
@@ -22,4 +17,13 @@ public class UpdateMenteeRequest extends Request {
 
     private boolean open;
     private boolean free;
+
+    @Builder
+    public UpdateMenteeRequest(String description, Set<Zone> zones, Set<Tag> tags, boolean open, boolean free) {
+        this.description = description;
+        this.zones = zones;
+        this.tags = tags;
+        this.open = open;
+        this.free = free;
+    }
 }
