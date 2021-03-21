@@ -30,7 +30,7 @@ public class QMentee extends EntityPathBase<Mentee> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final BooleanPath published = createBoolean("published");
+    public final BooleanPath open = createBoolean("open");
 
     public final DateTimePath<java.time.LocalDateTime> publishedDate = createDateTime("publishedDate", java.time.LocalDateTime.class);
 

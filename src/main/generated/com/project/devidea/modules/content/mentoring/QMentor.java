@@ -30,7 +30,7 @@ public class QMentor extends EntityPathBase<Mentor> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final BooleanPath publised = createBoolean("publised");
+    public final BooleanPath open = createBoolean("open");
 
     public final DateTimePath<java.time.LocalDateTime> publishedDate = createDateTime("publishedDate", java.time.LocalDateTime.class);
 
@@ -59,7 +59,7 @@ public class QMentor extends EntityPathBase<Mentor> {
     public QMentor(Class<? extends Mentor> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.account = inits.isInitialized("account") ? new com.project.devidea.modules.account.QAccount(forProperty("account")) : null;
-        this.resume = inits.isInitialized("resume") ? new com.project.devidea.modules.content.resume.QResume(forProperty("resume")) : null;
+        this.resume = inits.isInitialized("resume") ? new com.project.devidea.modules.content.resume.QResume(forProperty("resume"), inits.get("resume")) : null;
     }
 
 }
