@@ -1,9 +1,8 @@
 package com.project.devidea.modules.content.study.controller;
 
 import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.modules.content.study.KindsOf;
 import com.project.devidea.modules.content.study.StudyService;
-import com.project.devidea.modules.content.study.aop.스터디설정권한;
-import com.project.devidea.modules.content.study.aop.스터디신청서권한;
 import com.project.devidea.modules.content.study.form.*;
 import com.project.devidea.modules.content.study.repository.StudyMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class StudyBasicController {
     private final StudyMemberRepository studyMemberRepository;
 
     @GetMapping("/study")
-    public ResponseEntity<?> 조회(@RequestBody @Valid StudySearchForm searchForm) {
+    public ResponseEntity<?> 조회(@Valid StudySearchForm searchForm) {
         return new ResponseEntity<>(studyService.searchByCondition(searchForm), HttpStatus.OK);
     }
 

@@ -5,14 +5,19 @@ import com.project.devidea.modules.content.study.Study;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-@Data
+@Getter
+@Setter
 public class StudyBaseForm implements Serializable {
+
+    private Long id; //studyId
 
     @NotEmpty
     private String title;
@@ -40,6 +45,7 @@ public class StudyBaseForm implements Serializable {
     //@NotNull
     private Boolean mentoRecruiting;
 
+    private LocalDateTime publishedDateTime;
 
     public Study toStudy(){
         return new Study().builder()
@@ -51,6 +57,7 @@ public class StudyBaseForm implements Serializable {
                 .level(this.level)
                 .recruiting(this.recruiting)
                 .mentoRecruiting(this.mentoRecruiting)
+                .publishedDateTime(LocalDateTime.now())
                 .build();
     }
 

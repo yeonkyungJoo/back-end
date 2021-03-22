@@ -23,23 +23,23 @@ public class TagService {
 
     @PostConstruct
     public void initTagData() throws IOException {
-//        if (tagRepository.count() == 0) {
-//            Resource resource = new ClassPathResource("tag_kr.csv");
-//            Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
-//                    .forEach(line -> {
-//                        String[] split = line.split(",");
-//                        Tag tag = Tag.builder()
-//                                .firstName(split[1])
-//                                .secondName(split[2].equals("null")?null:split[2])
-//                                .thirdName(split[3].equals("null")?null:split[3])
-//                                .build();
-//                        if (!split[0].equals("parent")){
-//                            Tag tagParent = tagRepository.findByFirstName(split[0]);
-//                            tagParent.addChild(tag);
-//                        }
-//                        tagRepository.save(tag);
-//                    });
-//        }
+        if (tagRepository.count() == 0) {
+            Resource resource = new ClassPathResource("tag_kr.csv");
+            Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
+                    .forEach(line -> {
+                        String[] split = line.split(",");
+                        Tag tag = Tag.builder()
+                                .firstName(split[1])
+                                .secondName(split[2].equals("null")?null:split[2])
+                                .thirdName(split[3].equals("null")?null:split[3])
+                                .build();
+                        if (!split[0].equals("parent")){
+                            Tag tagParent = tagRepository.findByFirstName(split[0]);
+                            tagParent.addChild(tag);
+                        }
+                        tagRepository.save(tag);
+                    });
+        }
     }
 
     @Transactional(readOnly = true)

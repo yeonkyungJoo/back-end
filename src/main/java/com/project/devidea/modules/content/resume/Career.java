@@ -26,7 +26,7 @@ public class Career {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private boolean present;    // 재직중
-
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "career_tag",
                 joinColumns = @JoinColumn(name = "career_id"),

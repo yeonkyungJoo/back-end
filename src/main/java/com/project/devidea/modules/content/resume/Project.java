@@ -25,7 +25,7 @@ public class Project {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String shortDescription;
-
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "project_tag",
                 joinColumns = @JoinColumn(name = "project_id"),
