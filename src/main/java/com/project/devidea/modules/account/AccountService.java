@@ -102,7 +102,8 @@ public class AccountService implements OAuthServiceInterface {
 
     public void saveSignUpDetail(LoginUser loginUser, SignUpDetailRequestDto req) {
 
-        Account account = loginUser.getAccount();
+        Account account = accountRepository
+                .findByEmailWithMainActivityZoneAndInterests(loginUser.getUsername());
 
 //        활동지역(mainActivityZones)
         Map<String, List<String>> cityProvince = req.getCitiesAndProvinces();
@@ -114,7 +115,7 @@ public class AccountService implements OAuthServiceInterface {
         List<Tag> tags = tagRepository.findByFirstNameIn(req.getInterests());
         Set<Interest> interests = getInterests(account, tags);
 
-//        연관관계 설정하기 tag,zone 데이터가 없으므로 insert가 안된다!
+//        연관관계 설정하기
         account.saveSignUpDetail(req, mainActivityZones, interests);
 
 //        매핑 테이블 데이터들 save

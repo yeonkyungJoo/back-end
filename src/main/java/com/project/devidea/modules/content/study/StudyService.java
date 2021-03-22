@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,7 +51,7 @@ public class StudyService {
     }
 
     public StudyDetailForm makingStudy(String NickName, @Valid StudyMakingForm studyMakingForm) { //study만들기
-        Study study = studyMapper.map(studyMakingForm, Study.class);
+        Study study = studyMakingForm.toStudy();
         String[] locations = studyMakingForm.getLocation().split("/");
         Zone zone = zoneRepository.findByCityAndProvince(locations[0], locations[1]);
         Set<Tag> tagsSet = studyMakingForm.getTags().stream().map(tag -> {
@@ -68,7 +70,9 @@ public class StudyService {
                         .role(Study_Role.팀장)
                         .build()
         );
-        return studyMapper.map(study, StudyDetailForm.class);
+        StudyDetailForm studyDetailForm=studyMapper.map(study, StudyDetailForm.class);
+        studyDetailForm.setMembers(new HashSet<String>(Arrays.asList(admin.getName().toString())));
+        return studyDetailForm;
     }
 
     String applyStudy(@Valid StudyApplyForm studyApplyForm) {
@@ -90,9 +94,6 @@ public class StudyService {
         StudyApply studyApply = studyApplyRepository.findById(id).orElseThrow();
         Account applicant = studyApply.getApplicant();
         Study study = studyApply.getStudy();
-        if (applicant == null || study == null || studyApply == null) {
-            return "다음과 같은 사용자또는 스터디가 존재하지 않습니다";
-        }
         studyApply.setAccpted(accept);
         if (accept) {
             return addMember(applicant, study, Study_Role.회원);
@@ -109,8 +110,7 @@ public class StudyService {
                 .role(role)
                 .JoinDate(LocalDateTime.now())
                 .build();
-        study.setCounts(study.getCounts() + 1); //더하기
-        studyRepository.save(study);
+        studyRepository.addStudy(study.getId());
         studyMemberRepository.save(studyMember);
         return "성공적으로 완료했습니다.";
     }

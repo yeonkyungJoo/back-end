@@ -17,7 +17,7 @@ import java.util.*;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
+    @Column(name = "ACCOUNT_ID")
     private Long id;
 
     @Column(nullable = false, unique = true)

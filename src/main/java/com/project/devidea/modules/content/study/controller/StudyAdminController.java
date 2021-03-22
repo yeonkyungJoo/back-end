@@ -2,7 +2,6 @@ package com.project.devidea.modules.content.study.controller;
 
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.content.study.StudyService;
-import com.project.devidea.modules.content.study.aop.스터디설정권한;
 import com.project.devidea.modules.content.study.form.OpenRecruitForm;
 import com.project.devidea.modules.content.study.form.TagZoneForm;
 import com.project.devidea.modules.content.study.repository.StudyMemberRepository;

@@ -6,10 +6,8 @@ import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.modules.account.form.*;
 import com.project.devidea.modules.account.repository.AccountRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -84,7 +82,6 @@ class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is("1")))
                 .andExpect(jsonPath("$.name", is("고범떡")))
                 .andExpect(jsonPath("$.nickname", is("고범떡")))
                 .andExpect(jsonPath("$.email", is("kob@naver.com")))
@@ -148,27 +145,18 @@ class AccountControllerTest {
     @DisplayName("로그인 시 jwt, 토큰의 username == 로그인 username 확인")
     void confirmJwtTokenAndAuthorization() throws Exception {
 
-//        given
-        Account savedAccount = accountRepository.save(Account.builder().email("ko@naver.com")
-                .password(passwordEncoder.encode("123412341234")).name("고범석").nickname("고범석")
-                .joinedAt(LocalDateTime.now()).roles("ROLE_USER").build());
-        Map<String, String> map = new HashMap<>();
-        map.put("header", jwtTokenUtil.getHeader());
-        map.put("token", "Bearer " + jwtTokenUtil.generateToken(savedAccount.getEmail()));
-        when(accountService.login(any())).thenReturn(map);
-
 //        when, then
         MockHttpServletResponse mockHttpServletResponse = mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(LoginRequestDto.builder()
-                        .email(savedAccount.getEmail()).password("123412341234").build())))
+                        .email("test@test.com").password("1234").build())))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().exists("Authorization")).andReturn().getResponse();
 
         String jwtToken = mockHttpServletResponse.getHeader("Authorization").substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        assertEquals(username, savedAccount.getEmail());
+        assertEquals(username, "test@test.com");
     }
 
     @Test
@@ -176,8 +164,8 @@ class AccountControllerTest {
     void confirmJwtTokenAndAuthorizationWithOAuth() throws Exception {
 
 //        given
-        accountService.signUpOAuth(AccountDummy.getSignUpOAuthRequestDto());
-        LoginOAuthRequestDto loginOAuthRequestDto = AccountDummy.getLoginOAuthRequestDto();
+        accountService.signUpOAuth(AccountDummy.getSignUpOAuthRequestDto2());
+        LoginOAuthRequestDto loginOAuthRequestDto = AccountDummy.getLoginOAuthRequestDto2();
 
 //        when
         MockHttpServletResponse response = mockMvc.perform(post("/login/oauth")

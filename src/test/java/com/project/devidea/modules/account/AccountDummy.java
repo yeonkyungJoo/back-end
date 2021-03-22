@@ -31,11 +31,20 @@ public class AccountDummy {
     }
 
     public static SignUpOAuthRequestDto getSignUpOAuthRequestDto() {
-        return SignUpOAuthRequestDto.builder().email("ko@google.com").name("고범석").nickname("고범석")
+        return SignUpOAuthRequestDto.builder().email("kokoko@google.com").name("구글범석").nickname("구글범석")
+                .profileImage("12341234").provider("google").build();
+    }
+
+    public static SignUpOAuthRequestDto getSignUpOAuthRequestDto2() {
+        return SignUpOAuthRequestDto.builder().email("ko@google.com").name("고오범석").nickname("고오범석")
                 .profileImage("12341234").provider("google").build();
     }
 
     public static LoginOAuthRequestDto getLoginOAuthRequestDto() {
+        return LoginOAuthRequestDto.builder().provider("google").email("kokoko@google.com").build();
+    }
+
+    public static LoginOAuthRequestDto getLoginOAuthRequestDto2() {
         return LoginOAuthRequestDto.builder().provider("google").email("ko@google.com").build();
     }
 }

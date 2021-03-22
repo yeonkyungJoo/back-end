@@ -21,10 +21,10 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
 //        System.out.println(" loadUserByUsername=" + emailOrNickname);
-//        Account account = accountRepository.findByEmail(emailOrNickname).orElse(
-//                accountRepository.findByNickname(emailOrNickname));
+        Account account = accountRepository.findByEmail(emailOrNickname).orElse(
+                accountRepository.findByNickname(emailOrNickname));
 //        Querydsl fetchJoin적용
-        Account account = accountRepository.findByEmailWithMainActivityZoneAndInterests(emailOrNickname);
+//        Account account = accountRepository.findByEmailWithMainActivityZoneAndInterests(emailOrNickname);
         return new LoginUser(account);
     }
 }
