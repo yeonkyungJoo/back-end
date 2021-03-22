@@ -1,5 +1,6 @@
 package com.project.devidea.modules.content.mentoring;
 
+import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.mentoring.form.CreateMenteeRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest;
@@ -68,11 +69,13 @@ public class MenteeController {
      */
     @PostMapping("/")
     public ResponseEntity newMentee(@RequestBody @Valid CreateMenteeRequest request, Errors errors,
-            @AuthenticationPrincipal Account account) {
+                                     // @AuthenticationPrincipal Account account)
+                                     @AuthenticationPrincipal LoginUser loginUser) {
 
-        if (account == null) {
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
 
         // TODO - test : 이미 멘티인 경우
         Mentee findMentee = menteeRepository.findByAccountId(account.getId());
@@ -100,10 +103,13 @@ public class MenteeController {
      */
     @PostMapping("/update")
     public ResponseEntity editMentee(@RequestBody @Valid UpdateMenteeRequest request, Errors errors,
-                                     @AuthenticationPrincipal Account account) {
-        if (account == null) {
+                                     // @AuthenticationPrincipal Account account)
+                                     @AuthenticationPrincipal LoginUser loginUser) {
+
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
 
         Mentee mentee = menteeRepository.findByAccountId(account.getId());
         if(mentee == null) {
@@ -121,11 +127,14 @@ public class MenteeController {
      * 멘티 탈퇴
      */
     @PostMapping("/delete")
-    public ResponseEntity quitMentee(@AuthenticationPrincipal Account account) {
+    public ResponseEntity quitMentee(
+            // @AuthenticationPrincipal Account account)
+            @AuthenticationPrincipal LoginUser loginUser) {
 
-        if (account == null) {
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
 
         Mentee mentee = menteeRepository.findByAccountId(account.getId());
         if (mentee == null) {
