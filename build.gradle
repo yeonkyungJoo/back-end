@@ -58,6 +58,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
     implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
 }
 
 def generated='src/main/generated'
