@@ -68,6 +68,8 @@ com/project/devidea/infra/eventHandler/GlobalExceptionHandler.java
 com/project/devidea/modules/content/resume/Activity.java
  com.project.devidea.modules.content.resume.Activity
  com.project.devidea.modules.content.resume.Activity$ActivityBuilder
+com/project/devidea/modules/account/repository/AccountRepositoryCustom.java
+ com.project.devidea.modules.account.repository.AccountRepositoryCustom
 com/project/devidea/modules/content/resume/form/UpdateCareerRequest.java
  com.project.devidea.modules.content.resume.form.UpdateCareerRequest
  com.project.devidea.modules.content.resume.form.UpdateCareerRequest$UpdateCareerRequestBuilder
@@ -116,6 +118,8 @@ com/project/devidea/modules/tagzone/tag/Tag.java
 com/project/devidea/modules/account/Account.java
  com.project.devidea.modules.account.Account
  com.project.devidea.modules.account.Account$AccountBuilder
+com/project/devidea/modules/account/validator/SignUpOAuthRequestValidator.java
+ com.project.devidea.modules.account.validator.SignUpOAuthRequestValidator
 com/project/devidea/modules/tagzone/tag/TagsResponseDto.java
  com.project.devidea.modules.tagzone.tag.TagsResponseDto
 com/project/devidea/modules/account/form/LoginRequestDto.java
@@ -142,6 +146,9 @@ com/project/devidea/modules/content/tech/JavableCrawling.java
  com.project.devidea.modules.content.tech.JavableCrawling
 com/project/devidea/infra/config/security/oauth/provider/SocialLoginTypeConverter.java
  com.project.devidea.infra.config.security.oauth.provider.SocialLoginTypeConverter
+com/project/devidea/modules/account/form/LoginOAuthRequestDto.java
+ com.project.devidea.modules.account.form.LoginOAuthRequestDto
+ com.project.devidea.modules.account.form.LoginOAuthRequestDto$LoginOAuthRequestDtoBuilder
 com/project/devidea/modules/content/resume/Career.java
  com.project.devidea.modules.content.resume.Career
  com.project.devidea.modules.content.resume.Career$CareerBuilder
@@ -246,6 +253,9 @@ com/project/devidea/modules/account/QAccount.java
  com.project.devidea.modules.account.QAccount
 com/project/devidea/modules/content/tech/LineCrawling.java
  com.project.devidea.modules.content.tech.LineCrawling
+com/project/devidea/modules/account/form/SignUpOAuthRequestDto.java
+ com.project.devidea.modules.account.form.SignUpOAuthRequestDto
+ com.project.devidea.modules.account.form.SignUpOAuthRequestDto$SignUpOAuthRequestDtoBuilder
 com/project/devidea/modules/content/mentoring/MenteeService.java
  com.project.devidea.modules.content.mentoring.MenteeService
 com/project/devidea/modules/notification/Notification.java
@@ -256,6 +266,8 @@ com/project/devidea/modules/content/tech/DaangnCrawling.java
 com/project/devidea/modules/account/exception/AccountResponse.java
  com.project.devidea.modules.account.exception.AccountResponse
  com.project.devidea.modules.account.exception.AccountResponse$AccountResponseBuilder
+com/project/devidea/modules/account/repository/AccountRepositoryCustomImpl.java
+ com.project.devidea.modules.account.repository.AccountRepositoryCustomImpl
 com/project/devidea/modules/InitService.java
  com.project.devidea.modules.InitService
 com/project/devidea/modules/content/resume/AwardController.java
@@ -279,6 +291,8 @@ com/project/devidea/modules/content/study/Study_Role.java
  com.project.devidea.modules.content.study.Study_Role
 com/project/devidea/infra/config/security/oauth/provider/GoogleOAuth.java
  com.project.devidea.infra.config.security.oauth.provider.GoogleOAuth
+com/project/devidea/infra/config/security/oauth/OAuthServiceInterface.java
+ com.project.devidea.infra.config.security.oauth.OAuthServiceInterface
 com/project/devidea/modules/content/study/StudyMember.java
  com.project.devidea.modules.content.study.StudyMember
  com.project.devidea.modules.content.study.StudyMember$StudyMemberBuilder
@@ -322,11 +336,11 @@ com/project/devidea/modules/notification/NotificationType.java
  com.project.devidea.modules.notification.NotificationType
 com/project/devidea/modules/like/form/BasicForm.java
  com.project.devidea.modules.like.form.BasicForm
+com/project/devidea/modules/tagzone/zone/QZone.java
+ com.project.devidea.modules.tagzone.zone.QZone
 com/project/devidea/modules/content/resume/Education.java
  com.project.devidea.modules.content.resume.Education
  com.project.devidea.modules.content.resume.Education$EducationBuilder
-com/project/devidea/modules/tagzone/zone/QZone.java
- com.project.devidea.modules.tagzone.zone.QZone
 com/project/devidea/modules/content/mentoring/validator/CreateMentorRequestValidator.java
  com.project.devidea.modules.content.mentoring.validator.CreateMentorRequestValidator
 com/project/devidea/modules/account/QInterest.java

@@ -31,14 +31,9 @@ public class OAuthService {
     private final String OAUTH_PASSWORD = "devidea";
     private final JwtTokenUtil jwtTokenUtil;
 
-    public void request(SocialLoginType socialLoginType) {
+    public Map<String, String> request(SocialLoginType socialLoginType) {
         SocialOAuth socialOAuth = findSocialOAuthByType(socialLoginType);
-        String redirectURL = socialOAuth.getOAuthRedirectURL();
-        try {
-            response.sendRedirect(redirectURL);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return socialOAuth.getOAuthRedirectURL();
     }
 
     public Map<String, String> oauthLogin(SocialLoginType socialLoginType, String code) throws Exception {

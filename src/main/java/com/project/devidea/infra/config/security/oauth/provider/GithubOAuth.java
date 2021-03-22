@@ -24,17 +24,13 @@ public class GithubOAuth implements SocialOAuth {
     private final ObjectMapper objectMapper;
 
     @Override
-    public String getOAuthRedirectURL() {
-        Map<String, Object> params = new HashMap<>();
-        params.put("scope", "read:user%20user:email");
-        params.put("client_id", GITHUB_SNS_CLIENT_ID);
-        params.put("redirect_uri", GITHUB_SNS_CALLBACK_URL);
-
-        String queryString = params.entrySet().stream()
-                .map(x -> x.getKey() + "=" + x.getValue())
-                .collect(Collectors.joining("&"));
-
-        return GITHUB_SNS_BASE_URL + "?" + queryString;
+    public Map<String, String> getOAuthRedirectURL() {
+        Map<String, String> map = new HashMap<>();
+        map.put("scope", "read:user%20user:email");
+        map.put("client_id", GITHUB_SNS_CLIENT_ID);
+        map.put("redirect_uri", GITHUB_SNS_CALLBACK_URL);
+        map.put("base_url", GITHUB_SNS_BASE_URL);
+        return map;
     }
 
     @Override

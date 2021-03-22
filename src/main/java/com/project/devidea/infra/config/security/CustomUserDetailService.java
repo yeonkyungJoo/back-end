@@ -20,10 +20,11 @@ public class CustomUserDetailService implements UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
-        System.out.println(" loadUserByUsername=" + emailOrNickname);
+//        System.out.println(" loadUserByUsername=" + emailOrNickname);
         Account account = accountRepository.findByEmail(emailOrNickname).orElse(
-                accountRepository.findByNickname(emailOrNickname)
-        );
+                accountRepository.findByNickname(emailOrNickname));
+//        Querydsl fetchJoin적용
+//        Account account = accountRepository.findByEmailWithMainActivityZoneAndInterests(emailOrNickname);
         return new LoginUser(account);
     }
 }

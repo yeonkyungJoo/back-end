@@ -24,18 +24,14 @@ public class GoogleOAuth implements SocialOAuth {
     private final ObjectMapper objectMapper;
 
     @Override
-    public String getOAuthRedirectURL() {
-        Map<String, Object> params = new HashMap<>();
-        params.put("scope", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile");
-        params.put("response_type", "code");
-        params.put("client_id", GOOGLE_SNS_CLIENT_ID);
-        params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
-
-        String queryString = params.entrySet().stream()
-                .map(x -> x.getKey() + "=" + x.getValue())
-                .collect(Collectors.joining("&"));
-
-        return GOOGLE_SNS_BASE_URL + "?" + queryString;
+    public Map<String, String> getOAuthRedirectURL() {
+        Map<String, String> map = new HashMap<>();
+        map.put("base_url", GOOGLE_SNS_BASE_URL);
+        map.put("scope", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile");
+        map.put("response_type", "code");
+        map.put("client_id", GOOGLE_SNS_CLIENT_ID);
+        map.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
+        return map;
     }
 
     @Override
