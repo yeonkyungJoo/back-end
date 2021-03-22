@@ -1,7 +1,7 @@
 package com.project.devidea.modules.content.mentoring;
 
 import com.project.devidea.infra.MockMvcTest;
-import com.project.devidea.modules.account.WithAccount;
+import com.project.devidea.infra.WithAccount;
 import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,7 @@ class MentorControllerTest {
 
     @Test
     @DisplayName("멘토 등록")
-    @WithAccount("yk")
+    @WithAccount(NickName ="yk")
     public void newMentor() {
         // Given
         Resume resume = Resume.builder().build();
@@ -33,7 +33,7 @@ class MentorControllerTest {
 
     @Test
     @DisplayName("멘토 정보 수정")
-    @WithAccount("yk")
+    @WithAccount(NickName ="yk")
     public void editMentor() {
         // Given
         // When
@@ -42,7 +42,7 @@ class MentorControllerTest {
 
     @Test
     @DisplayName("멘토 삭제")
-    @WithAccount("yk")
+    @WithAccount(NickName ="yk")
     public void quitMentor() {
         // Given
         // When

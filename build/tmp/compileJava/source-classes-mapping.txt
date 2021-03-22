@@ -201,8 +201,6 @@ com/project/devidea/modules/account/exception/ErrorFieldAndMessage.java
  com.project.devidea.modules.account.exception.ErrorFieldAndMessage$ErrorFieldAndMessageBuilder
 com/project/devidea/infra/config/SwaggerConfig.java
  com.project.devidea.infra.config.SwaggerConfig
-com/project/devidea/modules/content/study/aop/스터디설정권한.java
- com.project.devidea.modules.content.study.aop.스터디설정권한
 com/project/devidea/modules/main/form/BasicForm.java
  com.project.devidea.modules.main.form.BasicForm
 com/project/devidea/modules/content/study/Study.java
@@ -225,8 +223,6 @@ com/project/devidea/infra/aop/LoggingAspect.java
 com/project/devidea/modules/content/mentoring/form/UpdateMenteeRequest.java
  com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest
  com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest$UpdateMenteeRequestBuilder
-com/project/devidea/modules/content/study/aop/스터디신청서권한.java
- com.project.devidea.modules.content.study.aop.스터디신청서권한
 com/project/devidea/modules/content/study/controller/StudyBasicController.java
  com.project.devidea.modules.content.study.controller.StudyBasicController
 com/project/devidea/infra/config/security/oauth/OAuthService.java
@@ -239,6 +235,8 @@ com/project/devidea/modules/notification/NotificationService.java
  com.project.devidea.modules.notification.NotificationService
 com/project/devidea/modules/content/study/QStudyMember.java
  com.project.devidea.modules.content.study.QStudyMember
+com/project/devidea/modules/content/study/KindsOf.java
+ com.project.devidea.modules.content.study.KindsOf
 com/project/devidea/modules/content/tech/BasicForm.java
  com.project.devidea.modules.content.tech.BasicForm
 com/project/devidea/modules/account/form/SignUpDetailRequestDto.java
