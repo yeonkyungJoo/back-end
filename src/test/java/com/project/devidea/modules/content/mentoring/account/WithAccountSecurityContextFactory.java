@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
 
     private final AccountRepository accountRepository;
     private final CustomUserDetailService customUserDetailService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public SecurityContext createSecurityContext(WithAccount withAccount) {
@@ -26,7 +28,8 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
                 .nickname(nickname)
                 .name(nickname)
                 .email(email)
-                .password("1234")
+                .password("{bcrypt}" + passwordEncoder.encode("1234"))
+                // .password("1234")
                 .roles("ROLE_USER")
                 .build();
         accountRepository.save(account);

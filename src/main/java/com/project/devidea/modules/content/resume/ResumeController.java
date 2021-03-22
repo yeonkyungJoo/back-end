@@ -1,5 +1,6 @@
 package com.project.devidea.modules.content.resume;
 
+import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.resume.form.CreateResumeRequest;
 import com.project.devidea.modules.content.resume.form.UpdateResumeRequest;
@@ -26,11 +27,15 @@ public class ResumeController {
      * 이력서 조회
      */
     @GetMapping("/")
-    public ResponseEntity getResume(@AuthenticationPrincipal Account account) {
+    public ResponseEntity getResume(
+            // @AuthenticationPrincipal Account account)
+            @AuthenticationPrincipal LoginUser loginUser) {
 
-        if (account == null) {
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
+
         Resume resume = resumeRepository.findByAccountId(account.getId());
         ResumeDto dto = new ResumeDto(resume);
         return new ResponseEntity(dto, HttpStatus.OK);
@@ -41,10 +46,14 @@ public class ResumeController {
      */
     @PostMapping("/")
     public ResponseEntity newResume(@RequestBody @Valid CreateResumeRequest request, Errors errors,
-                                    @AuthenticationPrincipal Account account) {
-        if (account == null) {
+                                    // @AuthenticationPrincipal Account account)
+                                    @AuthenticationPrincipal LoginUser loginUser) {
+
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
+
         if (errors.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -70,10 +79,14 @@ public class ResumeController {
      */
     @PostMapping("/edit")
     public ResponseEntity editResume(@RequestBody @Valid UpdateResumeRequest request, Errors errors,
-                                     @AuthenticationPrincipal Account account) {
-        if (account == null) {
+                                     // @AuthenticationPrincipal Account account)
+                                     @AuthenticationPrincipal LoginUser loginUser) {
+
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
+
         Resume resume = resumeRepository.findByAccountId(account.getId());
         if (resume == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -91,11 +104,15 @@ public class ResumeController {
      * 이력서 삭제
      */
     @PostMapping("/delete")
-    public ResponseEntity deleteResume(@AuthenticationPrincipal Account account) {
+    public ResponseEntity deleteResume(
+            // @AuthenticationPrincipal Account account)
+            @AuthenticationPrincipal LoginUser loginUser) {
 
-        if (account == null) {
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
+
         Resume resume = resumeRepository.findByAccountId(account.getId());
         if (resume == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
