@@ -14,7 +14,7 @@ public interface SocialOAuth {
         return null;
     }
 
-    String getOAuthRedirectURL();
+    Map<String, String> getOAuthRedirectURL();
 
     String requestAccessToken(String code);
 

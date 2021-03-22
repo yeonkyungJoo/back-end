@@ -30,7 +30,7 @@
 //    @PostConstruct
 //    @Transactional
 //    void Setting(){
-//        Account account=new Account().builder()
+//        Account account = Account.builder()
 //                .nickname("DevIdea")
 //                .email("devidea@devidea.com")
 //                .emailCheckToken("abcdefghijklmn")
@@ -41,7 +41,7 @@
 //                .password("{bcrypt}" + bCryptPasswordEncoder.encode("1234"))
 //                .joinedAt(LocalDateTime.now())
 //                .build();
-//        Account account2=new Account().builder()
+//        Account account2 = Account.builder()
 //                .nickname("테스트_회원")
 //                .email("test@test.com")
 //                .emailCheckToken("abcdefghijklmn")
@@ -55,7 +55,7 @@
 //        studyRepository.saveAll(studySampleGenerator.generateDumy(30));
 //        accountRepository.save(account);
 //        accountRepository.save(account2);
-//        studyRepository.findAll().stream().forEach(study -> {
+//        studyRepository.findAll().forEach(study -> {
 //            studyService.addMember(account,study, Study_Role.팀장);
 //            studyService.addMember(account2,study, Study_Role.회원);
 //        });

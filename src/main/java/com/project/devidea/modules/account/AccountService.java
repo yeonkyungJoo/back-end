@@ -1,10 +1,9 @@
 package com.project.devidea.modules.account;
 
+import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
-import com.project.devidea.modules.account.form.LoginRequestDto;
-import com.project.devidea.modules.account.form.SignUpDetailRequestDto;
-import com.project.devidea.modules.account.form.SignUpRequestDto;
-import com.project.devidea.modules.account.form.SignUpResponseDto;
+import com.project.devidea.infra.config.security.oauth.OAuthServiceInterface;
+import com.project.devidea.modules.account.form.*;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.account.repository.InterestRepository;
 import com.project.devidea.modules.account.repository.MainActivityZoneRepository;
@@ -28,7 +27,7 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AccountService {
+public class AccountService implements OAuthServiceInterface {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
@@ -39,34 +38,56 @@ public class AccountService {
     private final TagRepository tagRepository;
     private final InterestRepository interestRepository;
     private final MainActivityZoneRepository mainActivityZoneRepository;
+    private final String OAUTH_PASSWORD = "dev_idea_oauth_password";
 
     //    회원가입
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
-        Account savedAccount = accountRepository.save(
-                Account.builder()
-                        .email(signUpRequestDto.getEmail())
-                        .name(signUpRequestDto.getName())
-                        .password("{bcrypt}" + passwordEncoder.encode(signUpRequestDto.getPassword()))
-                        .nickname(signUpRequestDto.getNickname())
-                        .roles("ROLE_USER")
-                        .joinedAt(LocalDateTime.now())
-                        .gender(signUpRequestDto.getGender())
-                        .build());
+        Account savedAccount = accountRepository.save(Account.builder()
+                .email(signUpRequestDto.getEmail())
+                .name(signUpRequestDto.getName())
+                .password("{bcrypt}" + passwordEncoder.encode(signUpRequestDto.getPassword()))
+                .nickname(signUpRequestDto.getNickname())
+                .roles("ROLE_USER")
+                .joinedAt(LocalDateTime.now())
+                .provider(null)
+                .gender(signUpRequestDto.getGender())
+                .profileImage(null)
+                .build());
 
         return modelMapper.map(savedAccount, SignUpResponseDto.class);
     }
 
-    /**
-     * 로그인 로직, 단순 로그인만 우선적으로 진행했습니다.
-     *
-     * @param requestDto : 아이디, 비밀번호
-     * @return
-     */
+//    OAuth 회원가입
+    @Override
+    public SignUpResponseDto signUpOAuth(SignUpOAuthRequestDto signUpOAuthRequestDto) {
+        Account savedAccount = accountRepository.save(Account.builder()
+                .email(signUpOAuthRequestDto.getEmail())
+                .name(signUpOAuthRequestDto.getName())
+                .password("{bcrypt}" + passwordEncoder.encode(OAUTH_PASSWORD))
+                .nickname(signUpOAuthRequestDto.getNickname())
+                .roles("ROLE_USER")
+                .joinedAt(LocalDateTime.now())
+                .provider(signUpOAuthRequestDto.getProvider())
+                .gender(null)
+                .profileImage(signUpOAuthRequestDto.getProfileImage())
+                .build());
+
+        return modelMapper.map(savedAccount, SignUpResponseDto.class);
+    }
+
     public Map<String, String> login(LoginRequestDto requestDto) throws Exception {
         authenticate(requestDto.getEmail(), requestDto.getPassword());
 
         String jwtToken = jwtTokenUtil.generateToken(requestDto.getEmail());
         return jwtTokenUtil.createTokenMap(jwtToken);
+    }
+
+//    OAuth 로그인
+    @Override
+    public Map<String, String> loginOAuth(LoginOAuthRequestDto loginOAuthRequestDto) throws Exception {
+        LoginRequestDto loginRequestDto =
+                LoginRequestDto.builder().email(loginOAuthRequestDto.getEmail()).password(OAUTH_PASSWORD).build();
+        return login(loginRequestDto);
     }
 
     private void authenticate(String email, String password) throws Exception {
@@ -79,7 +100,9 @@ public class AccountService {
         }
     }
 
-    public void saveSignUpDetail(Account account, SignUpDetailRequestDto req) {
+    public void saveSignUpDetail(LoginUser loginUser, SignUpDetailRequestDto req) {
+
+        Account account = loginUser.getAccount();
 
 //        활동지역(mainActivityZones)
         Map<String, List<String>> cityProvince = req.getCitiesAndProvinces();
@@ -91,7 +114,7 @@ public class AccountService {
         List<Tag> tags = tagRepository.findByFirstNameIn(req.getInterests());
         Set<Interest> interests = getInterests(account, tags);
 
-//        연관관계 설정하기
+//        연관관계 설정하기 tag,zone 데이터가 없으므로 insert가 안된다!
         account.saveSignUpDetail(req, mainActivityZones, interests);
 
 //        매핑 테이블 데이터들 save
