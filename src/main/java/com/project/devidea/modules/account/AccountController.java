@@ -1,15 +1,12 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
-import com.project.devidea.infra.config.security.oauth.OAuthService;
-import com.project.devidea.infra.config.security.oauth.provider.SocialLoginType;
 import com.project.devidea.modules.account.exception.AccountRequestNotValidException;
 import com.project.devidea.modules.account.exception.AccountResponse;
-import com.project.devidea.modules.account.form.*;
+import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.account.validator.SignUpOAuthRequestValidator;
 import com.project.devidea.modules.account.validator.SignUpRequestValidator;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +16,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class AccountController {
 
     private final AccountService accountService;
-    private final OAuthService oAuthService;
     private final SignUpRequestValidator signUpRequestValidator;
     private final SignUpOAuthRequestValidator signUpOAuthRequestValidator;
 
@@ -86,9 +80,7 @@ public class AccountController {
         return headers;
     }
 
-    /**
-     * 회원가입 디테일
-     */
+//    회원가입 디테일
     @PostMapping("/sign-up/detail")
     public ResponseEntity<AccountResponse> signUpDetail(@AuthenticationPrincipal LoginUser loginUser,
                                                         @Valid @RequestBody SignUpDetailRequestDto signUpDetailRequestDto,

@@ -40,6 +40,8 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final SetPath<MainActivityZone, QMainActivityZone> mainActivityZones = this.<MainActivityZone, QMainActivityZone>createSet("mainActivityZones", MainActivityZone.class, QMainActivityZone.class, PathInits.DIRECT2);
 
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = createDateTime("modifiedAt", java.time.LocalDateTime.class);
+
     public final StringPath name = createString("name");
 
     public final StringPath nickname = createString("nickname");

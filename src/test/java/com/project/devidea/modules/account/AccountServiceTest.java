@@ -1,50 +1,29 @@
-//package com.project.devidea.modules.account;
-//
-//import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
-//import com.project.devidea.infra.config.security.CustomUserDetailService;
-//import com.project.devidea.modules.account.form.LoginRequestDto;
-//import com.project.devidea.modules.account.form.SignUpRequestDto;
-//import com.project.devidea.modules.account.form.SignUpResponseDto;
-//import com.project.devidea.modules.account.repository.AccountRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//import org.modelmapper.ModelMapper;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//
-//import java.time.LocalDateTime;
-//import java.util.Map;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-//@ExtendWith(MockitoExtension.class)
-//class AccountServiceTest {
-//
-//    @Mock
-//    BCryptPasswordEncoder passwordEncoder;
-//    @Mock
-//    AccountRepository accountRepository;
-//    @Mock
-//    AuthenticationManager authenticationManager;
-//    @Mock
-//    CustomUserDetailService customUserDetailService;
-//    @Mock
-//    JwtTokenUtil jwtTokenUtil;
-//    @InjectMocks
-//    AccountService accountService;
-//    @Mock
-//    ModelMapper modelMapper;
-//
+package com.project.devidea.modules.account;
+
+import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.modules.account.dto.AccountProfileResponseDto;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class AccountServiceTest {
+
+
+    @Mock
+    ModelMapper modelMapper;
+    @InjectMocks
+    AccountService accountService;
+
 //    Account account;
 //    SignUpRequestDto request;
 //    SignUpResponseDto response;
-//
+
 //    @BeforeEach
 //    void init() {
 //        request = SignUpRequestDto.builder()
@@ -121,4 +100,21 @@
 //        verify(jwtTokenUtil).generateToken(any(String.class));
 //        assertEquals(result.get("token"), "Bearer jwttoken");
 //    }
-//}
+
+    @Test
+    void 프로필_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        when(accountService.getProfile(loginUser))
+                .thenReturn(AccountDummy.getAccountProfileResponseDtoAtMockito());
+
+//        when
+        AccountProfileResponseDto accountProfileResponseDto =
+                accountService.getProfile(loginUser);
+
+//        then
+        verify(modelMapper).map(loginUser.getAccount(), AccountProfileResponseDto.class);
+    }
+
+}

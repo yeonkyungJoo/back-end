@@ -1,6 +1,6 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.form.SignUpDetailRequestDto;
+import com.project.devidea.modules.account.dto.SignUpDetailRequestDto;
 import com.project.devidea.modules.content.study.StudyMember;
 import lombok.*;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -38,6 +38,8 @@ public class Account {
 
     private LocalDateTime joinedAt;
 
+    private LocalDateTime modifiedAt;
+
     private String bio;
 
     private String profileImage;
@@ -57,12 +59,12 @@ public class Account {
 
     //    관심분야, 일대다 다대일로 풂
     @Builder.Default
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.ALL})
     private Set<Interest> interests = new HashSet<>();
 
     //    주요 활동지역, 일대다 다대일로 풂
     @Builder.Default
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.ALL})
     private Set<MainActivityZone> mainActivityZones = new HashSet<>();
 
 //    private Set<Resume> resume;
@@ -101,7 +103,7 @@ public class Account {
         return getNickname();
     }
 
-    //    편의 메서드 : 회원가입 디테일 여기서부터 시작하기!
+//    편의 메서드
     public void saveSignUpDetail(SignUpDetailRequestDto req, Set<MainActivityZone> mainActivityZones, Set<Interest> interests) {
 
         this.profileImage = req.getProfileImage();
@@ -115,7 +117,7 @@ public class Account {
     }
 
     @Builder
-    public Account(Long id, String email, String password, String name, String nickname, String emailCheckToken, String roles, LocalDateTime joinedAt, String bio, String profileImage, String url, String gender, String job, int careerYears, String techStacks, Set<Interest> interests, Set<MainActivityZone> mainActivityZones, Set<StudyMember> studies, String provider, boolean receiveEmail, boolean receiveNotification, boolean receiveTechNewsNotification, boolean receiveMentoringNotification, boolean receiveStudyNotification, boolean receiveRecruitingNotification) {
+    public Account(Long id, String email, String password, String name, String nickname, String emailCheckToken, String roles, LocalDateTime joinedAt, LocalDateTime modifiedAt, String bio, String profileImage, String url, String gender, String job, int careerYears, String techStacks, Set<Interest> interests, Set<MainActivityZone> mainActivityZones, Set<StudyMember> studies, String provider, boolean receiveEmail, boolean receiveNotification, boolean receiveTechNewsNotification, boolean receiveMentoringNotification, boolean receiveStudyNotification, boolean receiveRecruitingNotification) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -124,6 +126,7 @@ public class Account {
         this.emailCheckToken = emailCheckToken;
         this.roles = roles;
         this.joinedAt = joinedAt;
+        this.modifiedAt = modifiedAt;
         this.bio = bio;
         this.profileImage = profileImage;
         this.url = url;

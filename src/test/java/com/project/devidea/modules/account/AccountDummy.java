@@ -1,15 +1,13 @@
 package com.project.devidea.modules.account;
 
-import ch.qos.logback.core.net.LoginAuthenticator;
-import com.mysql.cj.xdevapi.Collection;
-import com.project.devidea.modules.account.form.LoginOAuthRequestDto;
-import com.project.devidea.modules.account.form.SignUpDetailRequestDto;
-import com.project.devidea.modules.account.form.SignUpOAuthRequestDto;
+import com.project.devidea.modules.account.dto.AccountProfileResponseDto;
+import com.project.devidea.modules.account.dto.LoginOAuthRequestDto;
+import com.project.devidea.modules.account.dto.SignUpDetailRequestDto;
+import com.project.devidea.modules.account.dto.SignUpOAuthRequestDto;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class AccountDummy {
 
@@ -46,5 +44,13 @@ public class AccountDummy {
 
     public static LoginOAuthRequestDto getLoginOAuthRequestDto2() {
         return LoginOAuthRequestDto.builder().provider("google").email("ko@google.com").build();
+    }
+
+    public static AccountProfileResponseDto getAccountProfileResponseDtoAtMockito() {
+        return AccountProfileResponseDto.builder()
+                .name("").bio("").careerYears(3).email("ko@naver.com").gender("male").job("PM")
+                .joinedAt(LocalDateTime.now()).modifiedAt(LocalDateTime.now()).nickname("고범석")
+                .profileImage("1231234").techStacks("java/spring/jpa").url("github.com")
+                .build();
     }
 }

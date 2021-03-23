@@ -1,4 +1,4 @@
-package com.project.devidea.modules.account.form;
+package com.project.devidea.modules.account.dto;
 
 import lombok.*;
 

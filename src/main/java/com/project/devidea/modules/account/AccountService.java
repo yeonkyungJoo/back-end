@@ -3,7 +3,7 @@ package com.project.devidea.modules.account;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.security.oauth.OAuthServiceInterface;
-import com.project.devidea.modules.account.form.*;
+import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.account.repository.InterestRepository;
 import com.project.devidea.modules.account.repository.MainActivityZoneRepository;
@@ -49,6 +49,7 @@ public class AccountService implements OAuthServiceInterface {
                 .nickname(signUpRequestDto.getNickname())
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
                 .provider(null)
                 .gender(signUpRequestDto.getGender())
                 .profileImage(null)
@@ -67,6 +68,7 @@ public class AccountService implements OAuthServiceInterface {
                 .nickname(signUpOAuthRequestDto.getNickname())
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
                 .provider(signUpOAuthRequestDto.getProvider())
                 .gender(null)
                 .profileImage(signUpOAuthRequestDto.getProfileImage())
@@ -138,5 +140,8 @@ public class AccountService implements OAuthServiceInterface {
         });
         return interests;
     }
-}
 
+    public AccountProfileResponseDto getProfile(LoginUser loginUser) {
+        return modelMapper.map(loginUser.getAccount(), AccountProfileResponseDto.class);
+    }
+}
