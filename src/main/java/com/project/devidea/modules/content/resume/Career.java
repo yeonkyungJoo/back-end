@@ -1,21 +1,18 @@
 package com.project.devidea.modules.content.resume;
 
 import com.project.devidea.modules.tagzone.tag.Tag;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Career {
 
     @Id @GeneratedValue
@@ -23,8 +20,8 @@ public class Career {
     private Long id;
     private String companyName;
     private String duty;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private boolean present;    // 재직중
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -36,32 +33,45 @@ public class Career {
     private String detail;
     private String url;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resume_id")
     private Resume resume;
 
-    public void setResume(Resume resume) {
-        this.resume = resume;
-    }
-
-    public static Career createCareer(String companyName, String duty,
-              LocalDateTime startDate, LocalDateTime endDate, boolean present, Set<Tag> tags, String detail, String url) {
+    public static Career createCareer(Resume resume, String companyName, String duty,
+                  LocalDate startDate, LocalDate endDate, boolean present, Set<Tag> tags, String detail, String url) {
 
         // TODO - validate
         // - startDate와 endDate 비교
+        // - endDate와 now 비교
         // - endDate, present 비교
 
-        Career career = Career.builder()
-                .companyName(companyName)
-                .duty(duty)
-                .startDate(startDate)
-                .endDate(endDate)
-                .present(present)
-                .tags(tags)
-                .detail(detail)
-                .url(url)
-                .build();
+        Career career = new Career();
+        career.setResume(resume);
+        career.setCompanyName(companyName);
+        career.setDuty(duty);
+        career.setStartDate(startDate);
+        career.setEndDate(endDate);
+        career.setPresent(present);
+        career.setTags(tags);
+        career.setDetail(detail);
+        career.setUrl(url);
+
+        resume.addCareer(career);
         return career;
     }
 
+    @Builder
+    public Career(Long id, String companyName, String duty, LocalDate startDate, LocalDate endDate, boolean present, Set<Tag> tags, String detail, String url, Resume resume) {
+        this.id = id;
+        this.companyName = companyName;
+        this.duty = duty;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.present = present;
+        this.tags = tags;
+        this.detail = detail;
+        this.url = url;
+        this.resume = resume;
+    }
 }

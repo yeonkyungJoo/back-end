@@ -2,11 +2,13 @@ package com.project.devidea.modules.content.resume.form;
 
 import com.project.devidea.api.Request;
 import com.project.devidea.modules.tagzone.tag.Tag;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -18,16 +20,16 @@ public class UpdateCareerRequest extends Request {
     @NotEmpty
     private String duty;
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDate startDate;
     @NotNull
-    private LocalDateTime endDate;
+    private LocalDate endDate;
     private boolean present;
     private Set<Tag> tags;
     private String detail;
     private String url;
 
     @Builder
-    public UpdateCareerRequest(@NotEmpty String companyName, @NotEmpty String duty, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate, boolean present, Set<Tag> tags, String detail, String url) {
+    public UpdateCareerRequest(@NotEmpty String companyName, @NotEmpty String duty, @NotNull LocalDate startDate, @NotNull LocalDate endDate, boolean present, Set<Tag> tags, String detail, String url) {
         this.companyName = companyName;
         this.duty = duty;
         this.startDate = startDate;
