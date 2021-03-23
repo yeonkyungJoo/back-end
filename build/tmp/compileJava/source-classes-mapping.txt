@@ -10,6 +10,8 @@ com/project/devidea/modules/content/study/Level.java
  com.project.devidea.modules.content.study.Level
 com/project/devidea/infra/config/security/jwt/JwtTokenUtil.java
  com.project.devidea.infra.config.security.jwt.JwtTokenUtil
+com/project/devidea/modules/content/resume/CareerRepository.java
+ com.project.devidea.modules.content.resume.CareerRepository
 com/project/devidea/modules/content/resume/QCareer.java
  com.project.devidea.modules.content.resume.QCareer
 com/project/devidea/modules/account/dto/AccountProfileResponseDto.java
@@ -41,6 +43,8 @@ com/project/devidea/modules/content/study/controller/StudyAdminController.java
  com.project.devidea.modules.content.study.controller.StudyAdminController
 com/project/devidea/modules/notification/NotificationRepository.java
  com.project.devidea.modules.notification.NotificationRepository
+com/project/devidea/modules/content/resume/CareerService.java
+ com.project.devidea.modules.content.resume.CareerService
 com/project/devidea/modules/account/AccountController.java
  com.project.devidea.modules.account.AccountController
 com/project/devidea/modules/content/resume/form/CreateAwardRequest.java

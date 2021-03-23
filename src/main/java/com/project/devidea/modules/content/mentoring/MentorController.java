@@ -85,6 +85,9 @@ public class MentorController {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
+        // TODO - validate
+        // - free와 cost 확인
+
         // TODO - test : 이미 멘토인 경우
         Mentor findMentor = mentorRepository.findByAccountId(account.getId());
         if (findMentor != null) {
@@ -117,7 +120,7 @@ public class MentorController {
     /**
      * 멘토 정보 수정
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity editMentor(@RequestBody @Valid UpdateMentorRequest request, Errors errors,
                                      // @AuthenticationPrincipal Account account)
                                      @AuthenticationPrincipal LoginUser loginUser) {

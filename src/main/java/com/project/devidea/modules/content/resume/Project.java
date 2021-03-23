@@ -1,7 +1,6 @@
 package com.project.devidea.modules.content.resume;
 
 import com.project.devidea.modules.tagzone.tag.Tag;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +13,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Project {
 
     @Id @GeneratedValue
@@ -63,4 +60,17 @@ public class Project {
         return project;
     }
 
+    @Builder
+    public Project(Long id, String projectName, LocalDateTime startDate, LocalDateTime endDate, String shortDescription, Set<Tag> tags, String description, String url, boolean open, Resume resume) {
+        this.id = id;
+        this.projectName = projectName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.shortDescription = shortDescription;
+        this.tags = tags;
+        this.description = description;
+        this.url = url;
+        this.open = open;
+        this.resume = resume;
+    }
 }
