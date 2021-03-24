@@ -164,7 +164,7 @@ class MentorControllerTest {
 
         Mentor findMentor = mentorRepository.findByAccountId(account.getId());
         assertNull(findMentor);
-        // assertNull(mentor);
+        assertNotNull(resumeRepository.findByAccountId(account.getId()));
     }
 
 }

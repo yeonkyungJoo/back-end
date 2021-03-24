@@ -6,10 +6,13 @@ import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.mentoring.account.WithAccount;
 import com.project.devidea.modules.content.resume.form.CreateCareerRequest;
+import com.project.devidea.modules.content.resume.form.UpdateCareerRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +56,7 @@ class CareerControllerTest {
     public void newCareer() throws Exception {
         // Given
         Account account = accountRepository.findByNickname("yk");
-        createResume(account);
+        Resume resume = createResume(account);
 
         // When
         // Then
@@ -76,7 +79,10 @@ class CareerControllerTest {
         Optional<Career> findCareer = careerRepository.findById(careerId);
         assertTrue(findCareer.isPresent());
         Career career = findCareer.get();
+
         assertNotNull(career.getResume());
+        assertTrue(resume.getCareers().contains(career));
+
         assertEquals("ABC", career.getCompanyName());
         assertEquals("senior", career.getDuty());
         assertEquals(LocalDate.of(2021, 1, 22), career.getStartDate());
@@ -91,7 +97,7 @@ class CareerControllerTest {
     public void newCareer_withWrongRequest() throws Exception {
         // Given
         Account account = accountRepository.findByNickname("yk");
-        createResume(account);
+        Resume resume = createResume(account);
 
         // When
         // Then
@@ -104,16 +110,22 @@ class CareerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+
+        assertTrue(resume.getCareers().isEmpty());
     }
 
     @Test
     @DisplayName("Career 등록 - 인증 실패")
+    @WithAccount("yk")
     public void newCareer_withoutAccount() throws Exception {
         // Given
         Account account = accountRepository.findByNickname("yk");
-        createResume(account);
+        Resume resume = createResume(account);
 
         // When
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(null);
+
         // Then
         CreateCareerRequest request = CreateCareerRequest.builder()
                 .companyName("ABC")
@@ -128,6 +140,29 @@ class CareerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
+
+        assertTrue(resume.getCareers().isEmpty());
+    }
+
+    @Test
+    @DisplayName("Career 등록 - 이력서가 없는 경우")
+    @WithAccount("yk")
+    public void newCareer_withoutResume() throws Exception {
+        // Given
+        // When, Then
+        CreateCareerRequest request = CreateCareerRequest.builder()
+                .companyName("ABC")
+                .duty("senior")
+                .startDate(LocalDate.of(2021, 1, 22))
+                .endDate(LocalDate.of(2021, 1, 31))
+                .present(false)
+                .build();
+
+        mockMvc.perform(post("/resume/career/")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -139,9 +174,42 @@ class CareerControllerTest {
         createResume(account);
         Resume resume = resumeRepository.findByAccountId(account.getId());
 
+        Career career = Career.createCareer(
+                resume,
+                "ABC",
+                "senior",
+                LocalDate.of(2021, 1, 22),
+                LocalDate.of(2021, 1, 31),
+                false,
+                null,
+                null,
+                null);
+        careerRepository.save(career);
 
-        // When
-        // Then
+        // When, Then
+        UpdateCareerRequest request = UpdateCareerRequest.builder()
+                .companyName("ABCD")
+                .build();
+
+        Long careerId = career.getId();
+        mockMvc.perform(post(String.format("/resume/career/%d/edit", careerId))
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        assertNotNull(career.getResume());
+        assertTrue(resume.getCareers().contains(career));
+
+        assertEquals("ABCD", career.getCompanyName());
+
+        /*
+        assertEquals("senior", career.getDuty());
+        assertEquals(LocalDate.of(2021, 1, 22), career.getStartDate());
+        assertEquals(LocalDate.of(2021, 1, 31), career.getEndDate());
+        assertEquals(false, career.isPresent());
+         */
+
     }
 
     @Test
@@ -149,9 +217,33 @@ class CareerControllerTest {
     @WithAccount("yk")
     public void deleteCareer() throws Exception {
         // Given
-        // When
-        // Then
-    }
+        Account account = accountRepository.findByNickname("yk");
+        createResume(account);
+        Resume resume = resumeRepository.findByAccountId(account.getId());
 
+        Career career = Career.createCareer(
+                resume,
+                "ABC",
+                "senior",
+                LocalDate.of(2021, 1, 22),
+                LocalDate.of(2021, 1, 31),
+                false,
+                null,
+                null,
+                null);
+        careerRepository.save(career);
+        assertTrue(resume.getCareers().contains(career));
+
+        // When, Then
+        Long careerId = career.getId();
+        mockMvc.perform(post(String.format("/resume/career/%d/delete", careerId)))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        Optional<Career> findCareer = careerRepository.findById(careerId);
+        // assertNull(career);
+        assertTrue(findCareer.isEmpty());
+        assertFalse(resume.getCareers().contains(career));
+    }
 
 }
