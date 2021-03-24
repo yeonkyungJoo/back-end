@@ -1,7 +1,5 @@
 package com.project.devidea.modules.account;
 
-import ch.qos.logback.core.net.LoginAuthenticator;
-import com.mysql.cj.xdevapi.Collection;
 import com.project.devidea.modules.account.form.LoginOAuthRequestDto;
 import com.project.devidea.modules.account.form.SignUpDetailRequestDto;
 import com.project.devidea.modules.account.form.SignUpOAuthRequestDto;
