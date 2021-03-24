@@ -19,6 +19,7 @@ public class CareerService {
     }
 
     public void deleteCareer(Resume resume, Career career) {
+        career.setResume(null);
         resume.getCareers().remove(career);
         careerRepository.delete(career);
     }

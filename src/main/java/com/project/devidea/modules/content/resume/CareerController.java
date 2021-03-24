@@ -41,7 +41,7 @@ public class CareerController {
     @GetMapping("/")
     public ResponseEntity getCareers(@AuthenticationPrincipal LoginUser loginUser) {
 
-        if(loginUser == null) {
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
         Account account = loginUser.getAccount();
@@ -69,7 +69,7 @@ public class CareerController {
     @GetMapping("/{id}")
     public ResponseEntity getCareer(@AuthenticationPrincipal LoginUser loginUser,
                                         @PathVariable("id") Long careerId) {
-        if(loginUser == null) {
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
         Account account = loginUser.getAccount();
@@ -89,12 +89,11 @@ public class CareerController {
     @PostMapping("/")
     public ResponseEntity newCareer(@RequestBody @Valid CreateCareerRequest request, Errors errors,
                                     @AuthenticationPrincipal LoginUser loginUser) {
-        Account account = loginUser.getAccount();
-        if (account == null) {
+        if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        Account account = loginUser.getAccount();
 
-        // TODO - Test : resume가 없는 경우
         Resume resume = resumeRepository.findByAccountId(account.getId());
         if (resume == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -123,7 +122,6 @@ public class CareerController {
         }
         Account account = loginUser.getAccount();
 
-        // TODO - Test : resume가 없는 경우
         Resume resume = resumeRepository.findByAccountId(account.getId());
         if (resume == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -151,12 +149,12 @@ public class CareerController {
         }
         Account account = loginUser.getAccount();
 
-        // TODO - Test : resume가 없는 경우
         Resume resume = resumeRepository.findByAccountId(account.getId());
         if (resume == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
+        // TODO - Test: 존재하지 않는 Career
         Career career = careerRepository.findById(careerId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Id"));
 

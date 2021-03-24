@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,6 +37,8 @@ class ResumeControllerTest {
     ObjectMapper objectMapper;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    CareerRepository careerRepository;
 
     @Test
     @DisplayName("이력서 등록")
@@ -151,17 +154,33 @@ class ResumeControllerTest {
     }
 
     @Test
-    @DisplayName("이력서 삭제")
+    @DisplayName("이력서 삭제 - CASCADE 확인")
     @WithAccount("yk")
     public void deleteResume() throws Exception {
         // Given
         Long resumeId = createResume("yk");
+        Resume resume = resumeRepository.findById(resumeId).get();
+
+        Career career = Career.createCareer(
+                resume,
+                "ABC",
+                "senior",
+                LocalDate.of(2021, 1, 22),
+                LocalDate.of(2021, 1, 31),
+                false,
+                null,
+                null,
+                null);
+        careerRepository.save(career);
+        Long careerId = career.getId();
 
         // When, Then
         mockMvc.perform(post("/resume/delete"))
                 .andDo(print())
                 .andExpect(status().isOk());
         assertTrue(resumeRepository.findById(resumeId).isEmpty());
+        // CASCADE 확인
+        assertTrue(careerRepository.findById(careerId).isEmpty());
     }
 
     @Test
