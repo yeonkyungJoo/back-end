@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,14 +16,14 @@ public class CreateEducationRequest extends Request {
     @NotEmpty
     private String major;
     @NotNull
-    private LocalDateTime entranceDate;
+    private LocalDate entranceDate;
     @NotNull
-    private LocalDateTime graduationDate;
+    private LocalDate graduationDate;
     private double score;
     private String degree;
 
     @Builder
-    public CreateEducationRequest(@NotEmpty String schoolName, @NotEmpty String major, @NotNull LocalDateTime entranceDate, @NotNull LocalDateTime graduationDate, double score, String degree) {
+    public CreateEducationRequest(@NotEmpty String schoolName, @NotEmpty String major, @NotNull LocalDate entranceDate, @NotNull LocalDate graduationDate, double score, String degree) {
         this.schoolName = schoolName;
         this.major = major;
         this.entranceDate = entranceDate;
