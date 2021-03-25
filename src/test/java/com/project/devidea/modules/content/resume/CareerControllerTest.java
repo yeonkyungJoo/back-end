@@ -189,6 +189,10 @@ class CareerControllerTest {
         // When, Then
         UpdateCareerRequest request = UpdateCareerRequest.builder()
                 .companyName("ABCD")
+                .duty("senior")
+                .startDate(LocalDate.of(2021, 1, 22))
+                .endDate(LocalDate.of(2021, 1, 31))
+                .present(false)
                 .build();
 
         Long careerId = career.getId();
@@ -202,13 +206,10 @@ class CareerControllerTest {
         assertTrue(resume.getCareers().contains(career));
 
         assertEquals("ABCD", career.getCompanyName());
-
-        /*
         assertEquals("senior", career.getDuty());
         assertEquals(LocalDate.of(2021, 1, 22), career.getStartDate());
         assertEquals(LocalDate.of(2021, 1, 31), career.getEndDate());
         assertEquals(false, career.isPresent());
-         */
 
     }
 

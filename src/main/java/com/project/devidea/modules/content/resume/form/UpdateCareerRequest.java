@@ -15,8 +15,11 @@ import java.util.Set;
 @Setter
 public class UpdateCareerRequest extends Request {
 
+    @NotEmpty
     private String companyName;
+    @NotEmpty
     private String duty;
+    @NotNull
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean present;
@@ -25,7 +28,7 @@ public class UpdateCareerRequest extends Request {
     private String url;
 
     @Builder
-    public UpdateCareerRequest(String companyName, String duty, LocalDate startDate, LocalDate endDate, boolean present, Set<Tag> tags, String detail, String url) {
+    public UpdateCareerRequest(@NotEmpty String companyName, @NotEmpty String duty, @NotNull LocalDate startDate, LocalDate endDate, boolean present, Set<Tag> tags, String detail, String url) {
         this.companyName = companyName;
         this.duty = duty;
         this.startDate = startDate;

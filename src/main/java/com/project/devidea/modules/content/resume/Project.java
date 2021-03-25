@@ -4,14 +4,16 @@ import com.project.devidea.modules.tagzone.tag.Tag;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Project {
 
@@ -19,8 +21,8 @@ public class Project {
     @Column(name = "project_id")
     private Long id;
     private String projectName;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String shortDescription;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -41,8 +43,8 @@ public class Project {
         this.resume = resume;
     }
 
-    public static Project createProject(String projectName, LocalDateTime startDate,
-                    LocalDateTime endDate, String shortDescription, Set<Tag> tags, String description, String url, boolean open) {
+    public static Project createProject(String projectName, LocalDate startDate,
+            LocalDate endDate, String shortDescription, Set<Tag> tags, String description, String url, boolean open) {
 
         // TODO - validate
         // - startDate, endDate 비교
@@ -61,7 +63,8 @@ public class Project {
     }
 
     @Builder
-    public Project(Long id, String projectName, LocalDateTime startDate, LocalDateTime endDate, String shortDescription, Set<Tag> tags, String description, String url, boolean open, Resume resume) {
+    public Project(Long id, String projectName, LocalDate startDate, LocalDate endDate,
+           String shortDescription, Set<Tag> tags, String description, String url, boolean open, Resume resume) {
         this.id = id;
         this.projectName = projectName;
         this.startDate = startDate;

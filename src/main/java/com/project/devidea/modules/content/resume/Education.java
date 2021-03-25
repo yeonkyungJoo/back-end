@@ -1,18 +1,14 @@
 package com.project.devidea.modules.content.resume;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Education {
 
     @Id @GeneratedValue
@@ -20,8 +16,8 @@ public class Education {
     private Long id;
     private String schoolName;
     private String major;
-    private LocalDateTime entranceDate;
-    private LocalDateTime graduationDate;
+    private LocalDate entranceDate;
+    private LocalDate graduationDate;
     private double score;
     private String degree;
 
@@ -34,7 +30,7 @@ public class Education {
     }
 
     public static Education createEducation(String schoolName, String major,
-                        LocalDateTime entranceDate, LocalDateTime graduationDate, double score, String degree) {
+                LocalDate entranceDate, LocalDate graduationDate, double score, String degree) {
         // TODO - validate
         // - entranceDate, graduationDate 비교
 
@@ -49,4 +45,15 @@ public class Education {
         return education;
     }
 
+    @Builder
+    public Education(Long id, String schoolName, String major, LocalDate entranceDate, LocalDate graduationDate, double score, String degree, Resume resume) {
+        this.id = id;
+        this.schoolName = schoolName;
+        this.major = major;
+        this.entranceDate = entranceDate;
+        this.graduationDate = graduationDate;
+        this.score = score;
+        this.degree = degree;
+        this.resume = resume;
+    }
 }

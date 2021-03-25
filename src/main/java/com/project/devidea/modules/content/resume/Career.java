@@ -1,10 +1,12 @@
 package com.project.devidea.modules.content.resume;
 
 import com.project.devidea.modules.tagzone.tag.Tag;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +35,6 @@ public class Career {
     private String detail;
     private String url;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resume_id")
     private Resume resume;

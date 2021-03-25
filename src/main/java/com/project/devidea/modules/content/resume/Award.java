@@ -1,25 +1,24 @@
 package com.project.devidea.modules.content.resume;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Award {
 
     @Id @GeneratedValue
     @Column(name = "award_id")
     private Long id;
     private String name;
-    private LocalDateTime date;
+    private LocalDate date;
     private String link;
     private String description;
 
@@ -31,7 +30,7 @@ public class Award {
         this.resume = resume;
     }
 
-    public static Award createAward(String name, LocalDateTime date,
+    public static Award createAward(String name, LocalDate date,
                                         String link, String description) {
         // TODO - validate
 
@@ -42,5 +41,15 @@ public class Award {
                 .description(description)
                 .build();
         return award;
+    }
+
+    @Builder
+    public Award(Long id, String name, LocalDate date, String link, String description, Resume resume) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.link = link;
+        this.description = description;
+        this.resume = resume;
     }
 }
