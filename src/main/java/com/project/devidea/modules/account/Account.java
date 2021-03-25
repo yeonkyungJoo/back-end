@@ -148,7 +148,6 @@ public class Account {
     }
 
     public void updateProfile(AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
-
         this.bio = accountProfileUpdateRequestDto.getBio();
         this.profileImage = accountProfileUpdateRequestDto.getProfileImage();
         this.url = accountProfileUpdateRequestDto.getUrl();
@@ -156,6 +155,11 @@ public class Account {
         this.job = accountProfileUpdateRequestDto.getJob();
         this.careerYears = accountProfileUpdateRequestDto.getCareerYears();
         this.techStacks = StringUtils.join(accountProfileUpdateRequestDto.getTechStacks(), '/');
+        this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 }
 

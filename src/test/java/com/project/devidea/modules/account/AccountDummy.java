@@ -18,7 +18,6 @@ public class AccountDummy {
     }
 
     public static Account getAccount() {
-
         return Account.builder()
                 .interests(new HashSet<>())
                 .mainActivityZones(new HashSet<>())
@@ -54,5 +53,9 @@ public class AccountDummy {
     public static AccountProfileUpdateRequestDto getAccountProfileUpdateRequestDto() {
         return AccountProfileUpdateRequestDto.builder().bio("12345").careerYears(1).gender("female")
                 .job("웹개발").profileImage("123456").techStacks(Arrays.asList("django", "jpa")).build();
+    }
+
+    public static UpdatePasswordRequestDto getUpdatePassowordRequestDto() {
+        return UpdatePasswordRequestDto.builder().password("123123123123").passwordConfirm("123123123123").build();
     }
 }

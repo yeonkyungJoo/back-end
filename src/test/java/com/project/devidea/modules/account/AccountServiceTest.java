@@ -3,12 +3,19 @@ package com.project.devidea.modules.account;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.dto.AccountProfileResponseDto;
 import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
+import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
+import com.project.devidea.modules.account.repository.AccountRepository;
+import com.project.devidea.modules.account.validator.UpdatePasswordValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -18,6 +25,10 @@ class AccountServiceTest {
 
     @Mock
     ModelMapper modelMapper;
+    @Mock
+    BCryptPasswordEncoder passwordEncoder;
+    @Mock
+    AccountRepository accountRepository;
     @InjectMocks
     AccountService accountService;
 
@@ -126,14 +137,37 @@ class AccountServiceTest {
         Account account = mock(Account.class);
         AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
                 mock(AccountProfileUpdateRequestDto.class);
-        when(loginUser.getAccount()).thenReturn(account);
+        when(accountRepository.findByEmail(account.getEmail()))
+                .thenReturn(Optional.of(account));
 
 //        when
         accountService.updateProfile(loginUser, accountProfileUpdateRequestDto);
 
 //        then
-        verify(loginUser).getAccount();
+        verify(accountRepository).findByEmail(account.getEmail());
         verify(account).updateProfile(accountProfileUpdateRequestDto);
+    }
 
+    @Test
+    void 패스워드_변경() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        UpdatePasswordRequestDto updatePasswordRequestDto = mock(UpdatePasswordRequestDto.class);
+        String changePassword = "{bcrypt}1234";
+        when(passwordEncoder.encode(any()))
+                .thenReturn(changePassword);
+        when(accountRepository.findByEmail(account.getEmail()))
+                .thenReturn(Optional.of(account));
+
+//        when
+        accountService.updatePassword(loginUser, updatePasswordRequestDto);
+
+//        then
+        verify(accountRepository).findByEmail(account.getEmail());
+        verify(updatePasswordRequestDto).getPassword();
+        verify(passwordEncoder).encode(updatePasswordRequestDto.getPassword());
+        verify(account).updatePassword(any());
     }
 }

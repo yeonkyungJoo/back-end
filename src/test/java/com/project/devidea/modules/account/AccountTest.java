@@ -1,7 +1,9 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
+import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
 import org.apache.tomcat.util.buf.StringUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +15,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto=
+        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
                 AccountDummy.getAccountProfileUpdateRequestDto();
 
 //        when
@@ -30,4 +32,19 @@ class AccountTest {
                 () -> assertEquals(account.getProfileImage(), accountProfileUpdateRequestDto.getProfileImage()),
                 () -> assertEquals(techStacks, StringUtils.join(accountProfileUpdateRequestDto.getTechStacks(), '/')));
     }
+
+    @Test
+    void 비밀번호_변경() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+        UpdatePasswordRequestDto updatePasswordRequestDto = AccountDummy.getUpdatePassowordRequestDto();
+
+//        when
+        account.updatePassword(updatePasswordRequestDto.getPassword());
+
+//        then
+        assertEquals(account.getPassword(), updatePasswordRequestDto.getPassword());
+    }
+
 }

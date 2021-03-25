@@ -148,7 +148,13 @@ public class AccountService implements OAuthServiceInterface {
 
     public void updateProfile(LoginUser loginUser,
                               AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
-        Account account = loginUser.getAccount();
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
         account.updateProfile(accountProfileUpdateRequestDto);
+    }
+
+    public void updatePassword(LoginUser loginUser,
+                               UpdatePasswordRequestDto updatePasswordRequestDto) {
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
+        account.updatePassword("{bcrypt}" + passwordEncoder.encode(updatePasswordRequestDto.getPassword()));
     }
 }
