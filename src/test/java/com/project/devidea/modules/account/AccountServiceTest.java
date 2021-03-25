@@ -2,6 +2,7 @@ package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.dto.AccountProfileResponseDto;
+import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -117,4 +118,22 @@ class AccountServiceTest {
         verify(modelMapper).map(loginUser.getAccount(), AccountProfileResponseDto.class);
     }
 
+    @Test
+    void 프로필_업데이트() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
+                mock(AccountProfileUpdateRequestDto.class);
+        when(loginUser.getAccount()).thenReturn(account);
+
+//        when
+        accountService.updateProfile(loginUser, accountProfileUpdateRequestDto);
+
+//        then
+        verify(loginUser).getAccount();
+        verify(account).updateProfile(accountProfileUpdateRequestDto);
+
+    }
 }

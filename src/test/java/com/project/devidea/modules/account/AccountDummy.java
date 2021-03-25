@@ -1,9 +1,6 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.dto.AccountProfileResponseDto;
-import com.project.devidea.modules.account.dto.LoginOAuthRequestDto;
-import com.project.devidea.modules.account.dto.SignUpDetailRequestDto;
-import com.project.devidea.modules.account.dto.SignUpOAuthRequestDto;
+import com.project.devidea.modules.account.dto.*;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -52,5 +49,10 @@ public class AccountDummy {
                 .joinedAt(LocalDateTime.now()).modifiedAt(LocalDateTime.now()).nickname("고범석")
                 .profileImage("1231234").techStacks("java/spring/jpa").url("github.com")
                 .build();
+    }
+
+    public static AccountProfileUpdateRequestDto getAccountProfileUpdateRequestDto() {
+        return AccountProfileUpdateRequestDto.builder().bio("12345").careerYears(1).gender("female")
+                .job("웹개발").profileImage("123456").techStacks(Arrays.asList("django", "jpa")).build();
     }
 }

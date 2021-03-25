@@ -141,7 +141,14 @@ public class AccountService implements OAuthServiceInterface {
         return interests;
     }
 
+    @Transactional(readOnly = true)
     public AccountProfileResponseDto getProfile(LoginUser loginUser) {
         return modelMapper.map(loginUser.getAccount(), AccountProfileResponseDto.class);
+    }
+
+    public void updateProfile(LoginUser loginUser,
+                              AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
+        Account account = loginUser.getAccount();
+        account.updateProfile(accountProfileUpdateRequestDto);
     }
 }
