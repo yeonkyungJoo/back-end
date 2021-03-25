@@ -13,10 +13,13 @@ import java.util.Optional;
 
 @Transactional
 public interface StudyRepository extends JpaRepository<Study, Long>, StudyRepositoryCustom{
+
     @EntityGraph(attributePaths = {"tags", "location", "members"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Transactional(readOnly = true)
     Optional<Study> findById(Long id);
 
     @EntityGraph(attributePaths = {"location", "tags","members"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Transactional(readOnly = true)
     List<Study> findAll();
 
     //스터디 좋아요 표시

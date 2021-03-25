@@ -92,4 +92,9 @@ public class Study implements Serializable {
         this.mentoRecruiting = mentoRecruiting;
         this.question = question;
     }
+    @Transient
+    public static Study generateStudyById(Long id){
+        return new Study().builder()
+                .id(id).build();
+    }
 }

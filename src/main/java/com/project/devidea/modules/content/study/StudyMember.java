@@ -17,6 +17,7 @@ public class StudyMember {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Column(name="study_member_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,7 +37,6 @@ public class StudyMember {
     public String toString(){
          return member.toString();
     }
-
 
 
 }

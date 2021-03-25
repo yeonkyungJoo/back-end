@@ -22,7 +22,6 @@ import java.util.HashSet;
 @Transactional
 @DependsOn(value={"TagService", "ZoneService"})
 public class InitService {
-    private final EntityManager entityManager;
     private final AccountRepository accountRepository;
     private final StudyRepository studyRepository;
     private final StudyService studyService;
@@ -31,6 +30,7 @@ public class InitService {
     @PostConstruct
     @Transactional
     void Setting(){
+        if(accountRepository.count()!=0) return;
         Account account=new Account().builder()
                 .nickname("DevIdea")
                 .email("devidea@devidea.com")

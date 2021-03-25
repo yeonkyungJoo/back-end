@@ -20,6 +20,9 @@ repositories {
 apply plugin: "io.spring.dependency-management"
 dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-actuator', version: '2.4.3'
+    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-server', version: '2.4.0'
+    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '2.4.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -35,6 +38,7 @@ dependencies {
     implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.1.6'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.19'
     implementation 'junit:junit:4.12'
     compile('org.projectlombok:lombok')
     compile("com.querydsl:querydsl-core") // querydsl
@@ -49,6 +53,7 @@ dependencies {
     testAnnotationProcessor('org.projectlombok:lombok')
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

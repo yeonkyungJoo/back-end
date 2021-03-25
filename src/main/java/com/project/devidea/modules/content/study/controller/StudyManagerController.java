@@ -36,7 +36,7 @@ public class StudyManagerController {
         return new ResponseEntity<>(studyService.decideJoin(study_id, false), HttpStatus.OK);
     }
 
-    @PostMapping("/study/{study_id}/apply/{applyId}/accept")
+    @PostMapping("/study/{study_id}/apply/{apply_id}/accept")
     public ResponseEntity<?> 스터디_신청서_승인(@AuthenticationPrincipal LoginUser account, @PathVariable(name = "study_id") Long study_id,
                                         @PathVariable(name = "apply_id") Long apply_id) {
         return new ResponseEntity<>(studyService.decideJoin(apply_id, true), HttpStatus.OK);
