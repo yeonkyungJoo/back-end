@@ -31,18 +31,20 @@ public class Activity {
         this.resume = resume;
     }
 
-    public static Activity createActivity(String activityName, LocalDate startDate, LocalDate endDate,
+    public static Activity createActivity(Resume resume, String activityName, LocalDate startDate, LocalDate endDate,
                                           String description, String link) {
         // TODO - validate
         // - startDate, endDate 비교
 
-        Activity activity = Activity.builder()
-                .activityName(activityName)
-                .startDate(startDate)
-                .endDate(endDate)
-                .description(description)
-                .link(link)
-                .build();
+        Activity activity = new Activity();
+        activity.setResume(resume);
+        activity.setActivityName(activityName);
+        activity.setStartDate(startDate);
+        activity.setEndDate(endDate);
+        activity.setDescription(description);
+        activity.setLink(link);
+
+        resume.addActivity(activity);
         return activity;
     }
 

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -206,6 +207,11 @@ class CareerControllerTest {
         assertTrue(resume.getCareers().contains(career));
 
         assertEquals("ABCD", career.getCompanyName());
+        // 2021.03.26
+        Career findCareer = resume.getCareers().stream()
+                .filter(c -> careerId.equals(c.getId())).findAny().get();
+        assertEquals("ABCD", findCareer.getCompanyName());
+
         assertEquals("senior", career.getDuty());
         assertEquals(LocalDate.of(2021, 1, 22), career.getStartDate());
         assertEquals(LocalDate.of(2021, 1, 31), career.getEndDate());

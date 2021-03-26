@@ -106,7 +106,7 @@ public class CareerController {
         Career career = Career.createCareer(resume, request.getCompanyName(), request.getDuty(),
                                 request.getStartDate(), request.getEndDate(), request.isPresent(),
                                 request.getTags(), request.getDetail(), request.getUrl());
-        Long careerId = careerRepository.save(career).getId();
+        Long careerId = careerService.save(career);
         return new ResponseEntity(careerId, HttpStatus.CREATED);
     }
 
@@ -128,7 +128,7 @@ public class CareerController {
         }
 
         Career career = careerRepository.findById(careerId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Id"));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid careerId"));
 
         if (errors.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
