@@ -28,6 +28,7 @@ public class ProjectController {
 
     private final ResumeRepository resumeRepository;
     private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
     /**
      * Project 전체 조회
@@ -61,8 +62,9 @@ public class ProjectController {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<Project> project = projectRepository.findById(projectId);
-
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid projectId"));
+        return new ResponseEntity(new ProjectDto(project), HttpStatus.OK);
     }
 
     /**
@@ -72,6 +74,24 @@ public class ProjectController {
     public ResponseEntity newProject(@AuthenticationPrincipal LoginUser loginUser,
                                      @RequestBody @Valid CreateProjectRequest request, Errors errors) {
 
+        if (loginUser == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        Account account = loginUser.getAccount();
+        Resume resume = resumeRepository.findByAccountId(account.getId());
+        if (resume == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        if (errors.hasErrors()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        Project project = Project.createProject(resume, request.getProjectName(), request.getStartDate(),
+                                    request.getEndDate(), request.getShortDescription(), request.getTags(),
+                                    request.getDescription(), request.getUrl(), request.isOpen());
+        Long projectId = projectService.save(project);
+        return new ResponseEntity(projectId, HttpStatus.CREATED);
     }
 
     /**
@@ -82,6 +102,24 @@ public class ProjectController {
                                       @PathVariable("id") Long projectId,
                                       @RequestBody @Valid UpdateProjectRequest request, Errors errors) {
 
+        if (loginUser == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        Account account = loginUser.getAccount();
+
+        // Resume resume = resumeRepository.findByAccountId(account.getId());
+        // if (resume == null) {
+        //     return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        // }
+
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Invalid projectId"));
+
+        if (errors.hasErrors()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        projectService.updateProject(request, project);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
@@ -91,6 +129,20 @@ public class ProjectController {
     public ResponseEntity deleteProject(@AuthenticationPrincipal LoginUser loginUser,
                                         @PathVariable("id") Long projectId) {
 
+        if (loginUser == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        Account account = loginUser.getAccount();
+
+        Resume resume = resumeRepository.findByAccountId(account.getId());
+        if (resume == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid projectId"));
+
+        projectService.deleteProject(resume, project);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @Data

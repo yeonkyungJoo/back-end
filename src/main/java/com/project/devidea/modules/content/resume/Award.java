@@ -30,16 +30,19 @@ public class Award {
         this.resume = resume;
     }
 
-    public static Award createAward(String name, LocalDate date,
+    public static Award createAward(Resume resume, String name, LocalDate date,
                                         String link, String description) {
         // TODO - validate
 
-        Award award = Award.builder()
-                .name(name)
-                .date(date)
-                .link(link)
-                .description(description)
-                .build();
+        Award award = new Award();
+        award.setResume(resume);
+        award.setName(name);
+        award.setDate(date);
+        award.setLink(link);
+        award.setDescription(description);
+
+        // TODO - why?
+        resume.addAward(award);
         return award;
     }
 

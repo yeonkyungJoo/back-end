@@ -43,22 +43,24 @@ public class Project {
         this.resume = resume;
     }
 
-    public static Project createProject(String projectName, LocalDate startDate,
+    public static Project createProject(Resume resume, String projectName, LocalDate startDate,
             LocalDate endDate, String shortDescription, Set<Tag> tags, String description, String url, boolean open) {
 
         // TODO - validate
         // - startDate, endDate 비교
 
-        Project project = Project.builder()
-                .projectName(projectName)
-                .startDate(startDate)
-                .endDate(endDate)
-                .shortDescription(shortDescription)
-                .tags(tags)
-                .description(description)
-                .url(url)
-                .open(open)
-                .build();
+        Project project = new Project();
+        project.setResume(resume);
+        project.setProjectName(projectName);
+        project.setStartDate(startDate);
+        project.setEndDate(endDate);
+        project.setShortDescription(shortDescription);
+        project.setTags(tags);
+        project.setDescription(description);
+        project.setUrl(url);
+        project.setOpen(open);
+
+        resume.addProject(project);
         return project;
     }
 

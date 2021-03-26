@@ -63,11 +63,6 @@ public class ResumeController {
                 .phoneNumber(request.getPhoneNumber())
                 .github(request.getGithub())
                 .blog(request.getBlog())
-                .careers(request.getCareers())
-                .projects(request.getProject())
-                .educations(request.getEducations())
-                .awards(request.getAwards())
-                .activites(request.getActivities())
                 .build();
 
         Long resumeId = resumeService.createResume(resume, account);
@@ -129,11 +124,6 @@ public class ResumeController {
         private String phoneNumber;
         private String github;
         private String blog;
-        private List<Career> careers;
-        private List<Project> projects;
-        private List<Education> educations;
-        private List<Award> awards;
-        private List<Activity> activities;
 
         public ResumeDto(Resume resume) {
 
@@ -142,12 +132,6 @@ public class ResumeController {
             this.phoneNumber = resume.getPhoneNumber();
             this.github = resume.getGithub();
             this.blog = resume.getBlog();
-
-            this.careers = resume.getCareers();
-            this.projects = resume.getProjects();
-            this.educations = resume.getEducations();
-            this.awards = resume.getAwards();
-            this.activities = resume.getActivites();
         }
     }
 

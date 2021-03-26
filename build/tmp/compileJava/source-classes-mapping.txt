@@ -1,5 +1,8 @@
 com/project/devidea/modules/content/resume/QAward.java
  com.project.devidea.modules.content.resume.QAward
+com/project/devidea/modules/content/resume/form/UpdateAwardRequest.java
+ com.project.devidea.modules.content.resume.form.UpdateAwardRequest
+ com.project.devidea.modules.content.resume.form.UpdateAwardRequest$UpdateAwardRequestBuilder
 com/project/devidea/modules/content/study/apply/StudyApply.java
  com.project.devidea.modules.content.study.apply.StudyApply
  com.project.devidea.modules.content.study.apply.StudyApply$StudyApplyBuilder
@@ -36,6 +39,9 @@ com/project/devidea/modules/content/resume/CareerService.java
  com.project.devidea.modules.content.resume.CareerService
 com/project/devidea/modules/account/AccountController.java
  com.project.devidea.modules.account.AccountController
+com/project/devidea/modules/content/resume/form/UpdateActivityRequest.java
+ com.project.devidea.modules.content.resume.form.UpdateActivityRequest
+ com.project.devidea.modules.content.resume.form.UpdateActivityRequest$UpdateActivityRequestBuilder
 com/project/devidea/modules/content/resume/form/CreateAwardRequest.java
  com.project.devidea.modules.content.resume.form.CreateAwardRequest
  com.project.devidea.modules.content.resume.form.CreateAwardRequest$CreateAwardRequestBuilder
@@ -98,6 +104,8 @@ com/project/devidea/modules/tagzone/zone/ZoneController.java
  com.project.devidea.modules.tagzone.zone.ZoneController
 com/project/devidea/modules/content/study/apply/StudyApplyListForm.java
  com.project.devidea.modules.content.study.apply.StudyApplyListForm
+com/project/devidea/modules/content/resume/ProjectRepository.java
+ com.project.devidea.modules.content.resume.ProjectRepository
 com/project/devidea/modules/content/resume/QEducation.java
  com.project.devidea.modules.content.resume.QEducation
 com/project/devidea/modules/account/AccountControllerAdvice.java
@@ -153,6 +161,9 @@ com/project/devidea/infra/config/security/oauth/provider/SocialOAuth.java
  com.project.devidea.infra.config.security.oauth.provider.SocialOAuth
 com/project/devidea/modules/event/validator/BasicValidator.java
  com.project.devidea.modules.event.validator.BasicValidator
+com/project/devidea/modules/content/resume/form/UpdateProjectRequest.java
+ com.project.devidea.modules.content.resume.form.UpdateProjectRequest
+ com.project.devidea.modules.content.resume.form.UpdateProjectRequest$UpdateProjectRequestBuilder
 com/project/devidea/modules/content/study/repository/StudyRepositoryImpl.java
  com.project.devidea.modules.content.study.repository.StudyRepositoryImpl
 com/project/devidea/infra/config/security/jwt/JwtRequestFilter.java
@@ -214,6 +225,7 @@ com/project/devidea/modules/content/study/Study.java
  com.project.devidea.modules.content.study.Study$StudyBuilder
 com/project/devidea/modules/content/resume/ProjectController.java
  com.project.devidea.modules.content.resume.ProjectController
+ com.project.devidea.modules.content.resume.ProjectController$ProjectDto
 com/project/devidea/modules/content/resume/form/CreateActivityRequest.java
  com.project.devidea.modules.content.resume.form.CreateActivityRequest
  com.project.devidea.modules.content.resume.form.CreateActivityRequest$CreateActivityRequestBuilder
@@ -231,6 +243,8 @@ com/project/devidea/modules/content/mentoring/form/UpdateMenteeRequest.java
  com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest$UpdateMenteeRequestBuilder
 com/project/devidea/modules/content/study/aop/스터디신청서권한.java
  com.project.devidea.modules.content.study.aop.스터디신청서권한
+com/project/devidea/modules/content/resume/EducationRepository.java
+ com.project.devidea.modules.content.resume.EducationRepository
 com/project/devidea/modules/content/study/controller/StudyBasicController.java
  com.project.devidea.modules.content.study.controller.StudyBasicController
 com/project/devidea/infra/config/security/oauth/OAuthService.java
@@ -272,6 +286,12 @@ com/project/devidea/modules/account/form/SignUpRequestDto.java
  com.project.devidea.modules.account.form.SignUpRequestDto$SignUpRequestDtoBuilder
 com/project/devidea/modules/content/study/form/StudyMakingForm.java
  com.project.devidea.modules.content.study.form.StudyMakingForm
+com/project/devidea/modules/content/resume/ActivityRepository.java
+ com.project.devidea.modules.content.resume.ActivityRepository
+com/project/devidea/modules/content/resume/AwardRepository.java
+ com.project.devidea.modules.content.resume.AwardRepository
+com/project/devidea/modules/content/resume/ProjectService.java
+ com.project.devidea.modules.content.resume.ProjectService
 com/project/devidea/modules/account/repository/InterestRepository.java
  com.project.devidea.modules.account.repository.InterestRepository
 com/project/devidea/modules/content/study/repository/StudyRepositoryCustom.java
@@ -351,6 +371,9 @@ com/project/devidea/modules/tagzone/tag/QTag.java
  com.project.devidea.modules.tagzone.tag.QTag
 com/project/devidea/modules/content/mentoring/MenteeRepository.java
  com.project.devidea.modules.content.mentoring.MenteeRepository
+com/project/devidea/modules/content/resume/form/UpdateEducationRequest.java
+ com.project.devidea.modules.content.resume.form.UpdateEducationRequest
+ com.project.devidea.modules.content.resume.form.UpdateEducationRequest$UpdateEducationRequestBuilder
 com/project/devidea/modules/content/study/StudySampleGenerator.java
  com.project.devidea.modules.content.study.StudySampleGenerator
 com/project/devidea/DevideaApplication.java

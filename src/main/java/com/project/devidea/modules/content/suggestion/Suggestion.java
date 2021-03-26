@@ -13,9 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Suggestion {
 
     @Id @GeneratedValue

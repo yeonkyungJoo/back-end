@@ -24,4 +24,7 @@ public class CareerService {
         careerRepository.delete(career);
     }
 
+    public Long save(Career career) {
+        return careerRepository.save(career).getId();
+    }
 }

@@ -29,19 +29,22 @@ public class Education {
         this.resume = resume;
     }
 
-    public static Education createEducation(String schoolName, String major,
+    public static Education createEducation(Resume resume, String schoolName, String major,
                 LocalDate entranceDate, LocalDate graduationDate, double score, String degree) {
+
         // TODO - validate
         // - entranceDate, graduationDate 비교
 
-        Education education = Education.builder()
-                .schoolName(schoolName)
-                .major(major)
-                .entranceDate(entranceDate)
-                .graduationDate(graduationDate)
-                .score(score)
-                .degree(degree)
-                .build();
+        Education education = new Education();
+        education.setResume(resume);
+        education.setSchoolName(schoolName);
+        education.setMajor(major);
+        education.setEntranceDate(entranceDate);
+        education.setGraduationDate(graduationDate);
+        education.setScore(score);
+        education.setDegree(degree);
+
+        resume.addEducation(education);
         return education;
     }
 
