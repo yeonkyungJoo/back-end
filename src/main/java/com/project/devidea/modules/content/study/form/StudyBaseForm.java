@@ -34,7 +34,7 @@ public class StudyBaseForm implements Serializable {
 
     private int likes;
     @DecimalMax(value="6")
-    @DecimalMin(value="2")
+    @DecimalMin(value="2", message = "최소2개이상이어야함")
     private int maxCount;
 
     //@NotNull
