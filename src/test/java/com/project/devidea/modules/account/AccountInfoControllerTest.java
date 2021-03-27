@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devidea.infra.config.security.CustomUserDetailService;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
-import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.LoginRequestDto;
-import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
+import com.project.devidea.modules.account.dto.*;
+import com.project.devidea.modules.account.repository.InterestRepository;
+import com.project.devidea.modules.account.repository.MainActivityZoneRepository;
+import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.tag.TagRepository;
+import com.project.devidea.modules.tagzone.zone.Zone;
+import com.project.devidea.modules.tagzone.zone.ZoneRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -15,15 +19,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,11 +45,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 class AccountInfoControllerTest {
 
-    @Autowired MockMvc mockMvc;
-    @Autowired ObjectMapper objectMapper;
-    @Autowired CustomUserDetailService customUserDetailService;
-    @Autowired JwtTokenUtil jwtTokenUtil;
-    @Autowired BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
+    @Autowired
+    CustomUserDetailService customUserDetailService;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    MainActivityZoneRepository mainActivityZoneRepository;
+    @Autowired
+    ZoneRepository zoneRepository;
+    @Autowired
+    InterestRepository interestRepository;
+    @Autowired
+    TagRepository tagRepository;
 
     @Test
     @WithUserDetails(value = "test@test.com")
@@ -106,7 +125,6 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        String previousPassword = loginUser.getPassword();
         UpdatePasswordRequestDto updatePasswordRequestDto =
                 AccountDummy.getUpdatePassowordRequestDto();
 
@@ -129,5 +147,122 @@ class AccountInfoControllerTest {
         String jwtToken = response.getHeader("Authorization").substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         assertEquals(username, "test@test.com");
+    }
+
+    @Test
+    @WithUserDetails(value = "test@test.com")
+    @Transactional
+    void 관심기술_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+
+//        when, then
+        mockMvc.perform(get("/account/settings/interests")
+                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails(value = "test@test.com")
+    @Transactional
+    void 관심기술_수정하기() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        addInterests(loginUser);
+        InterestsUpdateRequestDto interestsUpdateRequestDto = AccountDummy.getInterestsUpdateRequestDto();
+
+//        when
+        mockMvc.perform(patch("/account/settings/interests")
+                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(interestsUpdateRequestDto)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+//        then
+        Set<Interest> interests = loginUser.getAccount().getInterests();
+        List<String> names =
+                interests.stream().map(interest -> interest.getTag().getFirstName()).collect(Collectors.toList());
+        List<Interest> findInter = interestRepository.findByAccount(loginUser.getAccount());
+
+        assertThat(names).contains("Vue.js", "java", "docker");
+        assertThat(findInter.size()).isEqualTo(3);
+    }
+
+    private void addInterests(LoginUser loginUser) {
+        Account account = loginUser.getAccount();
+        List<Tag> tags = tagRepository.findByFirstNameIn(Arrays.asList("java", "spring"));
+
+        Set<Interest> interests = tags.stream().map(tag -> Interest.builder()
+                .account(account).tag(tag).build()).collect(Collectors.toSet());
+
+        account.getInterests().addAll(interests);
+        interestRepository.saveAll(interests);
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    @Transactional
+    void 활동지역_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+
+//        when, then
+        mockMvc.perform(get("/account/settings/mainactivityzones")
+                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    @Transactional
+    void 활동지역_수정하기() throws Exception {
+
+//        given
+        LoginUser loginUser = (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+//        기존 유저에 활동지역 저장해두기
+        addMainActivityZones(loginUser);
+        MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto =
+                AccountDummy.getMainActivityZonesUpdateRequestDto();
+
+//        when
+        mockMvc.perform(patch("/account/settings/mainactivityzones")
+                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(mainActivityZonesUpdateRequestDto)))
+                .andDo(print());
+
+//        then
+        Set<MainActivityZone> mainActivityZones = loginUser.getAccount().getMainActivityZones();
+        List<String> citiesAndProvinces = mainActivityZones.stream()
+                .map(mainActivityZone -> mainActivityZone.getZone().toString())
+                .collect(Collectors.toList());
+        List<MainActivityZone> findMains = mainActivityZoneRepository.findByAccount(loginUser.getAccount());
+
+        assertThat(citiesAndProvinces).contains("서울특별시/중랑구", "서울특별시/노원구");
+        assertThat(findMains.size()).isEqualTo(2);
+    }
+
+    private void addMainActivityZones(LoginUser loginUser) {
+        Account account = loginUser.getAccount();
+        List<Zone> zones =
+                zoneRepository.findByCityInAndProvinceIn(Arrays.asList("서울특별시", "서울특별시"),
+                        Arrays.asList("광진구", "송파구"));
+
+        Set<MainActivityZone> mainActivityZones = zones.stream().map(zone -> MainActivityZone.builder()
+                .account(account).zone(zone).build()).collect(Collectors.toSet());
+
+        account.getMainActivityZones().addAll(mainActivityZones);
+        mainActivityZoneRepository.saveAll(mainActivityZones);
     }
 }

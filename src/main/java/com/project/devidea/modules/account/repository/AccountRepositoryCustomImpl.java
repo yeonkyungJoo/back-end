@@ -21,9 +21,8 @@ public class AccountRepositoryCustomImpl implements AccountRepositoryCustom {
     @Override
     public Account findByEmailWithMainActivityZoneAndInterests(String email) {
         return query.selectFrom(account)
-                .leftJoin(account.interests, interest)
-                .leftJoin(account.mainActivityZones, mainActivityZone)
-                .fetchJoin()
+                .leftJoin(account.interests, interest).fetchJoin()
+                .leftJoin(account.mainActivityZones, mainActivityZone).fetchJoin()
                 .where(account.email.eq(email))
                 .fetchOne();
     }
@@ -35,6 +34,22 @@ public class AccountRepositoryCustomImpl implements AccountRepositoryCustom {
                 .leftJoin(account.mainActivityZones, mainActivityZone)
                 .fetchJoin()
                 .where(account.email.eq(nickname))
+                .fetchOne();
+    }
+
+    @Override
+    public Account findByEmailWithInterests(String email) {
+        return query.selectFrom(account)
+                .leftJoin(account.interests, interest).fetchJoin()
+                .where(account.email.eq(email))
+                .fetchOne();
+    }
+
+    @Override
+    public Account findByEmailWithMainActivityZones(String email) {
+        return query.selectFrom(account)
+                .leftJoin(account.mainActivityZones, mainActivityZone).fetchJoin()
+                .where(account.email.eq(email))
                 .fetchOne();
     }
 }

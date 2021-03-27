@@ -1,11 +1,14 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
-import com.project.devidea.modules.account.dto.AccountProfileResponseDto;
-import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
+import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.account.repository.AccountRepository;
-import com.project.devidea.modules.account.validator.UpdatePasswordValidator;
+import com.project.devidea.modules.account.repository.InterestRepository;
+import com.project.devidea.modules.account.repository.MainActivityZoneRepository;
+import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.tag.TagRepository;
+import com.project.devidea.modules.tagzone.zone.Zone;
+import com.project.devidea.modules.tagzone.zone.ZoneRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 
@@ -29,6 +32,14 @@ class AccountServiceTest {
     BCryptPasswordEncoder passwordEncoder;
     @Mock
     AccountRepository accountRepository;
+    @Mock
+    TagRepository tagRepository;
+    @Mock
+    InterestRepository interestRepository;
+    @Mock
+    ZoneRepository zoneRepository;
+    @Mock
+    MainActivityZoneRepository mainActivityZoneRepository;
     @InjectMocks
     AccountService accountService;
 
@@ -169,5 +180,94 @@ class AccountServiceTest {
         verify(updatePasswordRequestDto).getPassword();
         verify(passwordEncoder).encode(updatePasswordRequestDto.getPassword());
         verify(account).updatePassword(any());
+    }
+
+    @Test
+    void 관심기술_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        when(accountRepository.findByEmailWithInterests(loginUser.getUsername())).thenReturn(account);
+
+//        when
+        accountService.getAccountInterests(loginUser);
+
+//        then
+        verify(accountRepository).findByEmailWithInterests(loginUser.getUsername());
+    }
+
+    @Test
+    void 관심기술_수정하기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        InterestsUpdateRequestDto interestsUpdateRequestDto = mock(InterestsUpdateRequestDto.class);
+        List<Tag> tags = new ArrayList<>();
+        Tag tag = mock(Tag.class);
+        tags.add(tag);
+
+        when(accountRepository.findByEmailWithInterests(loginUser.getUsername()))
+                .thenReturn(account);
+        when(tagRepository.findByFirstNameIn(interestsUpdateRequestDto.getInterests()))
+                .thenReturn(tags);
+//        when(interestRepository.deleteByAccount(account)).thenReturn(anyInt());
+
+//        when
+        accountService.updateAccountInterests(loginUser, interestsUpdateRequestDto);
+
+//        then
+        verify(accountRepository).findByEmailWithInterests(loginUser.getUsername());
+        verify(tagRepository).findByFirstNameIn(interestsUpdateRequestDto.getInterests());
+        verify(interestRepository).deleteByAccount(account);
+        verify(account).updateInterests(any());
+        verify(interestRepository).saveAll(any());
+    }
+
+    @Test
+    void 활동지역_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        when(accountRepository.findByEmailWithMainActivityZones(loginUser.getUsername()))
+                .thenReturn(account);
+
+//        when
+        accountService.getAccountMainActivityZones(loginUser);
+
+//        then
+        verify(accountRepository).findByEmailWithMainActivityZones(loginUser.getUsername());
+    }
+
+    @Test
+    void 활동지역_수정하기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto =
+                mock(MainActivityZonesUpdateRequestDto.class);
+        List<Zone> zones = new ArrayList<>();
+        Zone zone = mock(Zone.class);
+        zones.add(zone);
+
+        when(accountRepository.findByEmailWithMainActivityZones(loginUser.getUsername()))
+                .thenReturn(account);
+        when(zoneRepository.findByCityInAndProvinceIn(any(), any()))
+                .thenReturn(zones);
+//        when(mainActivityZoneRepository.deleteByAccount(account)).thenReturn(anyInt());
+
+//        when
+        accountService.updateAccountMainActivityZones(loginUser, mainActivityZonesUpdateRequestDto);
+
+//        then
+        verify(accountRepository).findByEmailWithMainActivityZones(loginUser.getUsername());
+        verify(mainActivityZonesUpdateRequestDto).splitCityAndProvince();
+        verify(zoneRepository).findByCityInAndProvinceIn(any(), any());
+        verify(mainActivityZoneRepository).deleteByAccount(account);
+        verify(account).updateMainActivityZones(any());
+        verify(mainActivityZoneRepository).saveAll(any());
     }
 }

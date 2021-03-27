@@ -161,5 +161,15 @@ public class Account {
     public void updatePassword(String password) {
         this.password = password;
     }
+
+    public void updateInterests(Set<Interest> interests) {
+        this.interests.clear();
+        this.interests.addAll(interests);
+    }
+
+    public void updateMainActivityZones(Set<MainActivityZone> mainActivityZones) {
+        this.mainActivityZones.clear();
+        this.mainActivityZones.addAll(mainActivityZones);
+    }
 }
 

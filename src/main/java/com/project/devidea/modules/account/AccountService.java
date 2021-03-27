@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -105,7 +106,7 @@ public class AccountService implements OAuthServiceInterface {
     public void saveSignUpDetail(LoginUser loginUser, SignUpDetailRequestDto req) {
 
         Account account = accountRepository
-                .findByEmailWithMainActivityZoneAndInterests(loginUser.getUsername());
+                .findByEmail(loginUser.getUsername()).orElseThrow();
 
 //        활동지역(mainActivityZones)
         Map<String, List<String>> cityProvince = req.getCitiesAndProvinces();
@@ -156,5 +157,53 @@ public class AccountService implements OAuthServiceInterface {
                                UpdatePasswordRequestDto updatePasswordRequestDto) {
         Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
         account.updatePassword("{bcrypt}" + passwordEncoder.encode(updatePasswordRequestDto.getPassword()));
+    }
+
+    public InterestsResponseDto getAccountInterests(LoginUser loginUser) {
+        Set<Interest> interests =
+                accountRepository.findByEmailWithInterests(loginUser.getUsername()).getInterests();
+        return InterestsResponseDto.builder().tagNames(
+                interests.stream()
+                        .map(interest -> interest.getTag().getFirstName())
+                        .collect(Collectors.toList())).build();
+    }
+
+    public void updateAccountInterests(LoginUser loginUser,
+                                InterestsUpdateRequestDto interestsUpdateRequestDto) {
+        Account account = accountRepository.findByEmailWithInterests(loginUser.getUsername());
+        List<Tag> tags = tagRepository.findByFirstNameIn(interestsUpdateRequestDto.getInterests());
+        Set<Interest> interests = getInterests(account, tags);
+
+//        기존에 있던 정보들 삭제
+        interestRepository.deleteByAccount(account);
+
+//        연관관계 메서드
+        account.updateInterests(interests);
+        interestRepository.saveAll(interests);
+    }
+
+    public MainActivityZonesResponseDto getAccountMainActivityZones(LoginUser loginUser) {
+        Set<MainActivityZone> mainActivityZones =
+                accountRepository.findByEmailWithMainActivityZones(loginUser.getUsername()).getMainActivityZones();
+        return MainActivityZonesResponseDto.builder()
+                .zoneNames(
+                        mainActivityZones.stream().map(zone -> zone.getZone().toString()).collect(Collectors.toList()))
+                .build();
+    }
+
+    public void updateAccountMainActivityZones(LoginUser loginUser,
+                                               MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto) {
+        Account account = accountRepository.findByEmailWithMainActivityZones(loginUser.getUsername());
+        Map<String, List<String>> map = mainActivityZonesUpdateRequestDto.splitCityAndProvince();
+        List<Zone> zones
+                = zoneRepository.findByCityInAndProvinceIn(map.get("city"), map.get("province"));
+        Set<MainActivityZone> mainActivityZones = getMainActivityZones(account, zones);
+
+//        기존에 있던 정보들 삭제
+        mainActivityZoneRepository.deleteByAccount(account);
+
+//        연관관계 메서드
+        account.updateMainActivityZones(mainActivityZones);
+        mainActivityZoneRepository.saveAll(mainActivityZones);
     }
 }

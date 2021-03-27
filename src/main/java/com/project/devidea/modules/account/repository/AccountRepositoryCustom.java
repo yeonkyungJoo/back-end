@@ -9,4 +9,8 @@ public interface AccountRepositoryCustom {
     Account findByEmailWithMainActivityZoneAndInterests(String email);
 
     Account findByNicknameWithMainActivityZoneAndInterests(String nickname);
+
+    Account findByEmailWithInterests(String email);
+
+    Account findByEmailWithMainActivityZones(String email);
 }

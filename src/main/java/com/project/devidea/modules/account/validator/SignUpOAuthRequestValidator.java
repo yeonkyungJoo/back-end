@@ -13,7 +13,6 @@ public class SignUpOAuthRequestValidator implements Validator {
 
     private final AccountRepository accountRepository;
 
-
     @Override
     public boolean supports(Class<?> clazz) {
         return SignUpOAuthRequestDto.class.equals(clazz);

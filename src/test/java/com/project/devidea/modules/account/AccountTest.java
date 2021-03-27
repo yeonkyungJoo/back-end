@@ -1,10 +1,19 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
+import com.project.devidea.modules.account.dto.InterestsResponseDto;
 import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
+import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.tag.TagDummy;
+import com.project.devidea.modules.tagzone.zone.Zone;
+import com.project.devidea.modules.tagzone.zone.ZoneDummy;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,4 +56,35 @@ class AccountTest {
         assertEquals(account.getPassword(), updatePasswordRequestDto.getPassword());
     }
 
+    @Test
+    void 관심기술_수정() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+        Set<Interest> interests = new HashSet<>();
+        List<Tag> tags = TagDummy.getInterestDummy();
+        tags.forEach(tag -> interests.add(Interest.builder().account(account).tag(tag).build()));
+
+//        when
+        account.updateInterests(interests);
+
+//        then
+        assertEquals(account.getInterests().size(), 5);
+    }
+
+    @Test
+    void 활동지역_수정() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+        Set<MainActivityZone> mainActivityZones = new HashSet<>();
+        List<Zone> zones = ZoneDummy.getZoneDummy();
+        zones.forEach(zone -> mainActivityZones.add(MainActivityZone.builder().account(account).zone(zone).build()));
+
+//        when
+        account.updateMainActivityZones(mainActivityZones);
+
+//        then
+        assertEquals(account.getMainActivityZones().size(), 5);
+    }
 }
