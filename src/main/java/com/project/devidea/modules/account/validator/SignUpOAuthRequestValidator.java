@@ -1,6 +1,6 @@
 package com.project.devidea.modules.account.validator;
 
-import com.project.devidea.modules.account.form.SignUpOAuthRequestDto;
+import com.project.devidea.modules.account.dto.SignUpOAuthRequestDto;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,6 @@ import org.springframework.validation.Validator;
 public class SignUpOAuthRequestValidator implements Validator {
 
     private final AccountRepository accountRepository;
-
 
     @Override
     public boolean supports(Class<?> clazz) {

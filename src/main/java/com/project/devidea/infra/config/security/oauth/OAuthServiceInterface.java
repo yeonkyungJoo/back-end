@@ -1,9 +1,8 @@
 package com.project.devidea.infra.config.security.oauth;
 
-import com.project.devidea.modules.account.form.LoginOAuthRequestDto;
-import com.project.devidea.modules.account.form.LoginRequestDto;
-import com.project.devidea.modules.account.form.SignUpOAuthRequestDto;
-import com.project.devidea.modules.account.form.SignUpResponseDto;
+import com.project.devidea.modules.account.dto.LoginOAuthRequestDto;
+import com.project.devidea.modules.account.dto.SignUpOAuthRequestDto;
+import com.project.devidea.modules.account.dto.SignUpResponseDto;
 
 import java.util.Map;
 

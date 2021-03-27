@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +52,9 @@ public class InitService {
                 .name("테스트_회원")
                 .password("{bcrypt}" + bCryptPasswordEncoder.encode("1234"))
                 .joinedAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
+                .interests(new HashSet<>())
+                .mainActivityZones(new HashSet<>())
                 .build();
         studyRepository.saveAll(studySampleGenerator.generateDumy(30));
         accountRepository.save(account);

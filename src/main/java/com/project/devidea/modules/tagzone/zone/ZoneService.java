@@ -30,7 +30,6 @@ public class ZoneService {
     public void initZoneData() throws IOException {
         Map<String,Map<String,Boolean>> CheckMap=new HashMap<String, Map<String, Boolean>>();
         if (zoneRepository.count() == 0) {
-//            Resource resource = new ClassPathResource("zones_kr.csv");
             ClassPathResource resource = new ClassPathResource("zones_kr.csv");
             InputStream inputStream = resource.getInputStream();
             File file = File.createTempFile("zones_kr", ".csv");

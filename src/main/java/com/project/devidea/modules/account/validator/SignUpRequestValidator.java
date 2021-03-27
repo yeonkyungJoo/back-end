@@ -1,7 +1,7 @@
 package com.project.devidea.modules.account.validator;
 
 import com.project.devidea.modules.account.repository.AccountRepository;
-import com.project.devidea.modules.account.form.SignUpRequestDto;
+import com.project.devidea.modules.account.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
