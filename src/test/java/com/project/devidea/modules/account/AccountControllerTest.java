@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devidea.infra.config.security.CustomUserDetailService;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
+import com.project.devidea.modules.account.AccountService;
 import com.project.devidea.modules.account.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -93,7 +94,6 @@ class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());
     }
-
 //    @Test
 //    @DisplayName("회원가입 validation - 입력값 확인하기")
 //    void confirmJoinValidation() throws Exception {
@@ -150,49 +150,6 @@ class AccountControllerTest {
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         assertEquals(username, "test@test.com");
     }
-
-    @Test
-    @DisplayName("OAuth 로그인")
-    void confirmJwtTokenAndAuthorizationWithOAuth() throws Exception {
-
-//        given
-        accountService.signUpOAuth(AccountDummy.getSignUpOAuthRequestDto2());
-        LoginOAuthRequestDto loginOAuthRequestDto = AccountDummy.getLoginOAuthRequestDto2();
-
-//        when
-        MockHttpServletResponse response = mockMvc.perform(post("/login/oauth")
-                .content(objectMapper.writeValueAsString(loginOAuthRequestDto))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(header().exists("Authorization")).andReturn().getResponse();
-
-        String jwtToken = response.getHeader("Authorization").substring(7);
-        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        assertEquals(username, "ko@google.com");
-    }
-
-//    @Test
-//    @DisplayName("비밀번호가 틀렸을 경우, BadCredential Exception 확인하기")
-//    void confirmBadCredentialException() throws Exception {
-//
-////        given
-//        accountRepository.save(Account.builder().email("kobu@naver.com").password("123123123").name("고범숙")
-//                .nickname("고범숙").build());
-//        LoginRequestDto login = LoginRequestDto.builder()
-//                .email("ko@naver.com").password("1111")
-//                .build();
-//        when(accountService.login(any())).thenThrow(BadCredentialsException.class);
-//
-////        when, then
-//        mockMvc.perform(post("/login")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(login)))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.statusCode", is(400)))
-//                .andExpect(jsonPath("$.description", is("회원의 아이디와 비밀번호가 일치하지 않습니다.")));
-//    }
 
     @Test
     @DisplayName("회원가입 상세정보 저장")

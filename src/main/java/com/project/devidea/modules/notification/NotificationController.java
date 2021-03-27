@@ -1,5 +1,6 @@
 package com.project.devidea.modules.notification;
 
+import com.project.devidea.infra.error.exception.EntityNotFoundException;
 import com.project.devidea.modules.account.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,6 +46,13 @@ public class NotificationController {
     @PostMapping("/{id}/delete")
     public void deleteNotification(@PathVariable("id") Long id) {
         notificationRepository.deleteById(id);
+    }
+
+    @GetMapping("/entityErrorTest")
+    public void entityErrorTest(Long id) {
+        Optional<Notification> findNotification = notificationRepository.findById(id);
+        if(!findNotification.isPresent())
+            throw new EntityNotFoundException("notification");
     }
 
     @Data

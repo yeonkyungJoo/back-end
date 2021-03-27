@@ -1,9 +1,6 @@
 package com.project.devidea.modules.tagzone.tag;
 
 import java.util.List;
-import java.util.Random;
-
-import static java.lang.Math.abs;
 
 public class TagDummy {
 

@@ -72,6 +72,9 @@ com/project/devidea/modules/content/mentoring/form/UpdateMentorRequest.java
  com.project.devidea.modules.content.mentoring.form.UpdateMentorRequest$UpdateMentorRequestBuilder
 com/project/devidea/modules/content/study/form/StudyBaseForm.java
  com.project.devidea.modules.content.study.form.StudyBaseForm
+com/project/devidea/infra/error/ErrorResponse.java
+ com.project.devidea.infra.error.ErrorResponse
+ com.project.devidea.infra.error.ErrorResponse$FieldError
 com/project/devidea/modules/event/form/BasicForm.java
  com.project.devidea.modules.event.form.BasicForm
 com/project/devidea/infra/eventHandler/GlobalExceptionHandler.java
@@ -108,6 +111,8 @@ com/project/devidea/modules/notification/NotificationController.java
  com.project.devidea.modules.notification.NotificationController$ResponseNotifications
 com/project/devidea/modules/tagzone/zone/ZoneController.java
  com.project.devidea.modules.tagzone.zone.ZoneController
+com/project/devidea/infra/error/exception/EntityNotFoundException.java
+ com.project.devidea.infra.error.exception.EntityNotFoundException
 com/project/devidea/modules/content/study/apply/StudyApplyListForm.java
  com.project.devidea.modules.content.study.apply.StudyApplyListForm
 com/project/devidea/modules/content/resume/QEducation.java
@@ -164,6 +169,8 @@ com/project/devidea/infra/config/security/oauth/provider/SocialOAuth.java
  com.project.devidea.infra.config.security.oauth.provider.SocialOAuth
 com/project/devidea/modules/event/validator/BasicValidator.java
  com.project.devidea.modules.event.validator.BasicValidator
+com/project/devidea/infra/error/exception/ErrorCode.java
+ com.project.devidea.infra.error.exception.ErrorCode
 com/project/devidea/modules/content/study/repository/StudyRepositoryImpl.java
  com.project.devidea.modules.content.study.repository.StudyRepositoryImpl
 com/project/devidea/infra/config/security/jwt/JwtRequestFilter.java
@@ -278,6 +285,8 @@ com/project/devidea/modules/account/repository/AccountRepositoryCustomImpl.java
  com.project.devidea.modules.account.repository.AccountRepositoryCustomImpl
 com/project/devidea/modules/InitService.java
  com.project.devidea.modules.InitService
+com/project/devidea/infra/error/GlobalExceptionController.java
+ com.project.devidea.infra.error.GlobalExceptionController
 com/project/devidea/modules/content/resume/AwardController.java
  com.project.devidea.modules.content.resume.AwardController
 com/project/devidea/modules/account/dto/SignUpDetailRequestDto.java
@@ -300,6 +309,8 @@ com/project/devidea/modules/content/resume/form/UpdateResumeRequest.java
  com.project.devidea.modules.content.resume.form.UpdateResumeRequest$UpdateResumeRequestBuilder
 com/project/devidea/modules/content/study/Study_Role.java
  com.project.devidea.modules.content.study.Study_Role
+com/project/devidea/infra/error/exception/BusinessException.java
+ com.project.devidea.infra.error.exception.BusinessException
 com/project/devidea/modules/account/dto/LoginRequestDto.java
  com.project.devidea.modules.account.dto.LoginRequestDto
  com.project.devidea.modules.account.dto.LoginRequestDto$LoginRequestDtoBuilder
