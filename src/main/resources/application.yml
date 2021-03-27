@@ -38,9 +38,12 @@ spring:
 #    database-platform: org.hibernate.dialect.H2Dialect
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
 #        dialect: org.hibernate.dialect.H2Dialect
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true

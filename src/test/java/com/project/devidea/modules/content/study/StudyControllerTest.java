@@ -238,7 +238,7 @@ class StudyControllerTest {
         StudyApplyForm studyApplyForm=new StudyApplyForm()
                 .builder()
                 .study(study.getTitle())
-                .studyId(study.id)
+                .studyId(study.getId())
                 .applicant(User1.getNickname())
                 .build();
         studyService.applyStudy(studyApplyForm);
@@ -271,7 +271,12 @@ class StudyControllerTest {
         Assertions.assertNotNull(studyApplyRepository.findByStudy_Id(study.getId()));
     }
     @Test
+    @DisplayName("스터디-거절")
     void 스터디_거절() {
+        studyRepository.saveAll(studySampleGenerator.generateDumy(50));
+        studyRepository.saveAll(studySampleGenerator.generateDumy(50));
+        studyRepository.saveAll(studySampleGenerator.generateDumy(50));
+        return;
     }
 
     @Test

@@ -1,9 +1,6 @@
 package com.project.devidea.modules.tagzone.tag;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NaturalIdCache;
 
@@ -19,8 +16,10 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @NaturalIdCache
+@Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Tag implements Serializable {
     @Id
@@ -38,12 +37,12 @@ public class Tag implements Serializable {
     @Column(unique = true)
     private String thirdName;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Tag parent;
 
     @Builder.Default
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "parent")
     private List<Tag> children = new ArrayList();
 

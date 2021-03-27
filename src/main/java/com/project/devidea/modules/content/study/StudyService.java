@@ -90,7 +90,6 @@ public class StudyService {
         }
         else return "성공적으로 거절하였습니다.";
     }
-
     public String addMember(Account applicant, Study study, Study_Role role) {
         studyMemberRepository.save(
                 StudyMember.
@@ -176,7 +175,7 @@ public class StudyService {
         Study study = studyRepository.findById(id).orElseThrow();
         StudyApplyForm studyApplyForm = new StudyApplyForm()
                 .builder()
-                .studyId(study.id)
+                .studyId(study.getId())
                 .study(study.getTitle())
                 .answer(study.getQuestion())
                 .applicant("")

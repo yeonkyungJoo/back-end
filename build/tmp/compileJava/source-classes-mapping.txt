@@ -197,6 +197,8 @@ com/project/devidea/infra/config/security/oauth/provider/SocialLoginType.java
  com.project.devidea.infra.config.security.oauth.provider.SocialLoginType
 com/project/devidea/modules/tagzone/tag/TagController.java
  com.project.devidea.modules.tagzone.tag.TagController
+com/project/devidea/infra/config/MultipleCacheManagerConfig.java
+ com.project.devidea.infra.config.MultipleCacheManagerConfig
 com/project/devidea/modules/content/resume/ResumeService.java
  com.project.devidea.modules.content.resume.ResumeService
 com/project/devidea/modules/content/suggestion/QSuggestion.java
