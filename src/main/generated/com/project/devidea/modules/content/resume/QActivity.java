@@ -26,7 +26,7 @@ public class QActivity extends EntityPathBase<Activity> {
 
     public final StringPath description = createString("description");
 
-    public final DateTimePath<java.time.LocalDateTime> endDate = createDateTime("endDate", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -34,7 +34,7 @@ public class QActivity extends EntityPathBase<Activity> {
 
     public final QResume resume;
 
-    public final DateTimePath<java.time.LocalDateTime> startDate = createDateTime("startDate", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 
     public QActivity(String variable) {
         this(Activity.class, forVariable(variable), INITS);

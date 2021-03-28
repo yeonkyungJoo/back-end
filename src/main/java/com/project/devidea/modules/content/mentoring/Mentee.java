@@ -32,14 +32,14 @@ public class Mentee {
 
     private LocalDateTime publishedDate;
 
-    @Builder.Default
+    // @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mentee_zone",
                 joinColumns = @JoinColumn(name = "mentee_id"),
                 inverseJoinColumns = @JoinColumn(name = "zone_id"))
                 // indexes = @Index(name = "zone", columnList = "zone_id"))
     private Set<Zone> zones = new HashSet<>();
-    @Builder.Default
+    // @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mentee_tag",
                 joinColumns = @JoinColumn(name = "mentee_id"),

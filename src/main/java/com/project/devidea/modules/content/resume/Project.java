@@ -1,10 +1,7 @@
 package com.project.devidea.modules.content.resume;
 
 import com.project.devidea.modules.tagzone.tag.Tag;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
 public class Project {
 
     @Id @GeneratedValue
