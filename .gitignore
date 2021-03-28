@@ -29,7 +29,7 @@
 .idea/**/gradle.xml
 .idea/**/libraries
 
-src/main/generated
+src/main/generated/
 
 
 # Gradle and Maven with auto-import
@@ -45,7 +45,7 @@ src/main/generated
 # *.iml
 # *.ipr
 
-.idea
+.idea/
 
 # CMake
 cmake-build-*/
