@@ -26,11 +26,9 @@ public class StudyAuthorityAop {
     public void 스터디팀장권한() {
     }
 
-
     @Pointcut("within(com.project.devidea.modules.content.study.controller.StudyManagerController)")
     public void 스터디매니저권한() {
     }
-
 
     @Before("스터디팀장권한() && args(account,id)")
     public void 팀장권한확인(LoginUser account, Long id) {
@@ -38,7 +36,6 @@ public class StudyAuthorityAop {
         if (study_role == null || study_role != Study_Role.팀장)
             throw new ValidationException("권한이 없습니다.");
         else System.out.println("성공적으로 권한확인 했습니다.");
-
     }
 
 
@@ -49,5 +46,4 @@ public class StudyAuthorityAop {
             throw new ValidationException("권한이 없습니다.");
         else System.out.println("성공적으로 권한확인 했습니다.");
     }
-
 }

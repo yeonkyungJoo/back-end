@@ -29,6 +29,7 @@ public class AccountController {
     @InitBinder("signUpRequestDto")
     public void initSignUpRequestDtoValidator(WebDataBinder binder) {
         binder.addValidators(signUpRequestValidator);
+        System.out.println("AccountController.initSignUpRequestDtoValidator");
     }
 
     @InitBinder("signUpOAuthRequestValidator")
@@ -52,6 +53,7 @@ public class AccountController {
         if (errors.hasErrors()) {
             throw new AccountRequestNotValidException("회원가입 폼의 입력값을 확인해주세요.", errors);
         }
+
         return new ResponseEntity<>(accountService.signUpOAuth(signUpOAuthRequestDto), HttpStatus.OK);
     }
 
