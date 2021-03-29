@@ -16,14 +16,11 @@ import java.util.stream.Collectors;
 public class WebConfig implements WebMvcConfigurer {
 
 //    private final NotificationInterceptor notificationInterceptor;
-
-    @Configuration
-    public class addCorsMappings implements WebMvcConfigurer {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
-                .allowedOrigins("*");
-        }
+                    .allowedOrigins("*")
+                    .exposedHeaders("Authorization");
     }
 
 //    @Override
