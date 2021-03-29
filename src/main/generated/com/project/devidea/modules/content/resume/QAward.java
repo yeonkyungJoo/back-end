@@ -22,7 +22,7 @@ public class QAward extends EntityPathBase<Award> {
 
     public static final QAward award = new QAward("award");
 
-    public final DateTimePath<java.time.LocalDateTime> date = createDateTime("date", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
 
     public final StringPath description = createString("description");
 

@@ -26,6 +26,7 @@ public class ResumeService {
     }
 
     public void deleteResume(Resume resume) {
+        resume.setAccount(null);
         resumeRepository.delete(resume);
     }
 }

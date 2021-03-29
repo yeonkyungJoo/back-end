@@ -15,12 +15,11 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class Resume {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "resume_id")
     private Long id;
 
@@ -119,4 +118,5 @@ public class Resume {
         this.activites.add(activity);
         activity.setResume(this);
     }
+
 }

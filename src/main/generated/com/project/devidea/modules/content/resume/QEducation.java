@@ -24,9 +24,9 @@ public class QEducation extends EntityPathBase<Education> {
 
     public final StringPath degree = createString("degree");
 
-    public final DateTimePath<java.time.LocalDateTime> entranceDate = createDateTime("entranceDate", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> entranceDate = createDate("entranceDate", java.time.LocalDate.class);
 
-    public final DateTimePath<java.time.LocalDateTime> graduationDate = createDateTime("graduationDate", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> graduationDate = createDate("graduationDate", java.time.LocalDate.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

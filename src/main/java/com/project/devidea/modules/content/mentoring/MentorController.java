@@ -1,5 +1,6 @@
 package com.project.devidea.modules.content.mentoring;
 
+import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.mentoring.form.CreateMentorRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMentorRequest;
@@ -76,10 +77,16 @@ public class MentorController {
      */
     @PostMapping("/")
     public ResponseEntity newMentor(@RequestBody @Valid CreateMentorRequest request, Errors errors,
-                                    @AuthenticationPrincipal Account account) {
+                                    // @AuthenticationPrincipal Account account)
+                                    @AuthenticationPrincipal LoginUser loginUser) {
+
+        Account account = loginUser.getAccount();
         if (account == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+
+        // TODO - validate
+        // - free와 cost 확인
 
         // TODO - test : 이미 멘토인 경우
         Mentor findMentor = mentorRepository.findByAccountId(account.getId());
@@ -113,9 +120,12 @@ public class MentorController {
     /**
      * 멘토 정보 수정
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity editMentor(@RequestBody @Valid UpdateMentorRequest request, Errors errors,
-                                     @AuthenticationPrincipal Account account) {
+                                     // @AuthenticationPrincipal Account account)
+                                     @AuthenticationPrincipal LoginUser loginUser) {
+
+        Account account = loginUser.getAccount();
         if (account == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
@@ -135,8 +145,11 @@ public class MentorController {
      * 멘토 탈퇴
      */
     @PostMapping("/delete")
-    public ResponseEntity quitMentor(@AuthenticationPrincipal Account account) {
+    public ResponseEntity quitMentor(
+            // @AuthenticationPrincipal Account account)
+            @AuthenticationPrincipal LoginUser loginUser) {
 
+        Account account = loginUser.getAccount();
         if (account == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }

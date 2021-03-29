@@ -5,21 +5,20 @@ import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@Getter
-@Setter
+@Getter @Setter
 public class CreateAwardRequest extends Request {
 
     @NotEmpty
     private String name;
     @NotNull
-    private LocalDateTime date;
+    private LocalDate date;
     private String link;
     private String description;
 
     @Builder
-    public CreateAwardRequest(@NotEmpty String name, @NotNull LocalDateTime date, String link, String description) {
+    public CreateAwardRequest(@NotEmpty String name, @NotNull LocalDate date, String link, String description) {
         this.name = name;
         this.date = date;
         this.link = link;

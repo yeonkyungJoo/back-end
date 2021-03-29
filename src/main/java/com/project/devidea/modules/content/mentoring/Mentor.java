@@ -4,7 +4,6 @@ import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +17,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Mentor {
 
     @Id @GeneratedValue
@@ -37,14 +34,14 @@ public class Mentor {
     private Resume resume;
 
     private LocalDateTime publishedDate;
-    @Builder.Default
+    // @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mentor_zone",
                 joinColumns = @JoinColumn(name = "mentor_id"),
                 inverseJoinColumns = @JoinColumn(name = "zone_id"))
                 // indexes = @Index(name = "zone", columnList = "zone_id"))
     private Set<Zone> zones = new HashSet<>();  // 가능 지역
-    @Builder.Default
+    // @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mentor_tag",
                 joinColumns = @JoinColumn(name = "mentor_id"),
@@ -113,4 +110,16 @@ public class Mentor {
         setOpen();
     }
 
+    @Builder
+    public Mentor(Long id, @NotNull Account account, @NotNull Resume resume, LocalDateTime publishedDate, Set<Zone> zones, Set<Tag> tags, boolean open, boolean free, Integer cost) {
+        this.id = id;
+        this.account = account;
+        this.resume = resume;
+        this.publishedDate = publishedDate;
+        this.zones = zones;
+        this.tags = tags;
+        this.open = open;
+        this.free = free;
+        this.cost = cost;
+    }
 }

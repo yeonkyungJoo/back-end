@@ -1,26 +1,25 @@
 package com.project.devidea.modules.content.resume;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Activity {
 
     @Id @GeneratedValue
     @Column(name = "activity_id")
     private Long id;
     private String activityName;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
     private String link;
 
@@ -32,18 +31,31 @@ public class Activity {
         this.resume = resume;
     }
 
-    public static Activity createActivity(String activityName, LocalDateTime startDate, LocalDateTime endDate,
+    public static Activity createActivity(Resume resume, String activityName, LocalDate startDate, LocalDate endDate,
                                           String description, String link) {
         // TODO - validate
         // - startDate, endDate 비교
 
-        Activity activity = Activity.builder()
-                .activityName(activityName)
-                .startDate(startDate)
-                .endDate(endDate)
-                .description(description)
-                .link(link)
-                .build();
+        Activity activity = new Activity();
+        activity.setResume(resume);
+        activity.setActivityName(activityName);
+        activity.setStartDate(startDate);
+        activity.setEndDate(endDate);
+        activity.setDescription(description);
+        activity.setLink(link);
+
+        resume.addActivity(activity);
         return activity;
+    }
+
+    @Builder
+    public Activity(Long id, String activityName, LocalDate startDate, LocalDate endDate, String description, String link, Resume resume) {
+        this.id = id;
+        this.activityName = activityName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+        this.link = link;
+        this.resume = resume;
     }
 }
