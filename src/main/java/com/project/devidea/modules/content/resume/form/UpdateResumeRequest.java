@@ -1,34 +1,25 @@
 package com.project.devidea.modules.content.resume.form;
 
 import com.project.devidea.api.Request;
-import com.project.devidea.modules.content.resume.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
 public class UpdateResumeRequest extends Request {
 
+    @NotEmpty
     private String phoneNumber;
     private String github;
     private String blog;
 
-    private List<Career> careers;
-    private List<Project> project;
-    private List<Education> educations;
-    private List<Award> awards;
-    private List<Activity> activities;
-
     @Builder
-    public UpdateResumeRequest(String phoneNumber, String github, String blog, List<Career> careers, List<Project> project, List<Education> educations, List<Award> awards, List<Activity> activities) {
+    public UpdateResumeRequest(@NotEmpty String phoneNumber, String github, String blog) {
         this.phoneNumber = phoneNumber;
         this.github = github;
         this.blog = blog;
-        this.careers = careers;
-        this.project = project;
-        this.educations = educations;
-        this.awards = awards;
-        this.activities = activities;
     }
 }

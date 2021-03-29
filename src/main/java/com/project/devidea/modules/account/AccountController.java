@@ -37,7 +37,7 @@ public class AccountController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto, Errors errors) throws Exception {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto, Errors errors) {
         if (errors.hasErrors()) {
             throw new AccountRequestNotValidException("회원가입 폼의 입력값을 확인해주세요.", errors);
         }

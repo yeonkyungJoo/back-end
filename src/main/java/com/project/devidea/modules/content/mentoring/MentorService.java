@@ -25,6 +25,8 @@ public class MentorService {
     }
 
     public void deleteMentor(Mentor mentor) {
+        mentor.setAccount(null);
+        mentor.setResume(null);
         mentorRepository.delete(mentor);
     }
 

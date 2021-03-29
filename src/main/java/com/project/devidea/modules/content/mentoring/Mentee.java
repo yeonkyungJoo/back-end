@@ -3,7 +3,6 @@ package com.project.devidea.modules.content.mentoring;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Mentee {
 
     @Id
@@ -35,14 +32,14 @@ public class Mentee {
 
     private LocalDateTime publishedDate;
 
-    @Builder.Default
+    // @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mentee_zone",
                 joinColumns = @JoinColumn(name = "mentee_id"),
                 inverseJoinColumns = @JoinColumn(name = "zone_id"))
                 // indexes = @Index(name = "zone", columnList = "zone_id"))
     private Set<Zone> zones = new HashSet<>();
-    @Builder.Default
+    // @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "mentee_tag",
                 joinColumns = @JoinColumn(name = "mentee_id"),
@@ -91,5 +88,17 @@ public class Mentee {
     public void publish() {
         this.publishedDate = LocalDateTime.now();
         setOpen();
+    }
+
+    @Builder
+    public Mentee(Long id, @NotNull Account account, String description, LocalDateTime publishedDate, Set<Zone> zones, Set<Tag> tags, boolean open, boolean free) {
+        this.id = id;
+        this.account = account;
+        this.description = description;
+        this.publishedDate = publishedDate;
+        this.zones = zones;
+        this.tags = tags;
+        this.open = open;
+        this.free = free;
     }
 }

@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -16,9 +16,9 @@ public class CreateProjectRequest extends Request {
     @NotEmpty
     private String projectName;
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDate startDate;
     @NotNull
-    private LocalDateTime endDate;
+    private LocalDate endDate;
     @NotEmpty
     private String shortDescription;
     private Set<Tag> tags;
@@ -27,7 +27,7 @@ public class CreateProjectRequest extends Request {
     private boolean open;
 
     @Builder
-    public CreateProjectRequest(@NotEmpty String projectName, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate, @NotEmpty String shortDescription, Set<Tag> tags, String description, String url, boolean open) {
+    public CreateProjectRequest(@NotEmpty String projectName, @NotNull LocalDate startDate, @NotNull LocalDate endDate, @NotEmpty String shortDescription, Set<Tag> tags, String description, String url, boolean open) {
         this.projectName = projectName;
         this.startDate = startDate;
         this.endDate = endDate;

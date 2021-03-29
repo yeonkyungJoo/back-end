@@ -1,6 +1,5 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.exception.ErrorFieldAndMessage;
 import com.project.devidea.modules.account.exception.AccountResponse;
 import com.project.devidea.modules.account.exception.AccountRequestNotValidException;
 import org.springframework.http.HttpStatus;
@@ -8,9 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice(basePackages = "com.project.devidea.modules.account")
 public class AccountControllerAdvice {

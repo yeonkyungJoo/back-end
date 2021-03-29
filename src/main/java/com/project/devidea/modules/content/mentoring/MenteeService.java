@@ -30,6 +30,7 @@ public class MenteeService {
     }
 
     public void deleteMentee(Mentee mentee) {
+        mentee.setAccount(null);
         menteeRepository.delete(mentee);
     }
 }

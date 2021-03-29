@@ -11,9 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -45,7 +43,7 @@ public class Tag implements Serializable {
 
     @Builder.Default
     @OneToMany(mappedBy = "parent")
-    private List<Tag> children = new ArrayList();
+    private List<Tag> children = new ArrayList<>();
 
     //연관메서드
     public void addChild(Tag child) {
