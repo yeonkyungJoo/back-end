@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
 
 @Service
@@ -56,9 +57,22 @@ public class InitService {
                 .interests(new HashSet<>())
                 .mainActivityZones(new HashSet<>())
                 .build();
+        Account account3=new Account().builder()
+                .nickname("테스트_회원2")
+                .email("test2@test.com")
+                .emailCheckToken("abcdefghijklmn")
+                .bio("bio")
+                .gender("남성")
+                .roles("ROLE_USER")
+                .name("테스트_회원")
+                .password("{bcrypt}" + bCryptPasswordEncoder.encode("1234"))
+                .joinedAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
+                .interests(new HashSet<>())
+                .mainActivityZones(new HashSet<>())
+                .build();
         studyRepository.saveAll(studySampleGenerator.generateDumy(30));
-        accountRepository.save(account);
-        accountRepository.save(account2);
+        accountRepository.saveAll(Arrays.asList(account,account2,account3));
         studyRepository.findAll().stream().forEach(study -> {
             studyService.addMember(account,study, Study_Role.팀장);
             studyService.addMember(account2,study, Study_Role.회원);

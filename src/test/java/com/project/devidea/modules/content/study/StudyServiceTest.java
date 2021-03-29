@@ -5,7 +5,6 @@ import com.project.devidea.infra.config.AppConfig;
 import com.project.devidea.modules.ModuleGenerator;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountService;
-import com.project.devidea.modules.account.form.SignUpResponseDto;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.study.apply.StudyApplyRepository;
 import com.project.devidea.modules.content.study.form.StudyDetailForm;

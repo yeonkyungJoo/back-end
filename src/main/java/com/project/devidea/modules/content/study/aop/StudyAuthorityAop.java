@@ -32,9 +32,9 @@ public class StudyAuthorityAop {
     }
 
 
-    @Before("스터디팀장권한() && args(account,id)")
-    public void 팀장권한확인(LoginUser account, Long id) {
-        Study_Role study_role = studyMemberRepository.findByStudy_IdAndMember_Nickname(id, account.getNickName()).getRole();
+    @Before("스터디팀장권한() && args(account,study_id)")
+    public void 팀장권한확인(LoginUser account, Long study_id) {
+        Study_Role study_role = studyMemberRepository.findByStudy_IdAndMember_Nickname(study_id, account.getNickName()).getRole();
         if (study_role == null || study_role != Study_Role.팀장)
             throw new ValidationException("권한이 없습니다.");
         else System.out.println("성공적으로 권한확인 했습니다.");

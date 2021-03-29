@@ -94,11 +94,6 @@ class StudyControllerTest {
         //given 계정1개준비 및 스터디 30개 준비
     }
     @Test
-    void 기본(){
-        Study study=studyRepository.findById(1L).orElse(null);
-        System.out.println(study);
-    }
-    @Test
     @WithAnonymousUser
     @DisplayName("[스터디 조회] GET /study")
     void 조회() throws Exception {
@@ -263,7 +258,7 @@ class StudyControllerTest {
                 .answer("answer")
                 .etc("etc")
                 .build();
-        mockMvc.perform(post("/study/apply")
+        mockMvc.perform(post("/study/{id}/apply",study.getId().toString())
                 .content(objectMapper.writeValueAsString(studyApplyForm))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -302,4 +297,5 @@ class StudyControllerTest {
     @Test
     void 지역_태그_설정_변경() {
     }
+
 }

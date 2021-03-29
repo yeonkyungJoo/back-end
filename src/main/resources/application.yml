@@ -6,17 +6,25 @@ server:
       charset: UTF-8
       enabled: true
       force: true
-spring.boot.admin.client:
-  url: http://localhost:8080
-  instance.service-url: http://localhost:8080
+#spring.boot.admin.client:
+#  url: http://localhost:8080
+#  instance.service-url: http://localhost:8080
 management:
   endpoints:
     web:
       exposure:
         include: '*'
+  endpoint:
+    health:
+      show-details: always
   endpoint.shutdown:
     enabled: true
 spring:
+  boot:
+    admin:
+      ui:
+        brand: <img src="assets/img/icon-spring-boot-admin.svg"><span>Spring Boot Admin</span>
+        title: Spring Boot Admin
   data:
     mongodb:
       #      url: mongodb://mongodb2:27017/test

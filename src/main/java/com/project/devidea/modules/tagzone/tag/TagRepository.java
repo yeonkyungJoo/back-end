@@ -18,6 +18,7 @@ public interface TagRepository extends JpaRepository<Tag,Long> {
     @QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true")})
     @EntityGraph(attributePaths = {"parent", "children"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Tag> findAll();
+
     @QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true")})
     @EntityGraph(attributePaths = {"parent", "children"}, type = EntityGraph.EntityGraphType.LOAD)
     Tag findByFirstName(String firstname);

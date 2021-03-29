@@ -182,6 +182,8 @@ com/project/devidea/infra/config/security/jwt/JwtAuthenticationEntryPoint.java
 com/project/devidea/modules/content/resume/form/CreateResumeRequest.java
  com.project.devidea.modules.content.resume.form.CreateResumeRequest
  com.project.devidea.modules.content.resume.form.CreateResumeRequest$CreateResumeRequestBuilder
+com/project/devidea/modules/content/study/form/EmpowerForm.java
+ com.project.devidea.modules.content.study.form.EmpowerForm
 com/project/devidea/modules/content/tech/KakaoCrawling.java
  com.project.devidea.modules.content.tech.KakaoCrawling
 com/project/devidea/modules/content/resume/QResume.java
@@ -235,6 +237,8 @@ com/project/devidea/modules/content/study/Study.java
  com.project.devidea.modules.content.study.Study$StudyBuilder
 com/project/devidea/modules/content/resume/ProjectController.java
  com.project.devidea.modules.content.resume.ProjectController
+com/project/devidea/modules/content/study/exception/StudyAuthorityRequiredException.java
+ com.project.devidea.modules.content.study.exception.StudyAuthorityRequiredException
 com/project/devidea/modules/account/dto/UpdatePasswordRequestDto.java
  com.project.devidea.modules.account.dto.UpdatePasswordRequestDto
  com.project.devidea.modules.account.dto.UpdatePasswordRequestDto$UpdatePasswordRequestDtoBuilder
@@ -285,6 +289,8 @@ com/project/devidea/modules/account/exception/AccountResponse.java
  com.project.devidea.modules.account.exception.AccountResponse$AccountResponseBuilder
 com/project/devidea/modules/account/repository/AccountRepositoryCustomImpl.java
  com.project.devidea.modules.account.repository.AccountRepositoryCustomImpl
+com/project/devidea/modules/content/study/exception/StudyResponse.java
+ com.project.devidea.modules.content.study.exception.StudyResponse
 com/project/devidea/modules/InitService.java
  com.project.devidea.modules.InitService
 com/project/devidea/infra/error/GlobalExceptionController.java
@@ -339,8 +345,6 @@ com/project/devidea/modules/content/resume/Project.java
  com.project.devidea.modules.content.resume.Project$ProjectBuilder
 com/project/devidea/modules/content/study/StudyService.java
  com.project.devidea.modules.content.study.StudyService
-com/project/devidea/modules/content/study/controller/StudyControllerAdvice.java
- com.project.devidea.modules.content.study.controller.StudyControllerAdvice
 com/project/devidea/api/Request.java
  com.project.devidea.api.Request
 com/project/devidea/modules/account/validator/SignUpRequestValidator.java
@@ -365,6 +369,8 @@ com/project/devidea/modules/content/recruit/form/BasicForm.java
  com.project.devidea.modules.content.recruit.form.BasicForm
 com/project/devidea/modules/account/QMainActivityZone.java
  com.project.devidea.modules.account.QMainActivityZone
+com/project/devidea/modules/content/study/exception/StudyRequestNotValidException.java
+ com.project.devidea.modules.content.study.exception.StudyRequestNotValidException
 com/project/devidea/modules/notification/NotificationType.java
  com.project.devidea.modules.notification.NotificationType
 com/project/devidea/modules/like/form/BasicForm.java
@@ -381,6 +387,8 @@ com/project/devidea/modules/account/QInterest.java
 com/project/devidea/modules/content/study/form/StudySearchForm.java
  com.project.devidea.modules.content.study.form.StudySearchForm
  com.project.devidea.modules.content.study.form.StudySearchForm$StudySearchFormBuilder
+com/project/devidea/modules/notification/aop/WithNotification.java
+ com.project.devidea.modules.notification.aop.WithNotification
 com/project/devidea/infra/mail/EmailService.java
  com.project.devidea.infra.mail.EmailService
 com/project/devidea/modules/account/validator/UpdatePasswordValidator.java
