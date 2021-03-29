@@ -1,18 +1,14 @@
 package com.project.devidea.modules.content.suggestion;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.project.devidea.modules.account.Account;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Suggestion {
 
@@ -20,15 +16,15 @@ public class Suggestion {
     @Column(name = "suggestion_id")
     private Long id;
 
-    private LocalDateTime date;
+    private LocalDateTime dateTime;
 
-/*    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from")
     private Account from;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    private Account to;*/
+    @JoinColumn(name = "to")
+    private Account to;
 
     private String message;
 }

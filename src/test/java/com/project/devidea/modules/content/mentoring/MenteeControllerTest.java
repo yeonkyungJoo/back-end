@@ -7,6 +7,8 @@ import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.mentoring.account.WithAccount;
 import com.project.devidea.modules.content.mentoring.form.CreateMenteeRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest;
+import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.zone.Zone;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,6 +37,26 @@ class MenteeControllerTest {
     ObjectMapper objectMapper;
     @Autowired
     MenteeRepository menteeRepository;
+
+    @Test
+    @DisplayName("멘티 등록 - empty zones")
+    @WithAccount("yk")
+    public void newMentee_invalidInput() throws Exception {
+        // Given
+        // When, Then
+        CreateMenteeRequest request = CreateMenteeRequest.builder()
+                .description("description")
+                .free(true)
+                .build();
+
+        mockMvc.perform(post("/mentee/")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                // .with(csrf()))
+                .andDo(print())
+                .andExpect(status().is(400));
+
+    }
 
     @Test
     @DisplayName("멘티 등록 - 인증된 사용자")

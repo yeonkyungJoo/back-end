@@ -5,25 +5,22 @@ import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
+@Getter @Setter
+@Builder
 public class UpdateMenteeRequest extends Request {
 
     private String description;
-    private Set<Zone> zones;
-    private Set<Tag> tags;
-
+    @Builder.Default
+    @NotEmpty
+    private Set<String> zones = new HashSet<>();
+    @Builder.Default
+    @NotEmpty
+    private Set<String> tags = new HashSet<>();
     private boolean open;
     private boolean free;
 
-    @Builder
-    public UpdateMenteeRequest(String description, Set<Zone> zones, Set<Tag> tags, boolean open, boolean free) {
-        this.description = description;
-        this.zones = zones;
-        this.tags = tags;
-        this.open = open;
-        this.free = free;
-    }
 }
