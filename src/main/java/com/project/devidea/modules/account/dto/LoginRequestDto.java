@@ -12,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class LoginRequestDto {
 
-    @NotBlank
     @Email
     private String email;
 
