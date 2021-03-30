@@ -1,8 +1,8 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.infra.error.GlobalResponse;
 import com.project.devidea.modules.account.dto.*;
-import com.project.devidea.modules.account.exception.AccountResponse;
 import com.project.devidea.modules.account.validator.UpdatePasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class AccountInfoController {
     public ResponseEntity<?> updateProfile(@AuthenticationPrincipal LoginUser loginUser,
                                            @RequestBody AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
         accountService.updateProfile(loginUser, accountProfileUpdateRequestDto);
-        return new ResponseEntity<>(AccountResponse.isOkResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
     @PatchMapping("/password")
@@ -47,7 +47,7 @@ public class AccountInfoController {
 //            ControllerAdvice 보고 작성하기
 //        }
         accountService.updatePassword(loginUser, updatePasswordRequestDto);
-        return new ResponseEntity<>(AccountResponse.isOkResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
     @GetMapping("/interests")
@@ -59,7 +59,7 @@ public class AccountInfoController {
     public ResponseEntity<?> updateInterests(@AuthenticationPrincipal LoginUser loginUser,
                                              @RequestBody InterestsUpdateRequestDto interestsUpdateRequestDto) {
         accountService.updateAccountInterests(loginUser, interestsUpdateRequestDto);
-        return new ResponseEntity<>(AccountResponse.isOkResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
     @GetMapping("/mainactivityzones")
@@ -71,7 +71,7 @@ public class AccountInfoController {
     public ResponseEntity<?> updateMainActivityZones(@AuthenticationPrincipal LoginUser loginUser,
                                                      @RequestBody MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto) {
         accountService.updateAccountMainActivityZones(loginUser, mainActivityZonesUpdateRequestDto);
-        return new ResponseEntity<>(AccountResponse.isOkResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
 }

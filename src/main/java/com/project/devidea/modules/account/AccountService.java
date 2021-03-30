@@ -47,7 +47,6 @@ public class AccountService implements OAuthServiceInterface {
                 .email(signUpRequestDto.getEmail())
                 .name(signUpRequestDto.getName())
                 .password("{bcrypt}" + passwordEncoder.encode(signUpRequestDto.getPassword()))
-                .nickname(signUpRequestDto.getNickname())
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
@@ -66,7 +65,6 @@ public class AccountService implements OAuthServiceInterface {
                 .email(signUpOAuthRequestDto.getEmail())
                 .name(signUpOAuthRequestDto.getName())
                 .password("{bcrypt}" + passwordEncoder.encode(OAUTH_PASSWORD))
-                .nickname(signUpOAuthRequestDto.getNickname())
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
@@ -105,11 +103,10 @@ public class AccountService implements OAuthServiceInterface {
 
     public void saveSignUpDetail(LoginUser loginUser, SignUpDetailRequestDto req) {
 
-        Account account = accountRepository
-                .findByEmail(loginUser.getUsername()).orElseThrow();
+        Account account = accountRepository.findByEmailWithMainActivityZoneAndInterests(loginUser.getUsername());
 
 //        활동지역(mainActivityZones)
-        Map<String, List<String>> cityProvince = req.getCitiesAndProvinces();
+        Map<String, List<String>> cityProvince = req.splitCitiesAndProvinces();
         List<Zone> zones = zoneRepository
                 .findByCityInAndProvinceIn(cityProvince.get("city"), cityProvince.get("province"));
         Set<MainActivityZone> mainActivityZones = getMainActivityZones(account, zones);

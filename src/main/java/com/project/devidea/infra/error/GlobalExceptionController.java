@@ -6,13 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionController {
 
@@ -70,6 +71,16 @@ public class GlobalExceptionController {
     }
 
     /**
+     * 로그인 에러처리
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<ErrorResponse> handleBadCredentialException(BadCredentialsException e) {
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.ACCOUNT_ERROR,
+                "회원의 아이디와 비밀번호가 일치하지 않습니다.");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * 해당 프로젝트만의 비지니스 에러 처리
      */
     @ExceptionHandler(BusinessException.class)
@@ -78,7 +89,7 @@ public class GlobalExceptionController {
         final ErrorCode errorCode = e.getErrorCode();
 
         ErrorResponse response = new ErrorResponse();
-        if(e.getMessage() != "") response = ErrorResponse.of(errorCode, e.getMessage());
+        if(!e.getMessage().equals(""))  response = ErrorResponse.of(errorCode, e.getErrors());
         else response = ErrorResponse.of(errorCode);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }

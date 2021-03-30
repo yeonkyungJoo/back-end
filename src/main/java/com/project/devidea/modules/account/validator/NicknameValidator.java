@@ -1,9 +1,9 @@
 package com.project.devidea.modules.account.validator;
 
 import com.project.devidea.infra.error.exception.ErrorCode;
+import com.project.devidea.modules.account.dto.ChangeNicknameRequest;
 import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.account.repository.AccountRepository;
-import com.project.devidea.modules.account.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,25 +11,22 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class SignUpRequestValidator implements Validator {
+public class NicknameValidator implements Validator {
 
     private final AccountRepository accountRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return SignUpRequestDto.class.equals(clazz);
+        return ChangeNicknameRequest.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        SignUpRequestDto request = (SignUpRequestDto) target;
 
-        if (!request.getPassword().equals(request.getPasswordConfirm())) {
-            errors.rejectValue("password", "invalid.password", "비밀번호가 일치하지 않습니다.");
-        }
+        ChangeNicknameRequest request = (ChangeNicknameRequest) target;
 
-        if (accountRepository.existsByEmail(request.getEmail())) {
-            errors.rejectValue("email", "invalid.email", "이미 존재하는 이메일입니다.");
+        if (accountRepository.existsByNickname(request.getNickname())) {
+            errors.rejectValue("nickname", "invalid.nickname", "닉네임이 중복되었습니다.");
         }
 
         if (errors.hasErrors()) {

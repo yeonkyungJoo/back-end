@@ -5,11 +5,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -50,6 +54,10 @@ public class ErrorResponse {
         return new ErrorResponse(code, FieldError.of(bindingResult));
     }
 
+    public static ErrorResponse of(final ErrorCode code, final Errors errors) {
+        return new ErrorResponse(code, FieldError.of(errors));
+    }
+
     public static ErrorResponse of(final ErrorCode code) {
         return new ErrorResponse(code);
     }
@@ -63,7 +71,6 @@ public class ErrorResponse {
         final List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), value, e.getErrorCode());
         return new ErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
     }
-
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -91,7 +98,15 @@ public class ErrorResponse {
                             error.getField(),
                             error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
                             error.getDefaultMessage()))
-                    .collect(Collectors.toList());
+                    .collect(toList());
+        }
+
+        private static List<FieldError> of(final Errors errors) {
+            List<org.springframework.validation.FieldError> fieldErrors = errors.getFieldErrors();
+            return fieldErrors.stream().map(error -> new FieldError(
+                    error.getField(),
+                    error.getCode(), 
+                    error.getDefaultMessage())).collect(toList());
         }
     }
 }
