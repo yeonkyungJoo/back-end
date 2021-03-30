@@ -23,9 +23,12 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember,Long> {
     @EntityGraph(attributePaths = {"study"}, type = EntityGraph.EntityGraphType.LOAD)
     List<StudyMember> findByMember(Account member);
 
+//    @EntityGraph(attributePaths = {"study"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<StudyMember> findByMember_Id(Long memberId);
+
     StudyMember findByStudyAndMember(Study study,Account member);
 
-    StudyMember findByStudy_IdAndMember_Nickname(Long studyId,String nickName);
+    StudyMember findByStudy_IdAndMember_Id(Long studyId,Long memberId);
     List<StudyMember> findByStudy_Id(Long studyId);
     void deleteById(Long id);
 

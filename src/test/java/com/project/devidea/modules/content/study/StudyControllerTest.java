@@ -16,6 +16,7 @@ import com.project.devidea.modules.content.study.form.StudySearchForm;
 import com.project.devidea.modules.content.study.repository.StudyMemberRepository;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
 
+import com.project.devidea.utils.MultiValueMapConverter;
 import org.junit.jupiter.api.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
+import static com.project.devidea.modules.notification.NotificationType.스터디_거절;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,6 +61,7 @@ class StudyControllerTest {
     MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
+
     @Autowired
     ModelMapper studyMapper;
     @Autowired
@@ -93,6 +98,7 @@ class StudyControllerTest {
 //        studyRepository.deleteAll();
         //given 계정1개준비 및 스터디 30개 준비
     }
+
     @Test
     @WithAnonymousUser
     @DisplayName("[스터디 조회] GET /study")
@@ -105,9 +111,9 @@ class StudyControllerTest {
         BASE_REQUEST = new StudySearchForm().builder()
                 .pageSize(100).build();
         //then : 조회된 StudyList갯수 100개
+       Object obj= MultiValueMapConverter.convert(BASE_REQUEST);
         MvcResult result = mockMvc.perform(get("/study")
-                .content(objectMapper.writeValueAsString(BASE_REQUEST))
-                .contentType(MediaType.APPLICATION_JSON))
+                .queryParams(MultiValueMapConverter.convert(BASE_REQUEST)))
                 .andDo(print())
                 .andExpect(status().isOk()).andReturn();
 
@@ -146,11 +152,12 @@ class StudyControllerTest {
     void 내스터디() throws Exception {
         Account me = accountRepository.findByNickname("하이하이");
         List<Study> studies = studySampleGenerator.generateDumy(30);
+        studyRepository.saveAll(studies);
         //given 스터디 30개를 account를 등록
         Iterator<Study> studyIterator = studies.listIterator();
         while (studyIterator.hasNext()) {
             Study study = studyIterator.next();
-            studyService.addMember(me, study, Study_Role.회원);
+            studyService.addMember(me, study, Study_Role.팀장);
         }
         //when 조회
         MvcResult result = mockMvc.perform(post("/study/mystudy"))
@@ -183,6 +190,8 @@ class StudyControllerTest {
             Assertions.assertEquals(studyDetailForm.getTitle().toString(), study.getTitle().toString());
 
         }
+
+
 
 
     @Test
@@ -221,28 +230,6 @@ class StudyControllerTest {
         assertFalse(study.getMembers().contains(me));
     }
 
-    @Test
-    @DisplayName("[스터디 승인] Post /study/apply/{applyId}/accept")
-    @WithAccount(NickName = "me") //
-    void 스터디_승인() throws Exception {
-        Study study = studySampleGenerator.generateDumy(1).get(0);
-        studyRepository.save(study);
-        Account me=accountRepository.findByNickname("me");
-        studyService.addMember(User2,study,Study_Role.회원);
-        studyService.addMember(me,study,Study_Role.팀장);
-        StudyApplyForm studyApplyForm=new StudyApplyForm()
-                .builder()
-                .study(study.getTitle())
-                .studyId(study.getId())
-                .applicant(User1.getNickname())
-                .build();
-        studyService.applyStudy(studyApplyForm);
-        StudyApply studyApply= studyApplyRepository.findByApplicantAndStudy(User1,study);
-        mockMvc.perform(post("/study/{study_id}/apply/{apply_id}/accept",study.getId().toString(),
-                studyApply.getId().toString()))
-                .andDo(print())
-                .andExpect(status().isOk()).andReturn();
-    }
     @DisplayName("스터디 가입신청, Get /study/apply")
     @Test
     @WithAccount(NickName = "me") //팀장일때 나가면 스터디 삭제
@@ -258,6 +245,7 @@ class StudyControllerTest {
                 .answer("answer")
                 .etc("etc")
                 .build();
+        //when+then 요청했을시 제대로 작동하는지 체크
         mockMvc.perform(post("/study/{id}/apply",study.getId().toString())
                 .content(objectMapper.writeValueAsString(studyApplyForm))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -267,35 +255,68 @@ class StudyControllerTest {
     }
     @Test
     @DisplayName("스터디-거절")
-    void 스터디_거절() {
-        studyRepository.saveAll(studySampleGenerator.generateDumy(50));
-        studyRepository.saveAll(studySampleGenerator.generateDumy(50));
-        studyRepository.saveAll(studySampleGenerator.generateDumy(50));
-        return;
+    @WithAccount(NickName = "me") //팀장일때 나가면 스터디 삭제
+    void 스터디_거절() throws Exception {
+        //given 1.스터디 만들기 2.스터디장을 me로 등록 3.User1이 지원
+        Account account=accountRepository.findByNickname("me");
+        Study study = studySampleGenerator.generateDumy(1).get(0);
+        studyRepository.save(study);
+        studyMemberRepository.save(studyService.generateStudyMember(study,account,Study_Role.팀장));
+        StudyApply studyApply=studyService.generateStudyApply(study,User1);
+        studyApplyRepository.save(studyApply);
+        //when+then 거절했을시 잘 거절확인
+        mockMvc.perform(post("/study/{study_id}/apply/{apply_id}/reject",study.getId().toString(),studyApply.getId().toString()))
+                .andDo(print())
+                .andExpect(status().isOk()).andReturn();
+        Assertions.assertFalse(studyApplyRepository.findById(studyApply.getId()).get().getAccpted());
     }
 
     @Test
-    void 가입_신청_리스트() {
+    @DisplayName("가입-신청-리스트")
+    @WithAccount(NickName = "me") //팀장일때 나가면 스터디 삭제
+    public void 가입_신청_리스트() throws Exception {
+        //given 1.스터디 만들기 2.스터디장을 me로 등록 3.User1,User2지원
+        Account account=accountRepository.findByNickname("me");
+        Study study = studySampleGenerator.generateDumy(1).get(0);
+        studyRepository.save(study);
+        studyMemberRepository.save(studyService.generateStudyMember(study,account,Study_Role.팀장));
+        StudyApply studyApply1=studyService.generateStudyApply(study,User1);
+        StudyApply studyApply2=studyService.generateStudyApply(study,User2);
+        studyApplyRepository.saveAll(Arrays.asList(studyApply1,studyApply2));
+
+        mockMvc.perform(get("/study/{study_id}/apply/list",study.getId().toString()))
+                .andDo(print())
+                .andExpect(status().isOk()).andReturn();
+        Assertions.assertEquals(studyApplyRepository.findByStudy_Id(study.getId()).size(),2);
     }
 
     @Test
-    void 가입_신청_디테일_보기() {
+    @DisplayName("가입-신청-디테일")
+    @WithAccount(NickName = "me") //팀장일때 나가면 스터디 삭제
+    public void 가입_신청_디테일() throws Exception {
+        //given 1.스터디 만들기 2.스터디장을 me로 등록 3.User1,User2지원
+        Account account=accountRepository.findByNickname("me");
+        Study study = studySampleGenerator.generateDumy(1).get(0);
+        studyRepository.save(study);
+        studyMemberRepository.save(studyService.generateStudyMember(study,account,Study_Role.팀장));
+        StudyApply studyApply1=new StudyApply().builder().study(study)
+                            .applicant(User1)
+                            .answer("answer")
+                            .etc("etc").build();
+        studyApplyRepository.save(studyApply1);
+
+        MvcResult result = mockMvc.perform(get("/study/{study_id}/apply/{apply_id}",study.getId().toString(),studyApply1.getId().toString()))
+                .andDo(print())
+                .andExpect(status().isOk()).andReturn();
+
+        String strResult = result.getResponse().getContentAsString();
+        StudyApplyForm response = objectMapper.readValue(strResult, StudyApplyForm.class);
+        Assertions.assertAll(
+                () -> assertEquals(response.getStudy(), studyApply1.getStudy().toString()),
+                () -> assertEquals(response.getAnswer(),studyApply1.getAnswer()),
+                () -> assertEquals(response.getEtc(),studyApply1.getEtc())
+        );
     }
 
-    @Test
-    void 스터디_공개_및_모집여부_설정폼() {
-    }
-
-    @Test
-    void 스터디_공개_및_모집여부_변경() {
-    }
-
-    @Test
-    void 지역_태그_설정폼() {
-    }
-
-    @Test
-    void 지역_태그_설정_변경() {
-    }
 
 }

@@ -6,11 +6,13 @@ import com.project.devidea.modules.ModuleGenerator;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountService;
 import com.project.devidea.modules.account.repository.AccountRepository;
+import com.project.devidea.modules.content.study.apply.StudyApplyForm;
 import com.project.devidea.modules.content.study.apply.StudyApplyRepository;
 import com.project.devidea.modules.content.study.form.StudyDetailForm;
 import com.project.devidea.modules.content.study.form.StudyMakingForm;
 import com.project.devidea.modules.content.study.repository.StudyMemberRepository;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
+import com.project.devidea.modules.notification.NotificationRepository;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
 import com.project.devidea.modules.tagzone.zone.Zone;
@@ -30,15 +32,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.awt.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,6 +68,8 @@ public class StudyServiceTest {
     @MockBean
     StudyMemberRepository studyMemberRepository;
 
+    @MockBean
+    NotificationRepository notificationRepository;
 
     Study study;
     Account account1, account2;
@@ -75,7 +77,11 @@ public class StudyServiceTest {
 
     @Autowired
     StudyService studyService;
-
+    String TITLE="송파스터디";
+    Zone 서울송파구;
+    Zone 서울강남구;
+    Tag spring;
+    Tag java;
     @BeforeEach
     void init() {
         Zone 서울송파구 = moduleGenerator.generateZone("서울특별시","송파구",1L);
@@ -91,7 +97,7 @@ public class StudyServiceTest {
         when(accountRepository.findAll()).thenReturn(Arrays.asList(account1, account2));
         when(accountRepository.findByNickname("account1")).thenReturn(account1);
 
-        study = moduleGenerator.generateStudy("송파스터디",new ArrayList<StudyMember>(),tagRepository.findAll(),서울송파구);
+        study = moduleGenerator.generateStudy(TITLE,new ArrayList<StudyMember>(),tagRepository.findAll(),서울송파구);
         studyMember1=moduleGenerator.generateStudyMember(study,account1,1L);
         studyMember2=moduleGenerator.generateStudyMember(study,account1,2L);
         when(studyMemberRepository.findAll()).thenReturn(Arrays.asList(studyMember1, studyMember2));
@@ -104,7 +110,7 @@ public class StudyServiceTest {
     void getDetailStudy() {
         //given
         when(studyRepository.findById(study.getId()))
-                .thenReturn(java.util.Optional.ofNullable(study));
+                .thenReturn(Optional.ofNullable(study));
         //when
         StudyDetailForm studyDetailForm = studyService.getDetailStudy((study.getId()));
         assertAll(
@@ -134,74 +140,26 @@ public class StudyServiceTest {
         studyMakingForm.setLocation("서울/송파구");
         studyMakingForm.setLevel(Level.입문);
         studyMakingForm.setMaxCount(6);
-        studyMakingForm.setTitle("TITLE");
+        studyMakingForm.setTitle(TITLE);
         studyMakingForm.setRecruiting(true);
         studyMakingForm.setTags(new HashSet<String>(tagRepository.findAll().stream()
                 .map(tag -> {
                     return tag.toString();
                 }).collect(Collectors.toSet())));
         //when
-        StudyDetailForm studyDetailForm = studyService.makingStudy(account1.getNickname(), studyMakingForm);
+        StudyDetailForm studyDetailForm = studyService.makingStudy(account1, studyMakingForm);
         assertAll(
                 () -> assertNotNull(studyDetailForm),
-                () -> assertEquals(studyDetailForm.getId(), study.getId()),
                 () -> assertEquals(studyDetailForm.getMembers(), study.getMembers().stream()
                         .map(studyMember -> {
                             return studyMember.toString();
                         }).collect(Collectors.toSet())),
                 () -> assertEquals(studyDetailForm.getTitle(), study.getTitle()),
-                () -> assertEquals(studyDetailForm.getTags().toString(), study.getTags().toString()),
                 () -> assertEquals(studyDetailForm.getLocation(), study.getLocation().toString()),
-                () -> assertEquals(studyDetailForm.getCounts(), study.getCounts())
+                () -> assertEquals(studyDetailForm.getCounts(),1)
         );
     }
 
 
-    @Test
-    void applyStudy() {
-    }
 
-    @Test
-    void decideJoin() {
-    }
-
-    @Test
-    void getApplyForm() {
-    }
-
-    @Test
-    void deleteStudy() {
-    }
-
-    @Test
-    void leaveStudy() {
-    }
-
-    @Test
-    void myStudy() {
-    }
-
-    @Test
-    void getApplyList() {
-    }
-
-    @Test
-    void getApplyDetail() {
-    }
-
-    @Test
-    void getOpenRecruitForm() {
-    }
-
-    @Test
-    void getTagandZone() {
-    }
-
-    @Test
-    void updateOpenRecruiting() {
-    }
-
-    @Test
-    void updateTagAndZOne() {
-    }
 }

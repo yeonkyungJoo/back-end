@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Study implements Serializable {
     @Id
-    @SequenceGenerator(name = "SequenceGenerator", sequenceName = "mySeq", initialValue = 5, allocationSize = 100)
+    @SequenceGenerator(name = "SequenceGenerator", sequenceName = "mySeq", allocationSize = 50)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SequenceGenerator")
     @Column(name="study_id")
     private Long id;

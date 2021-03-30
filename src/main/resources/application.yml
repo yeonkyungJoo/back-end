@@ -46,6 +46,7 @@ spring:
 #    database-platform: org.hibernate.dialect.H2Dialect
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
+      use-new-id-generator-mappings: true
       ddl-auto: create-drop
     properties:
       hibernate:
@@ -81,7 +82,6 @@ sns:
       secret: k64ajtdh7iPfaEkW_TjbwiGm
     callback:
       url: http://localhost:8080/login/oauth/google/callback
-
 crawling:
   Scheduled: '*/10 * * * * *'
 

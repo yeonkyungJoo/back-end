@@ -21,6 +21,7 @@ import com.project.devidea.modules.tagzone.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.With;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,20 +58,19 @@ public class StudyService {
         return studyMapper.map(study, StudyDetailForm.class);
     }
 
-    public StudyDetailForm makingStudy(String NickName, @Valid StudyMakingForm studyMakingForm) { //study만들기
+    public StudyDetailForm makingStudy(Account admin, @Valid StudyMakingForm studyMakingForm) { //study만들기
         Study study = ConvertToStudy(studyMakingForm);
-        Account admin = accountRepository.findByNickname(NickName);
         studyRepository.save(study);
         studyMemberRepository.save(generateStudyMember(study, admin, Study_Role.팀장));
         StudyDetailForm studyDetailForm = studyMapper.map(study, StudyDetailForm.class);
-        studyDetailForm.setMembers(new HashSet<String>(Arrays.asList(admin.getName().toString())));
+        studyDetailForm.setMembers(new HashSet<String>(Arrays.asList(admin.getNickname())));
         return studyDetailForm;
     }
 
-    public String applyStudy(@Valid StudyApplyForm studyApplyForm) {
+    public String applyStudy(Account applicant,@Valid StudyApplyForm studyApplyForm) {
         StudyApply studyApply = StudyApply.builder()
                 .study(Study.generateStudyById(studyApplyForm.getStudyId()))
-                .applicant(Account.generateAccountById(accountRepository.findIdByNickname(studyApplyForm.getApplicant())))
+                .applicant(applicant)
                 .answer(studyApplyForm.getAnswer())
                 .etc(studyApplyForm.getEtc())
                 .build();
@@ -122,17 +122,14 @@ public class StudyService {
         return "성공적으로 삭제하였습니다.";
     }
 
-    public String leaveStudy(String nickName, Long study_id) {
-        Account account = accountRepository.findByNickname(nickName);
+    public String leaveStudy(Account account, Long study_id) {
         studyMemberRepository.deleteByStudy_IdAndMember_Id(study_id, account.getId());
         studyRepository.LeaveStudy(study_id);
         return "스터디를 떠났습니다.";
     }
 
-    public List<StudyListForm> myStudy(String email) {
-        Account account = accountRepository.findByEmail(email).orElse(
-                accountRepository.findByNickname(email));
-        List<StudyMember> studyList = studyMemberRepository.findByMember(account);
+    public List<StudyListForm> myStudy(Account account) {
+        List<StudyMember> studyList = studyMemberRepository.findByMember_Id(account.getId());
         return studyList.stream().map(study -> {
             return studyMapper.map(study.getStudy(), StudyListForm.class);
         }).collect(Collectors.toList());
@@ -147,7 +144,8 @@ public class StudyService {
     }
 
     public StudyApplyForm getApplyDetail(Long id) {
-        return studyMapper.map(studyApplyRepository.findById(id), StudyApplyForm.class);
+        StudyApply studyApply=studyApplyRepository.findById(id).get();
+        return studyMapper.map(studyApply, StudyApplyForm.class);
     }
 
     public OpenRecruitForm getOpenRecruitForm(Long id) {
@@ -204,14 +202,20 @@ public class StudyService {
                 .role(role)
                 .build();
     }
+    public StudyApply generateStudyApply(Study study, Account account) {
+        return new StudyApply().builder()
+                .study(study)
+                .applicant(account)
+                .build();
 
+    }
     public String setEmpower(Long study_id, EmpowerForm empowerForm) {
         studyMemberRepository.updateRole(study_id, accountRepository.findByNickname(empowerForm.getNickName()).getId(), empowerForm.getRole());
         return "성공적으로 권한을 부여했습니다.";
     }
 
-    public List<StudyApplyForm> myApplyList(String nickName) {
-        List<StudyApply> studyApplies = studyApplyRepository.findByApplicant_Nickname(nickName);
+    public List<StudyApplyForm> myApplyList(Account account) {
+        List<StudyApply> studyApplies = studyApplyRepository.findByApplicant(account);
         return studyApplies.stream().map(studyApply -> {
                     return studyMapper.map(studyApply, StudyApplyForm.class);
                 }

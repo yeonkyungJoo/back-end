@@ -19,9 +19,9 @@ public class StudyBaseForm implements Serializable {
 
     private Long id; //studyId
 
-    @NotEmpty
+    @NotBlank(message="스터디 타이틀은 비어있으면 안됩니다.")
     private String title;
-
+    @NotBlank(message="스터디 소개를 적어주세요.")
     private String shortDescription;
 
     //@NotEmpty

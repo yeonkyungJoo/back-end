@@ -24,7 +24,7 @@ public class StudyManagerController {
     }
 
 
-    @GetMapping("/study/{study_id}/apply/{applyid}")
+    @GetMapping("/study/{study_id}/apply/{apply_id}")
     public ResponseEntity<?> 가입_신청_디테일_보기(@AuthenticationPrincipal LoginUser account, @PathVariable(name = "study_id") Long study_id,
                                           @PathVariable(name = "apply_id") Long apply_id) {
         return new ResponseEntity<>(studyService.getApplyDetail(apply_id), HttpStatus.OK);
@@ -33,7 +33,7 @@ public class StudyManagerController {
     @PostMapping("/study/{study_id}/apply/{apply_id}/reject")
     public ResponseEntity<?> 스터디_신청서_거절(@AuthenticationPrincipal LoginUser account, @PathVariable(name = "study_id") Long study_id,
                                         @PathVariable(name = "apply_id") Long apply_id) {
-        return new ResponseEntity<>(studyService.decideJoin(study_id, false), HttpStatus.OK);
+        return new ResponseEntity<>(studyService.decideJoin(apply_id, false), HttpStatus.OK);
     }
 
     @PostMapping("/study/{study_id}/apply/{apply_id}/accept")
