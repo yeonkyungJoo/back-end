@@ -3,7 +3,6 @@ package com.project.devidea.modules.account.exception;
 import com.project.devidea.infra.error.exception.BusinessException;
 import com.project.devidea.infra.error.exception.ErrorCode;
 import lombok.Getter;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 
 @Getter

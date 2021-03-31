@@ -172,5 +172,9 @@ public class Account {
         this.mainActivityZones.clear();
         this.mainActivityZones.addAll(mainActivityZones);
     }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
 

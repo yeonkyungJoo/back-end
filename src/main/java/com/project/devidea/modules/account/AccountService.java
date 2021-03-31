@@ -203,4 +203,15 @@ public class AccountService implements OAuthServiceInterface {
         account.updateMainActivityZones(mainActivityZones);
         mainActivityZoneRepository.saveAll(mainActivityZones);
     }
+
+    public Map<String, String> getAccountNickname(LoginUser loginUser) {
+        Map<String, String> map = new HashMap<>();
+        map.put("nickname", loginUser.getAccount().getNickname());
+        return map;
+    }
+
+    public void updateAccountNickname(LoginUser loginUser, ChangeNicknameRequest request) {
+        Account account = loginUser.getAccount();
+        account.changeNickname(request.getNickname());
+    }
 }
