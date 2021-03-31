@@ -12,6 +12,7 @@ public enum ErrorCode {
     // Common
     INVALID_INPUT_VALUE(400, "Invalid Input Value"),
     METHOD_NOT_ALLOWED(400," Invalid Input Value"),
+    UNAUTHORIZED(401," UnAuthorized "),
     INTERNAL_SERVER_ERROR(500, "Server Error"),
     INVALID_TYPE_VALUE(400, " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "Access is Denied"),

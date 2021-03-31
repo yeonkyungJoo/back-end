@@ -3,6 +3,7 @@ package com.project.devidea.modules.content.study.controller;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.content.study.KindsOf;
 import com.project.devidea.modules.content.study.StudyService;
+import com.project.devidea.modules.content.study.apply.StudyApplyForm;
 import com.project.devidea.modules.content.study.form.*;
 import com.project.devidea.modules.content.study.repository.StudyMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +30,12 @@ public class StudyBasicController {
     @PostMapping("/study")
     public ResponseEntity<?> 등록(@AuthenticationPrincipal LoginUser account, @RequestBody @Valid StudyMakingForm studyMakingForm) {
         if (account.getNickName() == null) return new ResponseEntity<>("로그인 해주십쇼.", HttpStatus.FORBIDDEN);
-        return new ResponseEntity<>(studyService.makingStudy(account.getNickName(), studyMakingForm), HttpStatus.OK);
+        return new ResponseEntity<>(studyService.makingStudy(account.getAccount(), studyMakingForm), HttpStatus.OK);
     }
 
     @PostMapping("/study/mystudy")
     public ResponseEntity<?> 내스터디(@AuthenticationPrincipal LoginUser account) {
-        return new ResponseEntity<>(studyService.myStudy(account.getNickName()), HttpStatus.OK);
+        return new ResponseEntity<>(studyService.myStudy(account.getAccount()), HttpStatus.OK);
     }
 
     @GetMapping("/study/{id}")
@@ -45,7 +46,7 @@ public class StudyBasicController {
 
     @PostMapping("/study/{id}/leave")
     public ResponseEntity<?> 스터디에서_나가기(@AuthenticationPrincipal LoginUser account, @PathVariable Long id) {
-        return new ResponseEntity<>(studyService.leaveStudy(account.getNickName(), id), HttpStatus.OK);
+        return new ResponseEntity<>(studyService.leaveStudy(account.getAccount(), id), HttpStatus.OK);
     }
 
     @GetMapping("/study/{id}/applyform")
@@ -53,4 +54,13 @@ public class StudyBasicController {
         return new ResponseEntity<>(studyService.makeStudyForm(id), HttpStatus.OK);
     }
 
+    @PostMapping("/study/{id}/apply")
+    public ResponseEntity<?> 가입_신청하기(@AuthenticationPrincipal LoginUser account,@PathVariable Long id,
+                                     @RequestBody StudyApplyForm studyApplyForm) {
+        return new ResponseEntity<>(studyService.applyStudy(account.getAccount(),studyApplyForm), HttpStatus.OK);
+    }
+    @GetMapping("/study/{id}/applylist")
+    public ResponseEntity<?> 내_가입_신청리스트(@AuthenticationPrincipal LoginUser account) {
+        return new ResponseEntity<>(studyService.myApplyList(account.getAccount()), HttpStatus.OK);
+    }
 }

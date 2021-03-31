@@ -17,6 +17,7 @@ public class StudyMember {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Column(name="study_member_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,14 +30,13 @@ public class StudyMember {
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private Study_Role role;
+    private StudyRole role;
 
     private LocalDateTime JoinDate;
     @Override
     public String toString(){
          return member.toString();
     }
-
 
 
 }

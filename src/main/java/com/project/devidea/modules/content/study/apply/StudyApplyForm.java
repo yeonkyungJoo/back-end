@@ -16,15 +16,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class StudyApplyForm { //스터디 지원서를 보낼때도 쓰고 확인할때도 씀.. 처음에 보낼때는 appiant_id는 필요없음
 
-    Long appliant_id;
-
-    @NotNull
+    @NotNull( message = "스터디id")
     Long studyId;
 
-    @NotNull
-    String applicant; //지원자
+    @NotNull( message = "지원자닉네임")
+    String applicant; //지원자이름
 
-    @NotNull
+    @NotNull( message = "스터디이름")
     String study;
 
 

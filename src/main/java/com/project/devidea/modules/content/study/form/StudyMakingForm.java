@@ -15,6 +15,7 @@ import java.util.List;
 @Getter @Setter
 @EqualsAndHashCode(callSuper=false)
 public class StudyMakingForm extends StudyBaseForm implements Serializable {
+
     private String question;
     private String fullDescription;
     private boolean open; //open할건지

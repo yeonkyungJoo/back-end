@@ -20,11 +20,19 @@ spring:
       console:
         enabled: true
       path: /h2-console
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: create
+      use-new-id-generator-mappings: true
+    properties:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.H2Dialect
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+        dialect: org.hibernate.dialect.H2Dialect
       show-sql: true
       database-platform: org.hibernate.dialect.H2Dialect
+logging.level: #띄어쓰기 없음
+  org.hibernate.SQL: debug #띄어쓰기 2칸
+  org.hibernate.type.descriptor.sql: trace
+
