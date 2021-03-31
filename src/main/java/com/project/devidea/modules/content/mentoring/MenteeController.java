@@ -98,9 +98,7 @@ public class MenteeController {
      * 멘티 탈퇴
      */
     @PostMapping("/delete")
-    public ResponseEntity quitMentee(
-            // @AuthenticationPrincipal Account account)
-            @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity quitMentee(@AuthenticationPrincipal LoginUser loginUser) {
 
         if (loginUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
