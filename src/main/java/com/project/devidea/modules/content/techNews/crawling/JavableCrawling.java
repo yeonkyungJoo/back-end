@@ -1,15 +1,14 @@
-package com.project.devidea.modules.content.tech;
+package com.project.devidea.modules.content.techNews.crawling;
 
 
 
+import com.project.devidea.modules.content.techNews.TechNews;
+import com.project.devidea.modules.content.techNews.TechNewsRepository;
+import com.project.devidea.modules.content.techNews.TechSite;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +27,11 @@ public class JavableCrawling extends Crawling{
 	}
 
 	@Autowired
-	private TechBlogRepository techBlogRepository;
+	private TechNewsRepository techBlogRepository;
 
 	@Override
     public void connect() {
         try {
-
 			doc = Jsoup.connect(blogUrl+category)
 					.get();
 		} catch (IOException e) {
@@ -48,7 +46,7 @@ public class JavableCrawling extends Crawling{
         Elements document = doc.select("main#site-main>div.css-6ada2o");
 		Iterator<Element> articles = document.select("article.post-card").iterator();
 
-		List<TechBlog> techBlogs = new ArrayList<>();
+		List<TechNews> techBlogs = new ArrayList<>();
 		while (articles.hasNext()) {
 			Element element = articles.next();
 			String url = blogUrl + element.select(">a").attr("href");
@@ -61,7 +59,8 @@ public class JavableCrawling extends Crawling{
 			Set<String> tags = new HashSet<>();
 			tags.add(element.select("div.post-card-primary-tag").text());
 
-			TechBlog techBlog = TechBlog.builder()
+			TechNews techBlog = TechNews.builder()
+					.techSite(TechSite.JAVABLE)
 					.url(url)
 					.imgUrl(imgUrl)
 					.title(title)

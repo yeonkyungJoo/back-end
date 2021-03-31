@@ -8,10 +8,15 @@ server:
       force: true
 
 spring:
+#  data:
+#    mongodb:
+#      #      url: mongodb://mongodb2:27017/test
+#      host: mongodb2
+#      port: 27017
+#      database: test
   data:
     mongodb:
-      #      url: mongodb://mongodb2:27017/test
-      host: mongodb2
+      host: localhost
       port: 27017
       database: test
   h2:
