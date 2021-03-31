@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class Notification {
     private String message;
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
+    private String link;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;

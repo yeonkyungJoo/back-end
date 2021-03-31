@@ -1,5 +1,6 @@
 package com.project.devidea.infra.config;
 
+import com.project.devidea.infra.config.security.LoginUser;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,7 @@ public class SwaggerConfig
 
 
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(LoginUser.class)
                 .globalOperationParameters(aParameters)
                 .select()
                 .apis(RequestHandlerSelectors
