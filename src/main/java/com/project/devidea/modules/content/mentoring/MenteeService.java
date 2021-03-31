@@ -50,16 +50,13 @@ public class MenteeService {
         return menteeRepository.findByAccountId(accountId);
     }
 
-/*    public void updateMentee(UpdateMenteeRequest request, Mentee mentee) {
-        // modelMapper.map(request, mentee);
-        mentee.setDescription(request.getDescription());
-        mentee.setZones(request.getZones());
-        mentee.setTags(request.getTags());
-        mentee.setOpen(request.isOpen());
-        mentee.setFree(request.isFree());
-    }*/
+    public void deleteMentee(Account account) {
 
-    public void deleteMentee(Mentee mentee) {
+        Mentee mentee = getMentee(account.getId());
+        // TODO - 예외처리
+        if(mentee == null) {
+
+        }
         mentee.setAccount(null);
         menteeRepository.delete(mentee);
     }

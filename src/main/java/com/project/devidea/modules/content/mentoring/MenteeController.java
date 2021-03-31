@@ -33,7 +33,12 @@ public class MenteeController {
     private final CreateMenteeRequestValidator createMenteeRequestValidator;
 
     @InitBinder("createMenteeRequest")
-    public void initBinder(WebDataBinder webDataBinder) {
+    public void initCreateMenteeRequestBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(createMenteeRequestValidator);
+    }
+
+    @InitBinder("updateMenteeRequest")
+    public void initUpdateMenteeRequestBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(createMenteeRequestValidator);
     }
 
@@ -43,14 +48,10 @@ public class MenteeController {
     @GetMapping("/")
     public ResponseEntity getMentees() {
 
-        List<Mentee> mentees = menteeRepository.findAll();
-
-        List<MenteeDto> collect = mentees.stream()
+        List<MenteeDto> collect = menteeRepository.findAll().stream()
                 .map(mentee -> new MenteeDto(mentee))
                 .collect(Collectors.toList());
-
         return new ResponseEntity(collect, HttpStatus.OK);
-
     }
 
     /**
@@ -59,11 +60,10 @@ public class MenteeController {
     @GetMapping("/{id}")
     public ResponseEntity getMentee(@PathVariable(name = "id") Long menteeId) {
 
+        // TODO - 예외 처리
         Mentee mentee = menteeRepository.findById(menteeId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Id"));
-
-        MenteeDto dto = new MenteeDto(mentee);
-        return new ResponseEntity(dto, HttpStatus.OK);
+        return new ResponseEntity(new MenteeDto(mentee), HttpStatus.OK);
     }
 
     /**
@@ -98,18 +98,12 @@ public class MenteeController {
      * 멘티 탈퇴
      */
     @PostMapping("/delete")
-    public ResponseEntity quitMentee(@AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity quitMentee(@CurrentUser Account account) {
 
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
-        Mentee mentee = menteeRepository.findByAccountId(account.getId());
-        if (mentee == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        menteeService.deleteMentee(mentee);
+        menteeService.deleteMentee(account);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -117,18 +111,22 @@ public class MenteeController {
     @Data
     class MenteeDto {
 
+        private Long id;
         private String name;
         private String description;
-        private Set<Zone> zones;
-        private Set<Tag> tags;
+        private Set<String> zones;
+        private Set<String> tags;
         private boolean open;
         private boolean free;
 
         public MenteeDto(Mentee mentee) {
+            this.id = mentee.getId();
             this.name = mentee.getAccount().getName();
             this.description = mentee.getDescription();
-            this.zones = mentee.getZones();
-            this.tags = mentee.getTags();
+            this.zones = mentee.getZones().stream()
+                    .map(zone -> zone.toString()).collect(Collectors.toSet());
+            this.tags = mentee.getTags().stream()
+                    .map(tag -> tag.toString()).collect(Collectors.toSet());
             this.open = mentee.isOpen();
             this.free = mentee.isFree();
         }

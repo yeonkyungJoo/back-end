@@ -19,7 +19,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,27 +39,27 @@ public class MentorController {
     }
 */
 
+    // TODO - 페이징
     /**
      * 멘토 전체 조회 - 페이징
      */
-    @GetMapping("/")
+    @GetMapping("/list")
     public ResponseEntity getMentors(Pageable pageable) {
-
         return ResponseEntity.ok(null);
     }
 
-/*
+    /**
+     * 멘토 전체 조회
+     */
     @GetMapping("/")
     public ResponseEntity getMentors() {
 
-        List<Mentor> mentors = mentorRepository.findAll();
-        List<MentorDto> collect = mentors.stream()
+        List<MentorDto> collect = mentorRepository.findAll().stream()
                 .map(mentor -> new MentorDto(mentor))
                 .collect(Collectors.toList());
-
         return new ResponseEntity(collect, HttpStatus.OK);
     }
-*/
+
 
     /**
      * 멘토 조회

@@ -20,7 +20,7 @@ public class UpdateMenteeRequest extends Request {
     @Builder.Default
     @NotEmpty
     private Set<String> tags = new HashSet<>();
-    private boolean open;
+    private boolean open = true;
     private boolean free;
 
 }
