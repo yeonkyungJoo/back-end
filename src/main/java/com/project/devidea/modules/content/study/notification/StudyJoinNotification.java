@@ -25,14 +25,14 @@ public class StudyJoinNotification implements StudyNotification {
         List<Notification> notifications = accountList.stream()
                 .filter(account -> account.isReceiveStudyNotification() == true)
                 .map(account -> {
-                    return Notification.generateNotification(study.getTitle(), messageOthers, NotificationType.스터디_승인, account);
+                    return Notification.generateNotification(study.getTitle(), messageOthers, NotificationType.STUDY, account);
                 }).collect(Collectors.toList());
         notificationRepository.saveAll(notifications);
     }
 
     @Override
     public void sendOwn(Study study, Account account, JpaRepository jpaRepository) {
-        notificationRepository.save(Notification.generateNotification(study.getTitle(), messageOthers, NotificationType.스터디_승인, account));
+        notificationRepository.save(Notification.generateNotification(study.getTitle(), messageOthers, NotificationType.STUDY, account));
     }
 
     @Override

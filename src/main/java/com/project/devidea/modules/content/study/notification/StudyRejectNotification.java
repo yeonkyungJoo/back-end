@@ -21,7 +21,7 @@ public class StudyRejectNotification implements StudyNotification{
 
     @Override
     public void sendOwn(Study study, Account account, JpaRepository jpaRepository) {
-        notificationRepository.save(Notification.generateNotification(study.getTitle(), message_reject, NotificationType.스터디_거절, account));
+        notificationRepository.save(Notification.generateNotification(study.getTitle(), message_reject, NotificationType.STUDY, account));
     }
 
     @Override

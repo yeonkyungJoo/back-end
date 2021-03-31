@@ -27,14 +27,14 @@ public class StudyCreatedNotification implements StudyNotification {
         List<Notification> notifications = accountList.stream()
                 .filter(account -> account.isReceiveStudyNotification() == true)
                 .map(account -> {
-                return Notification.generateNotification(study.getTitle(), message_releated, NotificationType.스터디_생성, account);
+                return Notification.generateNotification(study.getTitle(), message_releated, NotificationType.STUDY, account);
         }).collect(Collectors.toList());
         notificationRepository.saveAll(notifications);
     }
 
     @Override
     public void sendOwn(Study study, Account account, JpaRepository jpaRepository) {
-        notificationRepository.save(Notification.generateNotification(study.getTitle(), message_owner, NotificationType.스터디_생성, account));
+        notificationRepository.save(Notification.generateNotification(study.getTitle(), message_owner, NotificationType.STUDY, account));
     }
 
     @Override

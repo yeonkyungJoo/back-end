@@ -1,22 +1,14 @@
 package com.project.devidea.modules.content.study;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.devidea.modules.account.Account;
-import com.project.devidea.modules.content.Content;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.core.metrics.StartupStep;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Data

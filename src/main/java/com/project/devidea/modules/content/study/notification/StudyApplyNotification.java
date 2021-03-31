@@ -27,14 +27,14 @@ public class StudyApplyNotification implements StudyNotification{
         List<Notification> notifications=studyMembers.stream().filter(studyMember ->
             (studyMember.getRole().equals(StudyRole.괸리자))||(studyMember.getRole().equals(StudyRole.팀장))
         ).map(studyMember -> {
-            return Notification.generateNotification(study.getTitle(), message_releated, NotificationType.스터디_신청, studyMember.getMember());
+            return Notification.generateNotification(study.getTitle(), message_releated, NotificationType.STUDY, studyMember.getMember());
         }).collect(Collectors.toList());
         notificationRepository.saveAll(notifications);
     }
 
     @Override
     public void sendOwn(Study study, Account account, JpaRepository jpaRepository) {
-        notificationRepository.save(Notification.generateNotification(study.getTitle(), message_applicant, NotificationType.스터디_신청,account));
+        notificationRepository.save(Notification.generateNotification(study.getTitle(), message_applicant, NotificationType.STUDY,account));
     }
 
     @Override
