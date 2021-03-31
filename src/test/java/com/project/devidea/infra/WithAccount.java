@@ -1,6 +1,5 @@
 package com.project.devidea.infra;
 
-import com.project.devidea.modules.content.study.Study_Role;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.Retention;

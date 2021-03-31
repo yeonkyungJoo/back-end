@@ -1,6 +1,6 @@
 package com.project.devidea.modules.content.study.form;
 
-import com.project.devidea.modules.content.study.Study_Role;
+import com.project.devidea.modules.content.study.StudyRole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +11,5 @@ public class EmpowerForm {
     @NotNull
     String NickName;
     @NotNull
-    Study_Role role;
+    StudyRole role;
 }

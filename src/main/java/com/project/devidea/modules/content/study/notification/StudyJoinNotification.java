@@ -12,14 +12,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
-public class StudyCreatedNotification implements StudyNotification {
-    static String message_releated = "관심분야의 스터디가 만들어졌습니다.";
-    static String message_owner = "스터디를 만들었습니다.";
+public class StudyJoinNotification implements StudyNotification {
+    static String messageOthers = "스터디원이 들어왔습니다.";
+    static String messageApplicant = "스터디원이 됐습니다.";
     private final NotificationRepository notificationRepository;
-
     @Override
     public void sendRelated(Study study, JpaRepository jpaRepository) {
         InterestRepository interestRepository = (InterestRepository) jpaRepository;
@@ -27,14 +25,14 @@ public class StudyCreatedNotification implements StudyNotification {
         List<Notification> notifications = accountList.stream()
                 .filter(account -> account.isReceiveStudyNotification() == true)
                 .map(account -> {
-                return Notification.generateNotification(study.getTitle(), message_releated, NotificationType.스터디_생성, account);
-        }).collect(Collectors.toList());
+                    return Notification.generateNotification(study.getTitle(), messageOthers, NotificationType.스터디_승인, account);
+                }).collect(Collectors.toList());
         notificationRepository.saveAll(notifications);
     }
 
     @Override
     public void sendOwn(Study study, Account account, JpaRepository jpaRepository) {
-        notificationRepository.save(Notification.generateNotification(study.getTitle(), message_owner, NotificationType.스터디_생성, account));
+        notificationRepository.save(Notification.generateNotification(study.getTitle(), messageOthers, NotificationType.스터디_승인, account));
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.project.devidea.modules.content.study;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devidea.infra.WithAccount;
-import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.study.apply.StudyApply;
@@ -23,26 +22,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
-
-import static com.project.devidea.modules.notification.NotificationType.스터디_거절;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -157,7 +146,7 @@ class StudyControllerTest {
         Iterator<Study> studyIterator = studies.listIterator();
         while (studyIterator.hasNext()) {
             Study study = studyIterator.next();
-            studyService.addMember(me, study, Study_Role.팀장);
+            studyService.addMember(me, study, StudyRole.팀장);
         }
         //when 조회
         MvcResult result = mockMvc.perform(post("/study/mystudy"))
@@ -177,8 +166,8 @@ class StudyControllerTest {
         void 스터디_자세한정보() throws Exception {
             Study study = studySampleGenerator.generateDumy(1).get(0);
             studyRepository.save(study);
-            studyService.addMember(User1, study, Study_Role.팀장);
-            studyService.addMember(User2, study, Study_Role.회원);
+            studyService.addMember(User1, study, StudyRole.팀장);
+            studyService.addMember(User2, study, StudyRole.회원);
             //when 스터디 자세한 정보 조회
             MvcResult result = mockMvc.perform(get("/study/{id}", study.getId().toString()))
                     .andDo(print())
@@ -203,9 +192,9 @@ class StudyControllerTest {
         Account admin = accountRepository.findByNickname("권위자");
         Study study = studySampleGenerator.generateDumy(1).get(0);
         studyRepository.save(study);
-        studyService.addMember(admin, study, Study_Role.팀장);
-        studyService.addMember(User1, study, Study_Role.회원);
-        studyService.addMember(User2, study, Study_Role.회원);
+        studyService.addMember(admin, study, StudyRole.팀장);
+        studyService.addMember(User1, study, StudyRole.회원);
+        studyService.addMember(User2, study, StudyRole.회원);
         List<StudyMember> studyMemberRepositoryAll = studyMemberRepository.findAll();
         //when 스터디 권위자 계정으로 삭제
         mockMvc.perform(post("/study/{id}/delete", study.getId().toString()))
@@ -221,7 +210,7 @@ class StudyControllerTest {
         Study study = studySampleGenerator.generateDumy(1).get(0);
         Account me = accountRepository.findByNickname("스터디원");
         studyRepository.save(study);
-        studyService.addMember(me,study,Study_Role.회원);
+        studyService.addMember(me,study, StudyRole.회원);
         //when 스터디 나가기
         mockMvc.perform(post("/study/{id}/leave",study.getId().toString()))
                 .andDo(print())
@@ -261,7 +250,7 @@ class StudyControllerTest {
         Account account=accountRepository.findByNickname("me");
         Study study = studySampleGenerator.generateDumy(1).get(0);
         studyRepository.save(study);
-        studyMemberRepository.save(studyService.generateStudyMember(study,account,Study_Role.팀장));
+        studyMemberRepository.save(studyService.generateStudyMember(study,account, StudyRole.팀장));
         StudyApply studyApply=studyService.generateStudyApply(study,User1);
         studyApplyRepository.save(studyApply);
         //when+then 거절했을시 잘 거절확인
@@ -279,7 +268,7 @@ class StudyControllerTest {
         Account account=accountRepository.findByNickname("me");
         Study study = studySampleGenerator.generateDumy(1).get(0);
         studyRepository.save(study);
-        studyMemberRepository.save(studyService.generateStudyMember(study,account,Study_Role.팀장));
+        studyMemberRepository.save(studyService.generateStudyMember(study,account, StudyRole.팀장));
         StudyApply studyApply1=studyService.generateStudyApply(study,User1);
         StudyApply studyApply2=studyService.generateStudyApply(study,User2);
         studyApplyRepository.saveAll(Arrays.asList(studyApply1,studyApply2));
@@ -298,7 +287,7 @@ class StudyControllerTest {
         Account account=accountRepository.findByNickname("me");
         Study study = studySampleGenerator.generateDumy(1).get(0);
         studyRepository.save(study);
-        studyMemberRepository.save(studyService.generateStudyMember(study,account,Study_Role.팀장));
+        studyMemberRepository.save(studyService.generateStudyMember(study,account, StudyRole.팀장));
         StudyApply studyApply1=new StudyApply().builder().study(study)
                             .applicant(User1)
                             .answer("answer")

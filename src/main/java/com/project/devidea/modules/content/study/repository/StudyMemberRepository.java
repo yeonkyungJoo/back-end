@@ -3,7 +3,7 @@ package com.project.devidea.modules.content.study.repository;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.study.Study;
 import com.project.devidea.modules.content.study.StudyMember;
-import com.project.devidea.modules.content.study.Study_Role;
+import com.project.devidea.modules.content.study.StudyRole;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -36,6 +36,6 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember,Long> {
 
     @Modifying
     @Query("update StudyMember s set s.role =:studyRole where s.member.id=:accountId and s.study.id=:studyId ")
-    void updateRole(@Param("studyId") Long studyId, @Param("accountId")Long accountId,@Param("studyRole") Study_Role studyRole);
+    void updateRole(@Param("studyId") Long studyId, @Param("accountId")Long accountId,@Param("studyRole") StudyRole studyRole);
 
 }

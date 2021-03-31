@@ -11,17 +11,12 @@ import com.project.devidea.modules.content.study.repository.StudyMemberRepositor
 import com.project.devidea.modules.content.study.repository.StudyRepository;
 import com.project.devidea.modules.notification.Notification;
 import com.project.devidea.modules.notification.NotificationRepository;
-import com.project.devidea.modules.notification.NotificationService;
-import com.project.devidea.modules.notification.NotificationType;
-import com.project.devidea.modules.notification.aop.WithNotification;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import com.project.devidea.modules.tagzone.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.With;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +56,7 @@ public class StudyService {
     public StudyDetailForm makingStudy(Account admin, @Valid StudyMakingForm studyMakingForm) { //study만들기
         Study study = ConvertToStudy(studyMakingForm);
         studyRepository.save(study);
-        studyMemberRepository.save(generateStudyMember(study, admin, Study_Role.팀장));
+        studyMemberRepository.save(generateStudyMember(study, admin, StudyRole.팀장));
         StudyDetailForm studyDetailForm = studyMapper.map(study, StudyDetailForm.class);
         studyDetailForm.setMembers(new HashSet<String>(Arrays.asList(admin.getNickname())));
         return studyDetailForm;
@@ -86,11 +81,11 @@ public class StudyService {
             return "인원이 꽉찼습니다.";
         studyApply.setAccpted(accept);
         if (accept) {
-            return addMember(applicant, study, Study_Role.회원);
+            return addMember(applicant, study, StudyRole.회원);
         }
         else return "성공적으로 거절하였습니다.";
     }
-    public String addMember(Account applicant, Study study, Study_Role role) {
+    public String addMember(Account applicant, Study study, StudyRole role) {
         studyMemberRepository.save(
                 StudyMember.
                         builder()
@@ -194,7 +189,7 @@ public class StudyService {
         return study;
     }
 
-    public StudyMember generateStudyMember(Study study, Account account, Study_Role role) {
+    public StudyMember generateStudyMember(Study study, Account account, StudyRole role) {
         return StudyMember.builder()
                 .study(study)
                 .member(account)

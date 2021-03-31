@@ -28,7 +28,7 @@ public class QStudyMember extends EntityPathBase<StudyMember> {
 
     public final com.project.devidea.modules.account.QAccount member;
 
-    public final EnumPath<Study_Role> role = createEnum("role", Study_Role.class);
+    public final EnumPath<StudyRole> role = createEnum("role", StudyRole.class);
 
     public final QStudy study;
 

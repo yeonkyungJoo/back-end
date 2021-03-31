@@ -2,7 +2,6 @@ package com.project.devidea.modules.content.study.controller;
 
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.content.study.StudyService;
-import com.project.devidea.modules.content.study.Study_Role;
 import com.project.devidea.modules.content.study.form.EmpowerForm;
 import com.project.devidea.modules.content.study.form.OpenRecruitForm;
 import com.project.devidea.modules.content.study.form.TagZoneForm;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @Controller
 @RestController

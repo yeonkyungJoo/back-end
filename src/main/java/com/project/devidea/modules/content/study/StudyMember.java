@@ -30,7 +30,7 @@ public class StudyMember {
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private Study_Role role;
+    private StudyRole role;
 
     private LocalDateTime JoinDate;
     @Override

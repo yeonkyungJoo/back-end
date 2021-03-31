@@ -2,9 +2,9 @@ package com.project.devidea.modules;
 
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.repository.AccountRepository;
+import com.project.devidea.modules.content.study.StudyRole;
 import com.project.devidea.modules.content.study.StudySampleGenerator;
 import com.project.devidea.modules.content.study.StudyService;
-import com.project.devidea.modules.content.study.Study_Role;
 import com.project.devidea.modules.content.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -74,8 +73,8 @@ public class InitService {
         studyRepository.saveAll(studySampleGenerator.generateDumy(30));
         accountRepository.saveAll(Arrays.asList(account,account2,account3));
         studyRepository.findAll().stream().forEach(study -> {
-            studyService.addMember(account,study, Study_Role.팀장);
-            studyService.addMember(account2,study, Study_Role.회원);
+            studyService.addMember(account,study, StudyRole.팀장);
+            studyService.addMember(account2,study, StudyRole.회원);
         });
     }
 }
