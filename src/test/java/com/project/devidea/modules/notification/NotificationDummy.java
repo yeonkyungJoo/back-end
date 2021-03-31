@@ -12,21 +12,21 @@ public class NotificationDummy {
 
         Notification notificationA = new Notification().builder()
                 .checked(true)
-                .notificationType(NotificationType.STUDY_CREATED)
+                .notificationType(NotificationType.STUDY)
                 .title("스터디생성")
                 .message("읽은 알람1")
                 .build();
 
         Notification notificationB = new Notification().builder()
                 .checked(true)
-                .notificationType(NotificationType.STUDY_CREATED)
+                .notificationType(NotificationType.STUDY)
                 .title("스터디생성")
                 .message("읽은 알람2")
                 .build();
 
         Notification notificationC = new Notification().builder()
                 .checked(true)
-                .notificationType(NotificationType.STUDY_CREATED)
+                .notificationType(NotificationType.STUDY)
                 .title("스터디생성")
                 .message("읽은 알람3")
                 .build();
@@ -44,7 +44,7 @@ public class NotificationDummy {
         Notification notificationA = new Notification().builder()
                 .account(AccountDummy.getAccount())
                 .checked(false)
-                .notificationType(NotificationType.STUDY_CREATED)
+                .notificationType(NotificationType.STUDY)
                 .title("스터디생성")
                 .message("읽지 않은 알람1")
                 .build();
@@ -52,7 +52,7 @@ public class NotificationDummy {
         Notification notificationB = new Notification().builder()
                 .account(AccountDummy.getAccount())
                 .checked(false)
-                .notificationType(NotificationType.STUDY_CREATED)
+                .notificationType(NotificationType.STUDY)
                 .title("스터디생성")
                 .message("읽지 않은 알람2")
                 .build();
@@ -60,7 +60,7 @@ public class NotificationDummy {
         Notification notificationC = new Notification().builder()
                 .account(AccountDummy.getAccount())
                 .checked(false)
-                .notificationType(NotificationType.STUDY_CREATED)
+                .notificationType(NotificationType.STUDY)
                 .title("스터디생성")
                 .message("읽지 않은 알람3")
                 .build();

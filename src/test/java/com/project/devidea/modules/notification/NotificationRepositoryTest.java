@@ -4,7 +4,6 @@ import com.project.devidea.infra.TestConfig;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.AccountDummy;
 import com.project.devidea.modules.account.repository.AccountRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @Import(TestConfig.class)
 public class NotificationRepositoryTest {
+
 
     @Autowired
     NotificationRepository notificationRepository;

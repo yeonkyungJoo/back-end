@@ -1,5 +1,8 @@
-package com.project.devidea.modules.content.tech;
+package com.project.devidea.modules.content.techNews.crawling;
 
+import com.project.devidea.modules.content.techNews.TechNews;
+import com.project.devidea.modules.content.techNews.TechNewsRepository;
+import com.project.devidea.modules.content.techNews.TechSite;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -23,7 +26,7 @@ public class LineCrawling extends Crawling{
     }
 
     @Autowired
-    private TechBlogRepository techBlogRepository;
+    private TechNewsRepository techBlogRepository;
 
     @Override
     public void connect() {
@@ -42,7 +45,7 @@ public class LineCrawling extends Crawling{
         connect();
         Elements document = doc.select("main#main");
         Iterator<Element> articles = document.select("article.post").iterator();
-        List<TechBlog> techBlogs = new ArrayList<>();
+        List<TechNews> techBlogs = new ArrayList<>();
         while (articles.hasNext()) {
             Element element = articles.next();
             String url = element.select("h2.entry-title>a").attr("href");
@@ -59,7 +62,8 @@ public class LineCrawling extends Crawling{
                 Element tag = elementTags.next();
                 tags.add(tag.text());
             }
-            TechBlog techBlog = TechBlog.builder()
+            TechNews techBlog = TechNews.builder()
+                    .techSite(TechSite.LINE)
                     .url(url)
                     .imgUrl(imgUrl)
                     .title(title)

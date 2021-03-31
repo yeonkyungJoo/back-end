@@ -1,10 +1,12 @@
-package com.project.devidea.modules.content.tech;
+package com.project.devidea.modules.content.techNews.crawling;
 
+import com.project.devidea.modules.content.techNews.TechNews;
+import com.project.devidea.modules.content.techNews.TechNewsRepository;
+import com.project.devidea.modules.content.techNews.TechSite;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +25,10 @@ public class DaangnCrawling extends Crawling{
     }
 
     @Autowired
-    private TechBlogRepository techBlogRepository;
+    private TechNewsRepository techBlogRepository;
 
     @Override
-    void connect() {
+    public void connect() {
         try {
             doc = Jsoup.connect(blogUrl+category)
                     .timeout(5000)
@@ -38,13 +40,13 @@ public class DaangnCrawling extends Crawling{
 
     @Override
  //   @Scheduled( cron="${crawling.Scheduled}")
-    void executeCrawling() {
+    public void executeCrawling() {
         connect();
 
         Elements document = doc.select("div.u-clearfix.u-maxWidth1032.u-marginAuto");
         Iterator<Element> articles = document.select("div.u-size8of12.u-xs-size12of12>div").iterator();
 
-        List<TechBlog> techBlogs = new ArrayList<>();
+        List<TechNews> techBlogs = new ArrayList<>();
         while (articles.hasNext()) {
             Element element = articles.next();
             String url = element.select(">a[data-post-id]").attr("href");
@@ -55,7 +57,8 @@ public class DaangnCrawling extends Crawling{
             String writerName = element.select("div.postMetaInline.postMetaInline-authorLockup.ui-captionStrong.u-flex1.u-noWrapWithEllipsis>a").text();
             LocalDate createdDate = LocalDate.parse(element.select("div.postMetaInline.postMetaInline-authorLockup.ui-captionStrong.u-flex1.u-noWrapWithEllipsis>div>time").attr("datetime").substring(0,10));
 
-            TechBlog techBlog = TechBlog.builder()
+            TechNews techBlog = TechNews.builder()
+                    .techSite(TechSite.DAANGN)
                     .url(url)
                     .imgUrl(imgUrl)
                     .title(title)

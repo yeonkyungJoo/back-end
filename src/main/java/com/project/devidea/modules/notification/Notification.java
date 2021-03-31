@@ -21,6 +21,7 @@ public class Notification {
     private String message;
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
+    private String link;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;

@@ -16,6 +16,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 apply plugin: "io.spring.dependency-management"
 dependencies {
@@ -60,7 +61,12 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    // https://mvnrepository.com/artifact/de.flapdoodle.embed/de.flapdoodle.embed.mongo
+    testImplementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.2.0'
 
+    implementation platform('com.google.cloud:libraries-bom:19.0.0')
+
+    compile 'com.google.cloud:google-cloud-language'
 }
 
 def generated='src/main/generated'

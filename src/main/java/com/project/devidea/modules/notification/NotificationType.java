@@ -4,5 +4,5 @@ import javax.persistence.Enumerated;
 
 
 public enum NotificationType {
-    STUDY_CREATED;
+    STUDY,TECH,MENTORING;
 }

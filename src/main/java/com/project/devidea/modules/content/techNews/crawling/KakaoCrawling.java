@@ -1,5 +1,8 @@
-package com.project.devidea.modules.content.tech;
+package com.project.devidea.modules.content.techNews.crawling;
 
+import com.project.devidea.modules.content.techNews.TechNews;
+import com.project.devidea.modules.content.techNews.TechNewsRepository;
+import com.project.devidea.modules.content.techNews.TechSite;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -23,10 +26,10 @@ public class KakaoCrawling extends Crawling{
     }
 
     @Autowired
-    private TechBlogRepository techBlogRepository;
+    private TechNewsRepository techBlogRepository;
 
     @Override
-    void connect() {
+    public void connect() {
         try {
             doc = Jsoup.connect(blogUrl+category)
                     .timeout(5000)
@@ -38,12 +41,12 @@ public class KakaoCrawling extends Crawling{
 
     @Override
     @Scheduled( cron="${crawling.Scheduled}")
-    void executeCrawling() {
+    public void executeCrawling() {
         connect();
         Elements document = doc.select("ul#post-list");
 		Iterator<Element> articles = document.select("li.post-item").iterator();
 
-        List<TechBlog> techBlogs = new ArrayList<>();
+        List<TechNews> techBlogs = new ArrayList<>();
 		while (articles.hasNext()) {
 			Element element = articles.next();
 			String url = blogUrl + element.select(">a").attr("href");
@@ -62,7 +65,8 @@ public class KakaoCrawling extends Crawling{
 				Element tag = elementTags.next();
                 tags.add(tag.text());
 			}
-			TechBlog techBlog = TechBlog.builder()
+			TechNews techBlog = TechNews.builder()
+                    .techSite(TechSite.KAKAO)
                     .url(url)
                     .imgUrl(imgUrl)
                     .title(title)
