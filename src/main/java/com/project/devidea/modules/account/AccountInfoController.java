@@ -50,9 +50,7 @@ public class AccountInfoController {
     @PatchMapping("/password")
     public ResponseEntity<?> updatePassword(@AuthenticationPrincipal LoginUser loginUser,
                                             @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto, Errors errors) {
-//        if (errors.hasErrors()) {
-//            ControllerAdvice 보고 작성하기
-//        }
+
         accountService.updatePassword(loginUser, updatePasswordRequestDto);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
