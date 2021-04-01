@@ -16,6 +16,10 @@ public interface StudyApplyRepository extends JpaRepository<StudyApply,Long> {
     StudyApply findByApplicantAndStudy(Account applicant, Study study);
     @EntityGraph(attributePaths = {"study"}, type = EntityGraph.EntityGraphType.LOAD)
     List<StudyApply> findByApplicant(Account account);
+
+    @EntityGraph(attributePaths = {"study"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<StudyApply> findByApplicant_Nickname(String NickName);
+
     @EntityGraph(attributePaths = {"applicant"}, type = EntityGraph.EntityGraphType.LOAD)
     List<StudyApply> findByStudy(Study study);
     @EntityGraph(attributePaths = {"applicant"}, type = EntityGraph.EntityGraphType.LOAD)

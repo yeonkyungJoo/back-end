@@ -29,6 +29,7 @@ public class AccountController {
     @InitBinder("signUpRequestDto")
     public void initSignUpRequestDtoValidator(WebDataBinder binder) {
         binder.addValidators(signUpRequestValidator);
+        System.out.println("AccountController.initSignUpRequestDtoValidator");
     }
 
     @InitBinder("signUpOAuthRequestDto")

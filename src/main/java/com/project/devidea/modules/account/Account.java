@@ -18,7 +18,7 @@ import java.util.*;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ACCOUNT_ID")
+    @Column(name = "account_id")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -175,6 +175,12 @@ public class Account {
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    @Transient
+    public static Account generateAccountById(Long id){
+        return new Account().builder()
+                .id(id).build();
     }
 }
 

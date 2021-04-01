@@ -1,21 +1,14 @@
 package com.project.devidea.modules.content.study;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.devidea.modules.account.Account;
-import com.project.devidea.modules.content.Content;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.springframework.core.metrics.StartupStep;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -24,9 +17,11 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(of = "id")
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Study implements Serializable {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    Long id;
+    @SequenceGenerator(name = "SequenceGenerator", sequenceName = "mySeq", allocationSize = 50)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SequenceGenerator")
+    @Column(name="study_id")
+    private Long id;
     @OneToMany(mappedBy = "study", cascade =CascadeType.ALL) //여기 스터디가 삭제되면 studymember에도 영향끼침
     private Set<StudyMember> members = new HashSet<>();
     private String title;
@@ -91,5 +86,10 @@ public class Study implements Serializable {
         this.level = level;
         this.mentoRecruiting = mentoRecruiting;
         this.question = question;
+    }
+    @Transient
+    public static Study generateStudyById(Long id){
+        return new Study().builder()
+                .id(id).build();
     }
 }

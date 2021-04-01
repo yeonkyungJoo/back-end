@@ -9,4 +9,5 @@ import java.lang.annotation.RetentionPolicy;
 @WithSecurityContext(factory = WithAccountFactory.class)
 public @interface WithAccount {
     String NickName();
+    String Role()default "Study_Role.회원";
 }
