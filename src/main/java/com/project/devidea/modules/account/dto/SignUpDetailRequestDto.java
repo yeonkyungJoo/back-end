@@ -1,6 +1,7 @@
 package com.project.devidea.modules.account.dto;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -11,10 +12,10 @@ import java.util.Map;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class SignUpDetailRequestDto {
+public class SignUpDetailRequestDto extends ChangeNicknameRequest {
 
     private String profileImage;
     private boolean receiveEmail;
@@ -34,13 +35,13 @@ public class SignUpDetailRequestDto {
     @Builder.Default
     private List<String> interests = new ArrayList<>();
 
-    public Map<String, List<String>> getCitiesAndProvinces() {
+    public Map<String, List<String>> splitCitiesAndProvinces() {
         Map<String, List<String>> map = new HashMap<>();
         List<String> cities = new ArrayList<>();
         List<String> provinces = new ArrayList<>();
 
         zones.forEach(z -> {
-            String[] cityProvince = z.split(" ");
+            String[] cityProvince = z.split("/");
             String c = cityProvince[0];
             String p = cityProvince[1];
             cities.add(c);

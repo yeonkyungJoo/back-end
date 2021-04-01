@@ -12,7 +12,8 @@ public class AccountDummy {
     public static SignUpDetailRequestDto getSignUpDetailRequestDto() {
         return SignUpDetailRequestDto.builder()
                 .careerYears(3).receiveEmail(true).jobField("웹개발").profileImage("1234")
-                .zones(Arrays.asList("서울특별시 광진구", "서울특별시 중랑구", "경기도 수원시"))
+                .nickname("고범석짱짱짱")
+                .zones(Arrays.asList("서울특별시/광진구", "서울특별시/중랑구", "경기도/수원시"))
                 .techStacks(Arrays.asList("java", "python"))
                 .interests(Arrays.asList("react", "Vue.js", "spring"))
                 .build();
@@ -40,12 +41,12 @@ public class AccountDummy {
     }
 
     public static SignUpOAuthRequestDto getSignUpOAuthRequestDto() {
-        return SignUpOAuthRequestDto.builder().email("kokoko@google.com").name("구글범석").nickname("구글범석")
+        return SignUpOAuthRequestDto.builder().email("kokoko@google.com").name("구글범석")
                 .profileImage("12341234").provider("google").build();
     }
 
     public static SignUpOAuthRequestDto getSignUpOAuthRequestDto2() {
-        return SignUpOAuthRequestDto.builder().email("ko@google.com").name("고오범석").nickname("고오범석")
+        return SignUpOAuthRequestDto.builder().email("ko@google.com").name("고오범석")
                 .profileImage("12341234").provider("google").build();
     }
 
@@ -82,5 +83,33 @@ public class AccountDummy {
         return MainActivityZonesUpdateRequestDto.builder()
                 .citiesAndProvinces(Arrays.asList("서울특별시/중랑구", "서울특별시/노원구"))
                 .build();
+    }
+
+    public static SignUpRequestDto getFailSignUpRequestWithValid() {
+        return SignUpRequestDto.builder()
+                .email("").name("").password("").passwordConfirm("").build();
+    }
+
+    public static SignUpRequestDto getFailSignUpRequestWithValidator() {
+        return SignUpRequestDto.builder().email("test@test.com").name("고범석")
+                .password("12341234").passwordConfirm("123412341234").build();
+    }
+
+    public static SignUpOAuthRequestDto getFailSignUpOAuthRequestWithValid() {
+        return SignUpOAuthRequestDto.builder().provider("").email("").name("").build();
+    }
+
+    public static SignUpOAuthRequestDto getFailSignUpOAuthRequestWithValidator() {
+        return SignUpOAuthRequestDto.builder().provider("kakao").email("asdfasdf").name("고범석").build();
+    }
+
+    public static SignUpDetailRequestDto getFailSignUpDetailRequestWithValid(){
+        return SignUpDetailRequestDto.builder()
+                .careerYears(-1).jobField("").nickname("testusers").build();
+    }
+
+    public static SignUpDetailRequestDto getFailSignUpDetailRequestWithValidator() {
+        return SignUpDetailRequestDto.builder().nickname("DevIdea")
+                .careerYears(2).jobField("웹개발").build();
     }
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devidea.infra.config.security.CustomUserDetailService;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
-import com.project.devidea.modules.account.AccountService;
 import com.project.devidea.modules.account.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -22,8 +21,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -47,8 +46,6 @@ class AccountControllerTest {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
     @Autowired
-    AccountService accountService;
-    @Autowired
     CustomUserDetailService customUserDetailService;
 
     @BeforeEach
@@ -64,10 +61,8 @@ class AccountControllerTest {
     void save() throws Exception {
 
 //        given
-        SignUpRequestDto request = SignUpRequestDto.builder().name("고범떡").nickname("고범떡").email("kob@naver.com")
+        SignUpRequestDto request = SignUpRequestDto.builder().name("고범떡").email("kob@naver.com")
                 .password("123412341234").passwordConfirm("123412341234").gender("male").build();
-        SignUpResponseDto response = SignUpResponseDto.builder().id("1").name(request.getName())
-                .nickname(request.getNickname()).email(request.getEmail()).gender(request.getGender()).build();
 
 //        when, then
         mockMvc.perform(post("/sign-up")
@@ -75,10 +70,9 @@ class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("고범떡")))
-                .andExpect(jsonPath("$.nickname", is("고범떡")))
-                .andExpect(jsonPath("$.email", is("kob@naver.com")))
-                .andExpect(jsonPath("$.gender", is("male")));
+                .andExpect(jsonPath("$.data.name", is("고범떡")))
+                .andExpect(jsonPath("$.data.email", is("kob@naver.com")))
+                .andExpect(jsonPath("$.data.gender", is("male")));
     }
 
     @Test
@@ -94,44 +88,6 @@ class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());
     }
-//    @Test
-//    @DisplayName("회원가입 validation - 입력값 확인하기")
-//    void confirmJoinValidation() throws Exception {
-//
-////        given
-//        SignUpRequestDto request = SignUpRequestDto.builder()
-//                .email("1234").gender("male").password("123").passwordConfirm("12").nickname("고").name("고").build();
-//
-////        when, then
-//        mockMvc.perform(post("/sign-up")
-//                .content(objectMapper.writeValueAsString(request))
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.statusCode", is(400)))
-//                .andExpect(jsonPath("$.errorFieldAndMessageList", hasSize(5)));
-//    }
-
-//    @Test
-//    @DisplayName("회원가입 validation - 닉네임과 이메일 중복")
-//    void confirmMultipleNicknameAndEmail() throws Exception {
-//
-////        given
-//        accountRepository.save(Account.builder().email("ko@naver.com").password("123123123").name("고범석")
-//                .nickname("고범석").build());
-//        SignUpRequestDto request = SignUpRequestDto.builder()
-//                .email("ko@naver.com").gender("male").password("123123123").passwordConfirm("123123123")
-//                .nickname("고범석").name("고범석").build();
-//
-////        when, then
-//        mockMvc.perform(post("/sign-up")
-//                .content(objectMapper.writeValueAsString(request))
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.statusCode", is(400)))
-//                .andExpect(jsonPath("$.errorFieldAndMessageList", hasSize(2)));
-//    }
 
     @Test
     @DisplayName("로그인 시 jwt, 토큰의 username == 로그인 username 확인")
@@ -172,17 +128,159 @@ class AccountControllerTest {
 //        then
         Set<Interest> getInterests = account.getInterests();
         List<String> tagNames = getInterests.stream()
-                .map(interest -> interest.getTag().getFirstName()).collect(Collectors.toList());
+                .map(interest -> interest.getTag().getFirstName()).collect(toList());
 
         Set<MainActivityZone> getMainActivityZones = account.getMainActivityZones();
         List<String> zoneNames = getMainActivityZones.stream()
                 .map(zone -> zone.getZone().getCity() + " " + zone.getZone().getProvince())
-                .collect(Collectors.toList());
+                .collect(toList());
 
         assertAll(
                 () -> assertEquals(getInterests.size(), 3),
                 () -> assertEquals(getMainActivityZones.size(), 3),
                 () -> assertThat(tagNames).contains("react", "Vue.js", "spring"),
                 () -> assertThat(zoneNames).contains("서울특별시 광진구", "서울특별시 중랑구", "경기도 수원시"));
+    }
+
+//    ValidationTest ====================================================================================================
+
+    @Test
+    void 회원가입_유효성_테스트_1_기본적인_Valid() throws Exception {
+
+//        given
+        SignUpRequestDto failValidSignUpRequest = AccountDummy.getFailSignUpRequestWithValid();
+
+//        when, then
+//        이메일 공백, password 입력값 길이, passwordConfirm 입력값 길이, name 길이
+        mockMvc.perform(post("/sign-up")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(failValidSignUpRequest)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(4)));
+    }
+
+    @Test
+    void 회원가입_유효성_테스트_2_With_Validator() throws Exception {
+
+//        given
+        SignUpRequestDto failValidSignUpRequest = AccountDummy.getFailSignUpRequestWithValidator();
+
+//        when, then
+//        이메일 중복과 패스워드, 패스워드 확인값 불일치
+        mockMvc.perform(post("/sign-up")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(failValidSignUpRequest)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(2)));
+    }
+
+    @Test
+    void 회원가입_유효성_테스트_OAuth_1_기본적인_Valid() throws Exception {
+
+//        given
+        SignUpOAuthRequestDto failRequest = AccountDummy.getFailSignUpOAuthRequestWithValid();
+
+//        when, then
+//        provider 공백, email 공백, name 공백
+        mockMvc.perform(post("/sign-up/oauth")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(failRequest)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(4)));
+    }
+
+    @Test
+    void 회원가입_유효성_테스트_OAuth_2_With_Validator() throws Exception {
+
+//        given
+        SignUpOAuthRequestDto failRequest = AccountDummy.getFailSignUpOAuthRequestWithValidator();
+
+//        when, then
+//        provider 공백, email 공백, name 공백
+        mockMvc.perform(post("/sign-up/oauth")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(failRequest)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(2)));
+    }
+
+    @Test
+    void 로그인_유효성_테스트_1_기본() throws Exception {
+
+//        given
+        LoginRequestDto loginRequestDto = LoginRequestDto.builder().email("asdfsdf").password("").build();
+
+//        when, then
+//        empty email, empty password
+        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginRequestDto)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(2)));
+    }
+
+    @Test
+    void 로그인_유효성_테스트_2_아이디와_비밀번호가_일치하지_않은_경우() throws Exception {
+
+//        given
+        LoginRequestDto loginRequestDto = LoginRequestDto.builder().email("test@test.com").password("11").build();
+
+//        when, then
+//        아이디와 비밀번호가 일치하지 않을 때, BadCredentialException 발생
+        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginRequestDto)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.message", is("회원의 아이디와 비밀번호가 일치하지 않습니다.")));
+    }
+
+    @Test
+    void 로그인_유효성_테스트_3_OAuth() throws Exception {
+
+//        given
+        LoginOAuthRequestDto login =
+                LoginOAuthRequestDto.builder().provider("").email("asdfasdf").build();
+
+//        when, then
+//        아이디와 비밀번호가 일치하지 않을 때, BadCredentialException 발생
+        mockMvc.perform(post("/login/oauth").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(login)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(2)));
+    }
+
+    @Test
+    void 회원가입_상세정보_저장_테스트_1() throws Exception {
+
+//        given
+        SignUpDetailRequestDto failRequest = AccountDummy.getFailSignUpDetailRequestWithValid();
+
+//        when, then
+//        경력년도 음수, 직업분야 empty, 닉네임 length 초과
+        mockMvc.perform(post("/sign-up/detail").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(failRequest)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(3)));
+    }
+
+    @Test
+    void 회원가입_상세정보_저장_테스트_2_닉네임_중복() throws Exception {
+
+//        given
+        SignUpDetailRequestDto failRequest = AccountDummy.getFailSignUpDetailRequestWithValidator();
+
+//        when, then
+//        경력년도 음수, 직업분야 empty
+        mockMvc.perform(post("/sign-up/detail").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(failRequest)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(1)));
     }
 }

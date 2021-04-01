@@ -1,6 +1,7 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
+import com.project.devidea.modules.account.dto.ChangeNicknameRequest;
 import com.project.devidea.modules.account.dto.InterestsResponseDto;
 import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
 import com.project.devidea.modules.tagzone.tag.Tag;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
@@ -86,5 +88,19 @@ class AccountTest {
 
 //        then
         assertEquals(account.getMainActivityZones().size(), 5);
+    }
+
+    @Test
+    void 닉네임_변경() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("변경닉네임").build();
+
+//        when
+        account.changeNickname(request.getNickname());
+
+//        then
+        assertThat(account.getNickname()).isEqualTo(request.getNickname());
     }
 }

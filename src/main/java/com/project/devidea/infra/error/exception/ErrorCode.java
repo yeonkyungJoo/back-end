@@ -16,7 +16,10 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "Server Error"),
     INVALID_TYPE_VALUE(400, " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "Access is Denied"),
-    ENTITY_NOT_FOUND(400, " Entity Not Found");
+    ENTITY_NOT_FOUND(400, " Entity Not Found"),
+
+//    Account 관련 에러코드
+    ACCOUNT_ERROR(400, "Invalid Input Value From Account");
 
 
 //    // Member

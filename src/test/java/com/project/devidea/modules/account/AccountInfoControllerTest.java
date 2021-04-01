@@ -36,8 +36,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -264,5 +264,87 @@ class AccountInfoControllerTest {
 
         account.getMainActivityZones().addAll(mainActivityZones);
         mainActivityZoneRepository.saveAll(mainActivityZones);
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    @Transactional
+    void 닉네임_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+
+//        when, then
+        mockMvc.perform(get("/account/settings/nickname")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", jwtTokenUtil.generateToken(loginUser)))
+                .andDo(print())
+                .andExpect(jsonPath("$.data.nickname", is(loginUser.getNickName())));
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    @Transactional
+    void 닉네임_변경하기() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("변경할닉네임").build();
+
+//        when
+        mockMvc.perform(patch("/account/settings/nickname")
+                .header("Authorization", jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+//        then
+        assertThat(loginUser.getNickName()).isEqualTo(request.getNickname());
+    }
+
+//    ValidationTest ====================================================================================================
+    @Test
+    @WithUserDetails("test@test.com")
+    @Transactional
+    void 닉네임_변경_유효성_검사_1_Size() throws Exception{
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("범석").build();
+
+//        when, then
+//        Valid 3자 미만의 경우
+        mockMvc.perform(patch("/account/settings/nickname")
+                .header("Authorization", jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(1)));
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    @Transactional
+    void 닉네임_변경_유효성_검사_2_Duplicate() throws Exception{
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("DevIdea").build();
+
+//        when, then
+//        중복 금지
+        mockMvc.perform(patch("/account/settings/nickname")
+                .header("Authorization", jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(1)));
     }
 }

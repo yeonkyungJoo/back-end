@@ -270,4 +270,39 @@ class AccountServiceTest {
         verify(account).updateMainActivityZones(any());
         verify(mainActivityZoneRepository).saveAll(any());
     }
+
+    @Test
+    void 닉네임_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        String nickname = "1234";
+        when(loginUser.getAccount()).thenReturn(account);
+        when(account.getNickname()).thenReturn(nickname);
+
+//        when
+        accountService.getAccountNickname(loginUser);
+
+//        then
+        verify(loginUser).getAccount();
+        verify(account).getNickname();
+    }
+
+    @Test
+    void 닉네임_변경하기() throws Exception{
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        ChangeNicknameRequest request = mock(ChangeNicknameRequest.class);
+        when(loginUser.getAccount()).thenReturn(account);
+
+//        when
+        accountService.updateAccountNickname(loginUser, request);
+
+//        then
+        verify(loginUser).getAccount();
+        verify(account).changeNickname(any());
+    }
 }

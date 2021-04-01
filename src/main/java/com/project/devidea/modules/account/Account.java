@@ -30,7 +30,7 @@ public class Account {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
     private String emailCheckToken;
@@ -137,6 +137,7 @@ public class Account {
     //    편의 메서드
     public void saveSignUpDetail(SignUpDetailRequestDto req, Set<MainActivityZone> mainActivityZones, Set<Interest> interests) {
 
+        this.nickname = req.getNickname();
         this.profileImage = req.getProfileImage();
         this.receiveEmail = req.isReceiveEmail();
         this.careerYears = req.getCareerYears();
@@ -171,6 +172,11 @@ public class Account {
         this.mainActivityZones.clear();
         this.mainActivityZones.addAll(mainActivityZones);
     }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Transient
     public static Account generateAccountById(Long id){
         return new Account().builder()

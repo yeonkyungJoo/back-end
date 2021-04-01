@@ -1,5 +1,7 @@
 package com.project.devidea.modules.account.validator;
 
+import com.project.devidea.infra.error.exception.ErrorCode;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.account.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +32,8 @@ public class SignUpRequestValidator implements Validator {
             errors.rejectValue("email", "invalid.email", "이미 존재하는 이메일입니다.");
         }
 
-        if (accountRepository.existsByNickname(request.getNickname())) {
-            errors.rejectValue("nickname", "invalid.nickname", "이미 존재하는 닉네임입니다.");
+        if (errors.hasErrors()) {
+            throw new AccountException(ErrorCode.ACCOUNT_ERROR, errors);
         }
     }
 }
