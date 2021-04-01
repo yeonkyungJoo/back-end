@@ -1,6 +1,5 @@
 package com.project.devidea.modules.content.study;
 
-import com.project.devidea.infra.MockMvcTest;
 import com.project.devidea.infra.config.AppConfig;
 import com.project.devidea.modules.ModuleGenerator;
 import com.project.devidea.modules.account.Account;
