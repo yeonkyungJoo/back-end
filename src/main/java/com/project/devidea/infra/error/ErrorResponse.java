@@ -9,6 +9,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,7 +107,7 @@ public class ErrorResponse {
             List<org.springframework.validation.FieldError> fieldErrors = errors.getFieldErrors();
             return fieldErrors.stream().map(error -> new FieldError(
                     error.getField(),
-                    error.getCode(), 
+                    error.getCode(),
                     error.getDefaultMessage())).collect(toList());
         }
     }

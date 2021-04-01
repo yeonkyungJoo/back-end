@@ -29,21 +29,7 @@
   <component name="ChangeListManager">
     <list default="true" id="69297f70-8a83-4470-a678-d4f4ec2b0bea" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/Account.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountInfoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountInfoController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountControllerTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountInfoControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountInfoControllerTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountServiceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountServiceTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountInfoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/exception/AccountException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/exception/AccountException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountInfoControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountInfoControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/ErrorResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +70,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="settings.editor.splitter.proportion" value="0.28645295" />
     <property name="show.unlinked.gradle.project.popup" value="true" />
   </component>
@@ -215,26 +201,26 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1617021304607" />
-    <state width="1493" height="222" key="GridCell.Tab.0.bottom" timestamp="1617162077863">
+    <state width="1493" height="401" key="GridCell.Tab.0.bottom" timestamp="1617163621365">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="746" height="113" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617035902187" />
-    <state width="1493" height="222" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617162077863" />
-    <state width="1493" height="222" key="GridCell.Tab.0.center" timestamp="1617162077862">
+    <state width="1493" height="401" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617163621365" />
+    <state width="1493" height="401" key="GridCell.Tab.0.center" timestamp="1617163621364">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="746" height="113" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617035902187" />
-    <state width="1493" height="222" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617162077862" />
-    <state width="1493" height="222" key="GridCell.Tab.0.left" timestamp="1617162077862">
+    <state width="1493" height="401" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617163621364" />
+    <state width="1493" height="401" key="GridCell.Tab.0.left" timestamp="1617163621364">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="746" height="113" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617035902186" />
-    <state width="1493" height="222" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617162077862" />
-    <state width="1493" height="222" key="GridCell.Tab.0.right" timestamp="1617162077862">
+    <state width="1493" height="401" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617163621364" />
+    <state width="1493" height="401" key="GridCell.Tab.0.right" timestamp="1617163621364">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="746" height="113" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617035902187" />
-    <state width="1493" height="222" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617162077862" />
+    <state width="1493" height="401" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617163621364" />
     <state width="1493" height="282" key="GridCell.Tab.1.bottom" timestamp="1617090565533">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -251,9 +237,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="282" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1617090565533" />
-    <state x="171" y="0" key="SettingsEditor" timestamp="1617083785020">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="2134" y="0" key="SettingsEditor" timestamp="1617197769915">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="171" y="0" key="SettingsEditor/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617196114066" />
+    <state x="2134" y="0" key="SettingsEditor/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1617197769915" />
     <state x="171" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1617083785020" />
     <state x="448" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1617027300590">
       <screen x="0" y="0" width="1536" height="824" />
