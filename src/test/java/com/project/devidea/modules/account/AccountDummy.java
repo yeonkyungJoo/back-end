@@ -1,5 +1,6 @@
 package com.project.devidea.modules.account;
 
+import com.project.devidea.infra.SHA256;
 import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.tagzone.tag.TagDummy;
 import com.project.devidea.modules.tagzone.zone.ZoneDummy;
@@ -41,21 +42,23 @@ public class AccountDummy {
     }
 
     public static SignUpOAuthRequestDto getSignUpOAuthRequestDto() {
-        return SignUpOAuthRequestDto.builder().email("kokoko@google.com").name("구글범석")
-                .profileImage("12341234").provider("google").build();
+        return SignUpOAuthRequestDto.builder().id(SHA256.encrypt("google123412341234"))
+                .name("구글범석").profileImage("12341234").provider("google").build();
     }
 
     public static SignUpOAuthRequestDto getSignUpOAuthRequestDto2() {
-        return SignUpOAuthRequestDto.builder().email("ko@google.com").name("고오범석")
-                .profileImage("12341234").provider("google").build();
+        return SignUpOAuthRequestDto.builder().id(SHA256.encrypt("google56785678"))
+                .name("고오범석").profileImage("12341234").provider("google").build();
     }
 
     public static LoginOAuthRequestDto getLoginOAuthRequestDto() {
-        return LoginOAuthRequestDto.builder().provider("google").email("kokoko@google.com").build();
+        return LoginOAuthRequestDto.builder().provider("google")
+                .id(SHA256.encrypt("google56785678")).build();
     }
 
     public static LoginOAuthRequestDto getLoginOAuthRequestDto2() {
-        return LoginOAuthRequestDto.builder().provider("google").email("ko@google.com").build();
+        return LoginOAuthRequestDto.builder().provider("google")
+                .id(SHA256.encrypt("google123412341234")).build();
     }
 
     public static AccountProfileResponseDto getAccountProfileResponseDtoAtMockito() {
@@ -96,11 +99,11 @@ public class AccountDummy {
     }
 
     public static SignUpOAuthRequestDto getFailSignUpOAuthRequestWithValid() {
-        return SignUpOAuthRequestDto.builder().provider("").email("").name("").build();
+        return SignUpOAuthRequestDto.builder().provider("").id("").name("").build();
     }
 
     public static SignUpOAuthRequestDto getFailSignUpOAuthRequestWithValidator() {
-        return SignUpOAuthRequestDto.builder().provider("kakao").email("asdfasdf").name("고범석").build();
+        return SignUpOAuthRequestDto.builder().provider("kakao").id("asdfasdf").name("고범석").build();
     }
 
     public static SignUpDetailRequestDto getFailSignUpDetailRequestWithValid(){

@@ -1,6 +1,7 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.infra.config.security.SHA256;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.security.oauth.OAuthServiceInterface;
 import com.project.devidea.modules.account.dto.*;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,20 +62,22 @@ public class AccountService implements OAuthServiceInterface {
 
 //    OAuth 회원가입
     @Override
-    public SignUpResponseDto signUpOAuth(SignUpOAuthRequestDto signUpOAuthRequestDto) {
+    public SignUpResponseDto signUpOAuth(SignUpOAuthRequestDto request) throws NoSuchAlgorithmException {
+
         Account savedAccount = accountRepository.save(Account.builder()
-                .email(signUpOAuthRequestDto.getEmail())
-                .name(signUpOAuthRequestDto.getName())
+                .email(SHA256.encrypt(request.getId()))
+                .name(request.getName())
                 .password("{bcrypt}" + passwordEncoder.encode(OAUTH_PASSWORD))
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
-                .provider(signUpOAuthRequestDto.getProvider())
+                .provider(request.getProvider())
                 .gender(null)
-                .profileImage(signUpOAuthRequestDto.getProfileImage())
+                .profileImage(request.getProfileImage())
                 .build());
 
-        return modelMapper.map(savedAccount, SignUpResponseDto.class);
+        return SignUpResponseDto.builder().provider(savedAccount.getProvider())
+                .id(savedAccount.getId().toString()).name(savedAccount.getName()).build();
     }
 
     public Map<String, String> login(LoginRequestDto requestDto) throws Exception {
@@ -86,8 +90,9 @@ public class AccountService implements OAuthServiceInterface {
 //    OAuth 로그인
     @Override
     public Map<String, String> loginOAuth(LoginOAuthRequestDto loginOAuthRequestDto) throws Exception {
-        LoginRequestDto loginRequestDto =
-                LoginRequestDto.builder().email(loginOAuthRequestDto.getEmail()).password(OAUTH_PASSWORD).build();
+        LoginRequestDto loginRequestDto = LoginRequestDto.builder()
+                .email(SHA256.encrypt(loginOAuthRequestDto.getId()))
+                .password(OAUTH_PASSWORD).build();
         return login(loginRequestDto);
     }
 
