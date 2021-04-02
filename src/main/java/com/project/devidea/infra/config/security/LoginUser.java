@@ -20,7 +20,8 @@ public class LoginUser extends User {
     private Account account;
     //need default constructor for JSON Parsing
     public LoginUser(Account account) {
-        super(account.getNickname(), account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
+//        에러 발생! 설명드릴것!!!
+        super(account.getEmail(), account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
         this.account = account;
     }
     @Override

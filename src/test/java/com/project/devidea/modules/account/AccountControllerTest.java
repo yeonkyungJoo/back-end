@@ -1,6 +1,7 @@
 package com.project.devidea.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.devidea.infra.SHA256;
 import com.project.devidea.infra.config.security.CustomUserDetailService;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
@@ -20,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.mail.Message;
+import java.security.MessageDigest;
 import java.util.*;
 
 import static java.util.stream.Collectors.*;
@@ -62,9 +65,10 @@ class AccountControllerTest {
 
 //        given
         SignUpRequestDto request = SignUpRequestDto.builder().name("고범떡").email("kob@naver.com")
-                .password("123412341234").passwordConfirm("123412341234").gender("male").build();
+                .password(SHA256.encrypt("123412341234")).passwordConfirm(SHA256.encrypt("123412341234"))
+                .gender("male").build();
 
-//        when, then
+//        when
         mockMvc.perform(post("/sign-up")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -73,6 +77,9 @@ class AccountControllerTest {
                 .andExpect(jsonPath("$.data.name", is("고범떡")))
                 .andExpect(jsonPath("$.data.email", is("kob@naver.com")))
                 .andExpect(jsonPath("$.data.gender", is("male")));
+
+//        then
+        assertEquals(request.getPassword(), SHA256.encrypt("123412341234"));
     }
 
     @Test
@@ -81,30 +88,57 @@ class AccountControllerTest {
 
 //        given
         SignUpOAuthRequestDto signUpOAuthRequestDto = AccountDummy.getSignUpOAuthRequestDto();
+        String encryptedId = signUpOAuthRequestDto.getId();
 
-//        when, then
+//        when
         mockMvc.perform(post("/sign-up/oauth")
                 .content(objectMapper.writeValueAsString(signUpOAuthRequestDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());
+
+//        then
+        assertEquals(encryptedId, SHA256.encrypt("google123412341234"));
     }
 
     @Test
     @DisplayName("로그인 시 jwt, 토큰의 username == 로그인 username 확인")
-    void confirmJwtTokenAndAuthorization() throws Exception {
+        void confirmJwtTokenAndAuthorization() throws Exception {
 
 //        when, then
         MockHttpServletResponse mockHttpServletResponse = mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(LoginRequestDto.builder()
                         .email("test@test.com").password("1234").build())))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(header().exists("Authorization")).andReturn().getResponse();
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(header().exists("Authorization")).andReturn().getResponse();
 
         String jwtToken = mockHttpServletResponse.getHeader("Authorization").substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         assertEquals(username, "test@test.com");
+    }
+
+    @Test
+    void OAuth_로그인() throws Exception {
+
+//        given
+        SignUpOAuthRequestDto join = AccountDummy.getSignUpOAuthRequestDto2();
+        mockMvc.perform(post("/sign-up/oauth").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(join)));
+        LoginOAuthRequestDto login = AccountDummy.getLoginOAuthRequestDto();
+
+//        when
+        MockHttpServletResponse response = mockMvc.perform(post("/login/oauth")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(login)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(header().exists("Authorization"))
+                .andReturn().getResponse();
+
+        String jwtToken = response.getHeader("Authorization").substring(7);
+        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        assertEquals(username, SHA256.encrypt(join.getId()));
     }
 
     @Test
@@ -205,7 +239,7 @@ class AccountControllerTest {
                 .content(objectMapper.writeValueAsString(failRequest)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.errors.length()", is(2)));
+                .andExpect(jsonPath("$.errors.length()", is(1)));
     }
 
     @Test
@@ -243,7 +277,7 @@ class AccountControllerTest {
 
 //        given
         LoginOAuthRequestDto login =
-                LoginOAuthRequestDto.builder().provider("").email("asdfasdf").build();
+                LoginOAuthRequestDto.builder().provider("").id("").build();
 
 //        when, then
 //        아이디와 비밀번호가 일치하지 않을 때, BadCredentialException 발생

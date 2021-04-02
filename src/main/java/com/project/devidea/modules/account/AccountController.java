@@ -15,6 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 @RestController
@@ -50,7 +51,8 @@ public class AccountController {
 
 //    oauth 회원가입
     @PostMapping("/sign-up/oauth")
-    public ResponseEntity<?> loginOAuth(@Valid @RequestBody SignUpOAuthRequestDto signUpOAuthRequestDto) {
+    public ResponseEntity<?> signUpOAuth(@Valid @RequestBody SignUpOAuthRequestDto signUpOAuthRequestDto)
+            throws NoSuchAlgorithmException {
 
         return new ResponseEntity<>(GlobalResponse.of(accountService.signUpOAuth(signUpOAuthRequestDto)), HttpStatus.OK);
     }

@@ -33,8 +33,8 @@ public class SignUpOAuthRequestValidator implements Validator {
                     "해당 소셜사이트 로그인 기능은 제공하지 않습니다.");
         }
 
-        if (accountRepository.existsByEmail(request.getEmail())) {
-            errors.rejectValue("email", "invalid.email", "이미 가입하신 회원입니다.");
+        if (accountRepository.existsByEmail(request.getId())) {
+            errors.rejectValue("OAuthId", "invalid.OAuthId", "이미 가입하신 회원입니다.");
         }
 
         if (errors.hasErrors()) {
