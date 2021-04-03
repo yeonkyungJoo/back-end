@@ -18,7 +18,7 @@ import java.util.*;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ACCOUNT_ID")
+    @Column(name = "account_id")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -30,7 +30,7 @@ public class Account {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
     private String emailCheckToken;
@@ -137,6 +137,7 @@ public class Account {
     //    편의 메서드
     public void saveSignUpDetail(SignUpDetailRequestDto req, Set<MainActivityZone> mainActivityZones, Set<Interest> interests) {
 
+        this.nickname = req.getNickname();
         this.profileImage = req.getProfileImage();
         this.receiveEmail = req.isReceiveEmail();
         this.careerYears = req.getCareerYears();
@@ -170,6 +171,16 @@ public class Account {
     public void updateMainActivityZones(Set<MainActivityZone> mainActivityZones) {
         this.mainActivityZones.clear();
         this.mainActivityZones.addAll(mainActivityZones);
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    @Transient
+    public static Account generateAccountById(Long id){
+        return new Account().builder()
+                .id(id).build();
     }
 }
 

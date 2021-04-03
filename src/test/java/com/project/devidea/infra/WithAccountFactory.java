@@ -28,7 +28,7 @@ public class WithAccountFactory implements WithSecurityContextFactory<WithAccoun
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto().builder()
                 .email(withAccount.NickName() + "@gmail.com")
                 .name(withAccount.NickName())
-                .nickname(withAccount.NickName())
+//                .nickname(withAccount.NickName())
                 .password("password")
                 .gender("남성")
                 .passwordConfirm("yes")

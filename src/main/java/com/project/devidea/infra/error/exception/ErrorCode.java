@@ -12,10 +12,14 @@ public enum ErrorCode {
     // Common
     INVALID_INPUT_VALUE(400, "Invalid Input Value"),
     METHOD_NOT_ALLOWED(400," Invalid Input Value"),
+    UNAUTHORIZED(401," UnAuthorized "),
     INTERNAL_SERVER_ERROR(500, "Server Error"),
     INVALID_TYPE_VALUE(400, " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "Access is Denied"),
-    ENTITY_NOT_FOUND(400, "Entity Not Found"),
+    ENTITY_NOT_FOUND(400, " Entity Not Found"),
+
+//    Account 관련 에러코드
+    ACCOUNT_ERROR(400, "Invalid Input Value From Account"),
 
     ENTITY_ALREADY_EXIST(400, "Entity Already Exist");
 

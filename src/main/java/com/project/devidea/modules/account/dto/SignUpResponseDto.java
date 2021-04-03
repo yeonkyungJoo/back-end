@@ -15,8 +15,6 @@ public class SignUpResponseDto {
 
     private String name;
 
-    private String nickname;
-
     private String gender;
 
     private String provider;

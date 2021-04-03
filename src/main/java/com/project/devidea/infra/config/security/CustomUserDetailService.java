@@ -22,8 +22,6 @@ public class CustomUserDetailService implements UserDetailsService {
 //        System.out.println(" loadUserByUsername=" + emailOrNickname);
         Account account = accountRepository.findByEmail(emailOrNickname).orElse(
                 accountRepository.findByNickname(emailOrNickname));
-//        Querydsl fetchJoin적용
-//        Account account = accountRepository.findByEmailWithMainActivityZoneAndInterests(emailOrNickname);
         return new LoginUser(account);
     }
 }
