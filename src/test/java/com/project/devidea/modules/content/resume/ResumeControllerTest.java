@@ -5,6 +5,8 @@ import com.project.devidea.infra.MockMvcTest;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.mentoring.account.WithAccount;
+import com.project.devidea.modules.content.resume.career.Career;
+import com.project.devidea.modules.content.resume.career.CareerRepository;
 import com.project.devidea.modules.content.resume.form.CreateResumeRequest;
 import com.project.devidea.modules.content.resume.form.UpdateResumeRequest;
 import org.junit.jupiter.api.DisplayName;

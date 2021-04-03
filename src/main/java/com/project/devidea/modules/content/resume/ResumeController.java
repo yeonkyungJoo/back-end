@@ -1,7 +1,9 @@
 package com.project.devidea.modules.content.resume;
 
+import com.project.devidea.infra.config.security.CurrentUser;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.Account;
+import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.resume.form.CreateResumeRequest;
 import com.project.devidea.modules.content.resume.form.UpdateResumeRequest;
 import lombok.Data;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.internal.Errors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,45 +30,28 @@ public class ResumeController {
      * 이력서 조회
      */
     @GetMapping("/")
-    public ResponseEntity getResume(
-            // @AuthenticationPrincipal Account account)
-            @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity getResume(@CurrentUser Account account) {
 
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
         Resume resume = resumeRepository.findByAccountId(account.getId());
-        ResumeDto dto = new ResumeDto(resume);
-        return new ResponseEntity(dto, HttpStatus.OK);
+        if (resume == null) {
+            throw new NotFoundException("이력서가 존재하지 않습니다.");
+        }
+        return new ResponseEntity(new ResumeDto(resume), HttpStatus.OK);
     }
 
     /**
      * 이력서 등록
      */
     @PostMapping("/")
-    public ResponseEntity newResume(@RequestBody @Valid CreateResumeRequest request, Errors errors,
-                                    // @AuthenticationPrincipal Account account)
-                                    @AuthenticationPrincipal LoginUser loginUser) {
-
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    public ResponseEntity newResume(@RequestBody @Valid CreateResumeRequest request,
+                                    @CurrentUser Account account) {
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
-        if (errors.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        // TODO - validate
-        Resume resume = Resume.builder()
-                .phoneNumber(request.getPhoneNumber())
-                .github(request.getGithub())
-                .blog(request.getBlog())
-                .build();
-
-        Long resumeId = resumeService.createResume(resume, account);
+        Long resumeId = resumeService.createResume(account, request);
         return new ResponseEntity(resumeId, HttpStatus.CREATED);
     }
 
@@ -73,25 +59,13 @@ public class ResumeController {
      * 이력서 수정
      */
     @PostMapping("/edit")
-    public ResponseEntity editResume(@RequestBody @Valid UpdateResumeRequest request, Errors errors,
-                                     // @AuthenticationPrincipal Account account)
-                                     @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity editResume(@RequestBody @Valid UpdateResumeRequest request,
+                                     @CurrentUser Account account) {
 
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
-        Resume resume = resumeRepository.findByAccountId(account.getId());
-        if (resume == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        if (errors.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        // TODO - validate
-        resumeService.updateResume(request, resume);
+        resumeService.updateResume(account, request);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -99,26 +73,19 @@ public class ResumeController {
      * 이력서 삭제
      */
     @PostMapping("/delete")
-    public ResponseEntity deleteResume(
-            // @AuthenticationPrincipal Account account)
-            @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity deleteResume(@CurrentUser Account account) {
 
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
-        Resume resume = resumeRepository.findByAccountId(account.getId());
-        if (resume == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        resumeService.deleteResume(resume);
+        resumeService.deleteResume(account);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @Data
     class ResumeDto {
 
+        private Long id;
         private String name;
         private String email;
         private String phoneNumber;
@@ -126,7 +93,7 @@ public class ResumeController {
         private String blog;
 
         public ResumeDto(Resume resume) {
-
+            this.id = resume.getId();
             this.name = resume.getAccount().getName();
             this.email = resume.getAccount().getEmail();
             this.phoneNumber = resume.getPhoneNumber();

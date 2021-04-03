@@ -1,6 +1,11 @@
 package com.project.devidea.modules.content.resume;
 
 import com.project.devidea.modules.account.Account;
+import com.project.devidea.modules.content.resume.activity.Activity;
+import com.project.devidea.modules.content.resume.award.Award;
+import com.project.devidea.modules.content.resume.career.Career;
+import com.project.devidea.modules.content.resume.education.Education;
+import com.project.devidea.modules.content.resume.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -118,5 +123,17 @@ public class Resume {
         this.activites.add(activity);
         activity.setResume(this);
     }
+
+    public static Resume createResume(Account account, String phoneNumber, String github, String blog) {
+
+        Resume resume = new Resume();
+        resume.setAccount(account);
+        resume.setPhoneNumber(phoneNumber);
+        resume.setGithub(github);
+        resume.setBlog(blog);
+
+        return resume;
+    }
+
 
 }

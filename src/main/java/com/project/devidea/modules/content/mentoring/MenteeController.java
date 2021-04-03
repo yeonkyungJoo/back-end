@@ -1,20 +1,16 @@
 package com.project.devidea.modules.content.mentoring;
 
 import com.project.devidea.infra.config.security.CurrentUser;
-import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.modules.account.Account;
+import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.mentoring.form.CreateMenteeRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest;
-import com.project.devidea.modules.content.mentoring.validator.CreateMenteeRequestValidator;
-import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.zone.Zone;
+import com.project.devidea.modules.content.mentoring.validator.MenteeRequestValidator;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,18 +26,15 @@ public class MenteeController {
 
     private final MenteeService menteeService;
     private final MenteeRepository menteeRepository;
-    private final CreateMenteeRequestValidator createMenteeRequestValidator;
+    private final MenteeRequestValidator menteeRequestValidator;
 
-    @InitBinder("createMenteeRequest")
-    public void initCreateMenteeRequestBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(createMenteeRequestValidator);
+    @InitBinder("request")
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(menteeRequestValidator);
     }
 
-    @InitBinder("updateMenteeRequest")
-    public void initUpdateMenteeRequestBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(createMenteeRequestValidator);
-    }
-
+    // TODO - 페이징 처리
+    
     /**
      * 멘티 전체 조회
      */
@@ -60,9 +53,8 @@ public class MenteeController {
     @GetMapping("/{id}")
     public ResponseEntity getMentee(@PathVariable(name = "id") Long menteeId) {
 
-        // TODO - 예외 처리
         Mentee mentee = menteeRepository.findById(menteeId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Id"));
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 멘티입니다."));
         return new ResponseEntity(new MenteeDto(mentee), HttpStatus.OK);
     }
 
@@ -70,13 +62,13 @@ public class MenteeController {
      * 멘티 등록
      */
     @PostMapping("/")
-    public ResponseEntity newMentee(@RequestBody @Valid CreateMenteeRequest createMenteeRequest,
+    public ResponseEntity newMentee(@RequestBody @Valid CreateMenteeRequest request,
                                     @CurrentUser Account account) {
 
         if (account == null) {
             throw new AccessDeniedException("Access is Denied");
         }
-        Long menteeId = menteeService.createMentee(account, createMenteeRequest);
+        Long menteeId = menteeService.createMentee(account, request);
         return new ResponseEntity(menteeId, HttpStatus.CREATED);
     }
 
@@ -84,13 +76,12 @@ public class MenteeController {
      * 멘티 정보 수정
      */
     @PostMapping("/update")
-    public ResponseEntity editMentee(@RequestBody @Valid UpdateMenteeRequest updateMenteeRequest,
+    public ResponseEntity editMentee(@RequestBody @Valid UpdateMenteeRequest request,
                                      @CurrentUser Account account) {
         if (account == null) {
             throw new AccessDeniedException("Access is Denied");
         }
-
-        menteeService.updateMentee(account, updateMenteeRequest);
+        menteeService.updateMentee(account, request);
         return new ResponseEntity(HttpStatus.OK);
     }
 

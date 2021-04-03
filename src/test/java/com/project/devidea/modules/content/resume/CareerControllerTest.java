@@ -5,8 +5,10 @@ import com.project.devidea.infra.MockMvcTest;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.content.mentoring.account.WithAccount;
-import com.project.devidea.modules.content.resume.form.CreateCareerRequest;
-import com.project.devidea.modules.content.resume.form.UpdateCareerRequest;
+import com.project.devidea.modules.content.resume.career.Career;
+import com.project.devidea.modules.content.resume.career.CareerRepository;
+import com.project.devidea.modules.content.resume.form.career.CreateCareerRequest;
+import com.project.devidea.modules.content.resume.form.career.UpdateCareerRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

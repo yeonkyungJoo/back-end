@@ -7,6 +7,7 @@ import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Mentor {
 
@@ -93,14 +95,14 @@ public class Mentor {
 
     public void setClose() {
         if (!isOpen()) {
-            // 이미 close 상태
+            // TODO - 이미 close 상태
         }
         this.open = false;
     }
 
     public void setOpen() {
         if (isOpen()) {
-            // 이미 open 상태
+            // TODO - 이미 open 상태
         }
         this.open = true;
     }
@@ -121,5 +123,20 @@ public class Mentor {
         this.open = open;
         this.free = free;
         this.cost = cost;
+    }
+
+    public static Mentor createMentor(Account account, Resume resume,
+                      Set<Zone> zones, Set<Tag> tags, boolean free, Integer cost) {
+
+        Mentor mentor = new Mentor();
+        mentor.setAccount(account);
+        mentor.setResume(resume);
+        mentor.setZones(zones);
+        mentor.setTags(tags);
+        mentor.setFree(free);
+        mentor.setCost(cost);
+
+        mentor.publish();
+        return mentor;
     }
 }

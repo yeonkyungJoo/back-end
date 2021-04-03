@@ -15,8 +15,9 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "Server Error"),
     INVALID_TYPE_VALUE(400, " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "Access is Denied"),
-    ENTITY_NOT_FOUND(400, " Entity Not Found");
+    ENTITY_NOT_FOUND(400, "Entity Not Found"),
 
+    ENTITY_ALREADY_EXIST(400, "Entity Already Exist");
 
 //    // Member
 //    EMAIL_DUPLICATION(400,"Email is Duplication"),
