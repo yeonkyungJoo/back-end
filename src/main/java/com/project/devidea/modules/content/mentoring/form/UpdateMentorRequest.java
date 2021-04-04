@@ -10,8 +10,13 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Builder
 public class UpdateMentorRequest extends MentorRequest {
 
-    private boolean open = true;
+    private boolean open;
+
+    @Builder
+    public UpdateMentorRequest(@NotEmpty Set<String> zones, @NotEmpty Set<String> tags, boolean free, Integer cost, boolean open) {
+        super(zones, tags, free, cost);
+        this.open = open;
+    }
 }

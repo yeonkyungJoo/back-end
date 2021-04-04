@@ -1,16 +1,15 @@
 package com.project.devidea.modules.content.resume.form.career;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@Builder
+@AllArgsConstructor
 public class CareerRequest {
 
     @NotEmpty
@@ -22,8 +21,7 @@ public class CareerRequest {
     private String endDate;
     private boolean present;
 
-    @Builder.Default
-    private Set<String> tags = new HashSet<>();
+    private Set<String> tags;
     private String detail;
     private String url;
 

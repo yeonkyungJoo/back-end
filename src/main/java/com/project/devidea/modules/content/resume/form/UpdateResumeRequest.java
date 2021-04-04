@@ -8,6 +8,10 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
-@Builder
 public class UpdateResumeRequest extends ResumeRequest {
+
+    @Builder
+    public UpdateResumeRequest(@NotEmpty String phoneNumber, String github, String blog) {
+        super(phoneNumber, github, blog);
+    }
 }

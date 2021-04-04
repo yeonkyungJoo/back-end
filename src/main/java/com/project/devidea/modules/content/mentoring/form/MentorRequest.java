@@ -1,6 +1,7 @@
 package com.project.devidea.modules.content.mentoring.form;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,16 +11,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter @Setter
-@Builder
+@AllArgsConstructor
 public class MentorRequest {
 
-    @Builder.Default
     @NotEmpty
-    private Set<String> zones = new HashSet<>();
-
-    @Builder.Default
+    private Set<String> zones;
     @NotEmpty
-    private Set<String> tags = new HashSet<>();
+    private Set<String> tags;
     private boolean free;
     private Integer cost;
 

@@ -28,5 +28,18 @@ public class Suggestion {
     @JoinColumn(name = "to")
     private Account to;
 
+    private String subject;
     private String message;
+
+    public static Suggestion createSuggestion(Account from, Account to, String subject, String message) {
+
+        Suggestion suggestion = new Suggestion();
+        suggestion.setFrom(from);
+        suggestion.setTo(to);
+        suggestion.setSubject(subject);
+        suggestion.setMessage(message);
+
+        suggestion.setDateTime(LocalDateTime.now());
+        return suggestion;
+    }
 }

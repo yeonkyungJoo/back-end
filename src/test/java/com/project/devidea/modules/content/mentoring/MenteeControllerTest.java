@@ -8,17 +8,27 @@ import com.project.devidea.modules.content.mentoring.account.WithAccount;
 import com.project.devidea.modules.content.mentoring.form.CreateMenteeRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest;
 import com.project.devidea.modules.tagzone.tag.Tag;
+import com.project.devidea.modules.tagzone.tag.TagRepository;
 import com.project.devidea.modules.tagzone.zone.Zone;
+import com.project.devidea.modules.tagzone.zone.ZoneRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,6 +47,62 @@ class MenteeControllerTest {
     ObjectMapper objectMapper;
     @Autowired
     MenteeRepository menteeRepository;
+    @Autowired
+    TagRepository tagRepository;
+    @Autowired
+    ZoneRepository zoneRepository;
+
+    Set<String> tagSet = new HashSet<>();
+    Set<String> zoneSet = new HashSet<>();
+
+    @BeforeEach
+    @Transactional
+    void init() throws Exception {
+        Resource resource = null;
+        if (tagRepository.count() == 0) {
+            resource = new ClassPathResource("tag_kr.csv");
+            Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
+                    .forEach(line -> {
+                        String[] split = line.split(",");
+                        Tag tag = Tag.builder()
+                                .firstName(split[1])
+                                .secondName(split[2].equals("null") ? null : split[2])
+                                .thirdName(split[3].equals("null") ? null : split[3])
+                                .build();
+                        if (!split[0].equals("parent")) {
+                            Tag tagParent = tagRepository.findByFirstName(split[0]);
+                            tagParent.addChild(tag);
+                        }
+                        tagRepository.save(tag);
+                    });
+        }
+
+        if (zoneRepository.count() == 0) {
+            resource = new ClassPathResource("zones_kr.csv");
+            Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
+                    .forEach(line -> {
+                        String[] split = line.split(",");
+                        Zone zone = Zone.builder()
+                                .city(split[0])
+                                .province(split[1])
+                                .build();
+                        zoneRepository.save(zone);
+                    });
+        }
+
+        List<Tag> tagList = tagRepository.findAll();
+        List<Zone> zoneList = zoneRepository.findAll();
+
+        Random random = new Random();
+        int i = 0;
+        while (i < 3) {
+            int randomIdx = random.nextInt(tagList.size());
+            tagSet.add(tagList.get(randomIdx).toString());
+            zoneSet.add(zoneList.get(randomIdx).toString());
+            i++;
+        }
+
+    }
 
     @Test
     @DisplayName("멘티 등록 - empty zones")
@@ -46,6 +112,8 @@ class MenteeControllerTest {
         // When, Then
         CreateMenteeRequest request = CreateMenteeRequest.builder()
                 .description("description")
+                .zones(new HashSet<String>())
+                .tags(new HashSet<String>())
                 .free(true)
                 .build();
 
@@ -55,7 +123,6 @@ class MenteeControllerTest {
                 // .with(csrf()))
                 .andDo(print())
                 .andExpect(status().is(400));
-
     }
 
     @Test
@@ -66,6 +133,8 @@ class MenteeControllerTest {
         // When, Then
         CreateMenteeRequest request = CreateMenteeRequest.builder()
                 .description("description")
+                .zones(zoneSet)
+                .tags(tagSet)
                 .free(true)
                 .build();
 
@@ -82,6 +151,8 @@ class MenteeControllerTest {
 
         assertNotNull(findMentee);
         assertEquals("description", findMentee.getDescription());
+        assertEquals(3, findMentee.getZones().size());
+        assertEquals(3, findMentee.getTags().size());
         assertEquals(true, findMentee.isFree());
         assertEquals(true, findMentee.isOpen());
         assertEquals("yk", findMentee.getAccount().getNickname());
@@ -96,6 +167,8 @@ class MenteeControllerTest {
         // When, Then
         CreateMenteeRequest request = CreateMenteeRequest.builder()
                 .description("description")
+                .zones(zoneSet)
+                .tags(tagSet)
                 .free(true)
                 .build();
 
@@ -104,7 +177,7 @@ class MenteeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 // .with(csrf()))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().is(403));
 
     }
 

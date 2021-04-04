@@ -10,6 +10,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter @Setter
-@Builder
 public class CreateMentorRequest extends MentorRequest {
+
+    @Builder
+    public CreateMentorRequest(@NotEmpty Set<String> zones, @NotEmpty Set<String> tags, boolean free, Integer cost) {
+        super(zones, tags, free, cost);
+    }
 }

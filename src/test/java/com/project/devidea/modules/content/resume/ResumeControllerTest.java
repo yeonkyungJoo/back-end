@@ -1,3 +1,4 @@
+/*
 package com.project.devidea.modules.content.resume;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -200,4 +201,4 @@ class ResumeControllerTest {
                 .andExpect(status().isUnauthorized());
         assertTrue(resumeRepository.findById(resumeId).isPresent());
     }
-}
+}*/

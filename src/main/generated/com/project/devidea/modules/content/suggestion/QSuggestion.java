@@ -30,6 +30,8 @@ public class QSuggestion extends EntityPathBase<Suggestion> {
 
     public final StringPath message = createString("message");
 
+    public final StringPath subject = createString("subject");
+
     public final com.project.devidea.modules.account.QAccount to;
 
     public QSuggestion(String variable) {
