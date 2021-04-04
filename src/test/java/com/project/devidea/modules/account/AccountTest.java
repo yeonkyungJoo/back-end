@@ -1,9 +1,6 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.ChangeNicknameRequest;
-import com.project.devidea.modules.account.dto.InterestsResponseDto;
-import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
+import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagDummy;
 import com.project.devidea.modules.tagzone.zone.Zone;
@@ -102,5 +99,27 @@ class AccountTest {
 
 //        then
         assertThat(account.getNickname()).isEqualTo(request.getNickname());
+    }
+
+    @Test
+    void 알림_설정_변경() throws Exception{
+
+//        given
+        Account account = AccountDummy.getAccount();
+        NotificationRequestResponse request = NotificationRequestResponse.builder().receiveEmail(true)
+                .receiveMentoringNotification(true).receiveNotification(true).receiveRecruitingNotification(true)
+                .receiveStudyNotification(true).receiveTechNewsNotification(true).build();
+
+//        when
+        account.updateNotifications(request);
+
+//        then
+        assertAll(
+                () -> assertTrue(account.isReceiveEmail()),
+                () -> assertTrue(account.isReceiveMentoringNotification()),
+                () -> assertTrue(account.isReceiveNotification()),
+                () -> assertTrue(account.isReceiveRecruitingNotification()),
+                () -> assertTrue(account.isReceiveStudyNotification()),
+                () -> assertTrue(account.isReceiveTechNewsNotification()));
     }
 }

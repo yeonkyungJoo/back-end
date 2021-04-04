@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.*;
 
@@ -236,5 +235,42 @@ class AccountServiceTest {
 //        then
         verify(loginUser).getAccount();
         verify(account).changeNickname(any());
+    }
+
+    @Test
+    void 알림_설정_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        NotificationRequestResponse response = mock(NotificationRequestResponse.class);
+        when(loginUser.getAccount()).thenReturn(account);
+
+//        when
+        accountService.getAccountNotification(loginUser);
+
+//        then
+        verify(loginUser).getAccount();
+        verify(modelMapper).map(account, NotificationRequestResponse.class);
+    }
+
+    @Test
+    void 알림_설정_수정하기() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        NotificationRequestResponse request = mock(NotificationRequestResponse.class);
+        when(loginUser.getUsername()).thenReturn("email");
+        when(accountRepository.findByEmail(loginUser.getUsername()))
+                .thenReturn(Optional.of(account));
+
+
+//        when
+        accountService.updateAccountNotification(loginUser, request);
+
+//        then
+        verify(accountRepository).findByEmail(loginUser.getUsername());
+        verify(account).updateNotifications(request);
     }
 }

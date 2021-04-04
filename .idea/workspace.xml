@@ -34,35 +34,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b5d0166-6f91-48b5-bdc5-afeed5f06884" name="Default Changelist" comment="study알림구현">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/SHA256.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/infra/SHA256.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/NotificationRequestResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/infra/config/security/CustomUserDetailService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/infra/config/security/CustomUserDetailService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/infra/config/security/LoginUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/infra/config/security/LoginUser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/Account.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountInfoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountInfoController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/LoginOAuthRequestDto$LoginOAuthRequestDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/LoginOAuthRequestDto$LoginOAuthRequestDtoBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/LoginOAuthRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/LoginOAuthRequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/SignUpOAuthRequestDto$SignUpOAuthRequestDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/SignUpOAuthRequestDto$SignUpOAuthRequestDtoBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/SignUpOAuthRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/SignUpOAuthRequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/SignUpRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/dto/SignUpRequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/validator/SignUpOAuthRequestValidator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/validator/SignUpOAuthRequestValidator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountControllerTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountDummy.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountDummy.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountInfoControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountInfoControllerTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountServiceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountServiceTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/CustomUserDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/CustomUserDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/LoginUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/LoginUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/oauth/OAuthServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/oauth/OAuthServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/GlobalExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/GlobalExceptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountInfoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/LoginOAuthRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/LoginOAuthRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/SignUpOAuthRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/SignUpOAuthRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/SignUpRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/SignUpRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/validator/SignUpOAuthRequestValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/validator/SignUpOAuthRequestValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/UpdatePasswordRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/dto/UpdatePasswordRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/validator/UpdatePasswordValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/validator/UpdatePasswordValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountDummy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountDummy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountInfoControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountInfoControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +137,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="ignore_missing_gitignore" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../study/devidea/back-end/build.gradle" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/build.gradle" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="project.structure.last.edited" value="Project" />
@@ -169,7 +158,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AccountControllerTest">
+  <component name="RunManager" selected="JUnit.AccountInfoControllerTest">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -181,20 +170,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DevideaApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.project.devidea.DevideaApplication" />
-      <module name="devidea.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.project.devidea.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AccountControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccountInfoControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="devidea.test" />
       <extension name="coverage">
         <pattern>
@@ -203,13 +179,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
-      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountControllerTest" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountInfoControllerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccountControllerTest.OAuth_로그인" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccountInfoControllerTest.관심기술_수정하기" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="devidea.test" />
       <extension name="coverage">
         <pattern>
@@ -218,14 +194,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
-      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountControllerTest" />
-      <option name="METHOD_NAME" value="OAuth_로그인" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountInfoControllerTest" />
+      <option name="METHOD_NAME" value="관심기술_수정하기" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccountControllerTest.saveOAuthGoogle" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccountInfoControllerTest.관심기술_가져오기" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="devidea.test" />
       <extension name="coverage">
         <pattern>
@@ -234,14 +210,30 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
-      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountControllerTest" />
-      <option name="METHOD_NAME" value="saveOAuthGoogle" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountInfoControllerTest" />
+      <option name="METHOD_NAME" value="관심기술_가져오기" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccountServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccountInfoControllerTest.알림_설정_수정하기" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="devidea.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.project.devidea.modules.account.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountInfoControllerTest" />
+      <option name="METHOD_NAME" value="알림_설정_수정하기" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountServiceTest.알림_설정_수정하기" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="devidea.test" />
       <extension name="coverage">
         <pattern>
@@ -251,18 +243,35 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
       <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="METHOD_NAME" value="알림_설정_수정하기" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountServiceTest.알림_설정_수정하기" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="devidea.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.project.devidea.modules.account.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountServiceTest" />
+      <option name="METHOD_NAME" value="알림_설정_수정하기" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.AccountControllerTest" />
-        <item itemvalue="Application.DevideaApplication" />
-        <item itemvalue="JUnit.AccountControllerTest.OAuth_로그인" />
-        <item itemvalue="JUnit.AccountServiceTest" />
-        <item itemvalue="JUnit.AccountControllerTest.saveOAuthGoogle" />
+        <item itemvalue="JUnit.AccountInfoControllerTest" />
+        <item itemvalue="JUnit.AccountInfoControllerTest.알림_설정_수정하기" />
+        <item itemvalue="JUnit.AccountServiceTest.알림_설정_수정하기" />
+        <item itemvalue="JUnit.AccountInfoControllerTest.관심기술_수정하기" />
+        <item itemvalue="JUnit.AccountInfoControllerTest.관심기술_가져오기" />
       </list>
     </recent_temporary>
   </component>
@@ -330,46 +339,54 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="506" y="213" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1617268053613" />
+    <state x="358" y="335" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1617443687372">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="358" y="335" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1617443687372" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1617358105199">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1617358105199" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1617268332448">
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1617428044022">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1617268332448" />
-    <state width="1493" height="258" key="GridCell.Tab.0.bottom" timestamp="1617366309113">
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1617428044022" />
+    <state width="1493" height="354" key="GridCell.Tab.0.bottom" timestamp="1617543457489">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="258" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617366309113" />
-    <state width="1493" height="258" key="GridCell.Tab.0.center" timestamp="1617366309113">
+    <state width="1493" height="91" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
+    <state width="1493" height="354" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617543457489" />
+    <state width="1493" height="354" key="GridCell.Tab.0.center" timestamp="1617543457489">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="258" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617366309113" />
-    <state width="1493" height="258" key="GridCell.Tab.0.left" timestamp="1617366309113">
+    <state width="1493" height="91" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
+    <state width="1493" height="354" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617543457489" />
+    <state width="1493" height="354" key="GridCell.Tab.0.left" timestamp="1617543457489">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="258" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617366309113" />
-    <state width="1493" height="258" key="GridCell.Tab.0.right" timestamp="1617366309113">
+    <state width="1493" height="91" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
+    <state width="1493" height="354" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617543457489" />
+    <state width="1493" height="354" key="GridCell.Tab.0.right" timestamp="1617543457489">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="258" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617366309113" />
-    <state width="1493" height="442" key="GridCell.Tab.1.bottom" timestamp="1617364798784">
+    <state width="1493" height="91" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
+    <state width="1493" height="354" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617543457489" />
+    <state width="1493" height="168" key="GridCell.Tab.1.bottom" timestamp="1617542444889">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="442" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617364798784" />
-    <state width="1493" height="442" key="GridCell.Tab.1.center" timestamp="1617364798783">
+    <state width="1493" height="168" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617542444889" />
+    <state width="1493" height="168" key="GridCell.Tab.1.center" timestamp="1617542444889">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="442" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1617364798783" />
-    <state width="1493" height="442" key="GridCell.Tab.1.left" timestamp="1617364798783">
+    <state width="1493" height="168" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1617542444889" />
+    <state width="1493" height="168" key="GridCell.Tab.1.left" timestamp="1617542444889">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="442" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1617364798783" />
-    <state width="1493" height="442" key="GridCell.Tab.1.right" timestamp="1617364798784">
+    <state width="1493" height="168" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1617542444889" />
+    <state width="1493" height="168" key="GridCell.Tab.1.right" timestamp="1617542444889">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="442" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1617364798784" />
+    <state width="1493" height="168" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1617542444889" />
     <state x="147" y="65" key="MergeDialog" timestamp="1617271689505">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -382,14 +399,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1617277463513" />
-    <state x="221" y="141" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1617364666681">
+    <state x="221" y="141" width="891" height="640" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1617537479321">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="221" y="141" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1617364666681" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1617364632128">
+    <state x="221" y="141" width="891" height="640" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1617537479321" />
+    <state x="406" y="6" width="1130" height="800" key="new project wizard" timestamp="1617427700986">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1617364632128" />
+    <state x="406" y="6" width="1130" height="800" key="new project wizard/0.0.1536.824@0.0.1536.824" timestamp="1617427700986" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1617443627700">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1617443627700" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

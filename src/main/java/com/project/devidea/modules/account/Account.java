@@ -1,6 +1,7 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
+import com.project.devidea.modules.account.dto.NotificationRequestResponse;
 import com.project.devidea.modules.account.dto.SignUpDetailRequestDto;
 import com.project.devidea.modules.content.study.StudyMember;
 import lombok.*;
@@ -181,6 +182,16 @@ public class Account {
     public static Account generateAccountById(Long id){
         return new Account().builder()
                 .id(id).build();
+    }
+
+    public void updateNotifications(NotificationRequestResponse request) {
+
+        this.receiveEmail = request.isReceiveEmail();
+        this.receiveNotification = request.isReceiveNotification();
+        this.receiveTechNewsNotification = request.isReceiveTechNewsNotification();
+        this.receiveMentoringNotification = request.isReceiveMentoringNotification();
+        this.receiveStudyNotification = request.isReceiveStudyNotification();
+        this.receiveRecruitingNotification = request.isReceiveRecruitingNotification();
     }
 }
 
