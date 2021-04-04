@@ -37,6 +37,7 @@ public class AccountInfoController {
 
     @GetMapping("/profile")
     public AccountProfileResponseDto getProfile(@AuthenticationPrincipal LoginUser loginUser) {
+//        ResponseEntity로 가져오기
         return accountService.getProfile(loginUser);
     }
 
@@ -49,15 +50,16 @@ public class AccountInfoController {
 
     @PatchMapping("/password")
     public ResponseEntity<?> updatePassword(@AuthenticationPrincipal LoginUser loginUser,
-                                            @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto, Errors errors) {
+                                            @Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto, Errors errors) {
 
         accountService.updatePassword(loginUser, updatePasswordRequestDto);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
     @GetMapping("/interests")
-    public InterestsResponseDto getInterests(@AuthenticationPrincipal LoginUser loginUser) {
-        return accountService.getAccountInterests(loginUser);
+    public ResponseEntity<?> getInterests(@AuthenticationPrincipal LoginUser loginUser) {
+
+        return new ResponseEntity<>(GlobalResponse.of(accountService.getAccountInterests(loginUser)), HttpStatus.OK);
     }
 
     @PatchMapping("/interests")
@@ -68,8 +70,9 @@ public class AccountInfoController {
     }
 
     @GetMapping("/mainactivityzones")
-    public MainActivityZonesResponseDto getMainActivityZones(@AuthenticationPrincipal LoginUser loginUser) {
-        return accountService.getAccountMainActivityZones(loginUser);
+    public ResponseEntity<?> getMainActivityZones(@AuthenticationPrincipal LoginUser loginUser) {
+        return new ResponseEntity<>(GlobalResponse.of(accountService.getAccountMainActivityZones(loginUser)),
+                HttpStatus.OK);
     }
 
     @PatchMapping("/mainactivityzones")
@@ -92,5 +95,21 @@ public class AccountInfoController {
 
         accountService.updateAccountNickname(loginUser, changeNicknameRequest);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
+    }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<?> getAccountNotifications(@AuthenticationPrincipal LoginUser loginUser) {
+
+        NotificationRequestResponse response = accountService.getAccountNotification(loginUser);
+        return new ResponseEntity<>(GlobalResponse.of(response), HttpStatus.OK);
+    }
+
+    @PatchMapping("/notifications")
+    public ResponseEntity<?> updateAccountNotifications(@AuthenticationPrincipal LoginUser loginUser,
+                                                     @RequestBody NotificationRequestResponse request) {
+
+        accountService.updateAccountNotification(loginUser, request);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
+
     }
 }

@@ -43,7 +43,7 @@ public class AccountService implements OAuthServiceInterface {
     private final MainActivityZoneRepository mainActivityZoneRepository;
     private final String OAUTH_PASSWORD = "dev_idea_oauth_password";
 
-    //    회원가입
+//    회원가입
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
         Account savedAccount = accountRepository.save(Account.builder()
                 .email(signUpRequestDto.getEmail())
@@ -216,7 +216,19 @@ public class AccountService implements OAuthServiceInterface {
     }
 
     public void updateAccountNickname(LoginUser loginUser, ChangeNicknameRequest request) {
-        Account account = loginUser.getAccount();
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
         account.changeNickname(request.getNickname());
+    }
+
+    public NotificationRequestResponse getAccountNotification(LoginUser loginUser) {
+
+        Account account = loginUser.getAccount();
+        return modelMapper.map(account, NotificationRequestResponse.class);
+    }
+
+    public void updateAccountNotification(LoginUser loginUser, NotificationRequestResponse request) {
+
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
+        account.updateNotifications(request);
     }
 }

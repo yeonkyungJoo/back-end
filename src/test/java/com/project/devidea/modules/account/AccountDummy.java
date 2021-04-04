@@ -75,7 +75,21 @@ public class AccountDummy {
     }
 
     public static UpdatePasswordRequestDto getUpdatePassowordRequestDto() {
-        return UpdatePasswordRequestDto.builder().password("123123123123").passwordConfirm("123123123123").build();
+        return UpdatePasswordRequestDto.builder()
+                .password(SHA256.encrypt("123123123123"))
+                .passwordConfirm(SHA256.encrypt("123123123123")).build();
+    }
+
+    public static UpdatePasswordRequestDto getNotEqualsPasswordAndPasswordConfirm() {
+        return UpdatePasswordRequestDto.builder()
+                .password(SHA256.encrypt("1234567890"))
+                .passwordConfirm(SHA256.encrypt("123")).build();
+    }
+
+    public static UpdatePasswordRequestDto getBlankPasswordRequest() {
+        return UpdatePasswordRequestDto.builder()
+                .password("  ")
+                .passwordConfirm("").build();
     }
 
     public static InterestsUpdateRequestDto getInterestsUpdateRequestDto() {
