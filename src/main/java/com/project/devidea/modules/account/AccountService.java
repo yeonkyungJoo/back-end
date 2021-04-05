@@ -3,7 +3,7 @@ package com.project.devidea.modules.account;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.SHA256;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
-import com.project.devidea.infra.config.security.oauth.OAuthServiceInterface;
+import com.project.devidea.infra.config.security.oauth.OAuthService;
 import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.account.repository.InterestRepository;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AccountService implements OAuthServiceInterface {
+public class AccountService implements OAuthService {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
@@ -43,11 +43,11 @@ public class AccountService implements OAuthServiceInterface {
     private final MainActivityZoneRepository mainActivityZoneRepository;
     private final String OAUTH_PASSWORD = "dev_idea_oauth_password";
 
-//    회원가입
-    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
+    public SignUp.Response signUp(SignUp.CommonRequest signUpRequestDto) {
         Account savedAccount = accountRepository.save(Account.builder()
                 .email(signUpRequestDto.getEmail())
                 .name(signUpRequestDto.getName())
+                .nickname(signUpRequestDto.getNickname())
                 .password("{bcrypt}" + passwordEncoder.encode(signUpRequestDto.getPassword()))
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
@@ -57,43 +57,42 @@ public class AccountService implements OAuthServiceInterface {
                 .profileImage(null)
                 .build());
 
-        return modelMapper.map(savedAccount, SignUpResponseDto.class);
+        return modelMapper.map(savedAccount, SignUp.Response.class);
     }
 
-//    OAuth 회원가입
     @Override
-    public SignUpResponseDto signUpOAuth(SignUpOAuthRequestDto request) throws NoSuchAlgorithmException {
+    public SignUp.Response signUpOAuth(SignUp.OAuthRequest request) throws NoSuchAlgorithmException {
 
         Account savedAccount = accountRepository.save(Account.builder()
                 .email(SHA256.encrypt(request.getId()))
                 .name(request.getName())
+                .nickname(request.getNickname())
                 .password("{bcrypt}" + passwordEncoder.encode(OAUTH_PASSWORD))
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
                 .provider(request.getProvider())
-                .gender(null)
-                .profileImage(request.getProfileImage())
+                .gender(request.getGender())
                 .build());
 
-        return SignUpResponseDto.builder().provider(savedAccount.getProvider())
+        return SignUp.Response.builder().provider(savedAccount.getProvider())
                 .id(savedAccount.getId().toString()).name(savedAccount.getName()).build();
     }
 
-    public Map<String, String> login(LoginRequestDto requestDto) throws Exception {
-        authenticate(requestDto.getEmail(), requestDto.getPassword());
+    public Map<String, String> login(Login.Common login) throws Exception {
+        authenticate(login.getEmail(), login.getPassword());
 
-        String jwtToken = jwtTokenUtil.generateToken(requestDto.getEmail());
+        String jwtToken = jwtTokenUtil.generateToken(login.getEmail());
         return jwtTokenUtil.createTokenMap(jwtToken);
     }
 
 //    OAuth 로그인
     @Override
-    public Map<String, String> loginOAuth(LoginOAuthRequestDto loginOAuthRequestDto) throws Exception {
-        LoginRequestDto loginRequestDto = LoginRequestDto.builder()
-                .email(SHA256.encrypt(loginOAuthRequestDto.getId()))
+    public Map<String, String> loginOAuth(Login.OAuth login) throws Exception {
+        Login.Common request = Login.Common.builder()
+                .email(SHA256.encrypt(login.getId()))
                 .password(OAUTH_PASSWORD).build();
-        return login(loginRequestDto);
+        return login(request);
     }
 
     private void authenticate(String email, String password) throws Exception {
@@ -106,7 +105,7 @@ public class AccountService implements OAuthServiceInterface {
         }
     }
 
-    public void saveSignUpDetail(LoginUser loginUser, SignUpDetailRequestDto req) {
+    public void saveSignUpDetail(LoginUser loginUser, SignUp.DetailRequest req) {
 
         Account account = accountRepository.findByEmailWithMainActivityZoneAndInterests(loginUser.getUsername());
 

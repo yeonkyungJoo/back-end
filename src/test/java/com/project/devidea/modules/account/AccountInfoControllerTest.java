@@ -89,7 +89,7 @@ class AccountInfoControllerTest {
         Account account = findUser.getAccount();
         assertAll(
                 () -> assertEquals(account.getBio(), accountProfileUpdateRequestDto.getBio()),
-                () -> assertEquals(account.getProfileImage(), accountProfileUpdateRequestDto.getProfileImage()),
+                () -> assertEquals(account.getProfilePath(), accountProfileUpdateRequestDto.getProfileImage()),
                 () -> assertEquals(account.getUrl(), accountProfileUpdateRequestDto.getUrl()),
                 () -> assertEquals(account.getGender(), accountProfileUpdateRequestDto.getGender()),
                 () -> assertEquals(account.getJob(), accountProfileUpdateRequestDto.getJob()),
@@ -118,7 +118,7 @@ class AccountInfoControllerTest {
 //        then, 바뀐 비밀번호로 로그인할 경우 Bearer 토큰을 주는지?
         MockHttpServletResponse response = mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(LoginRequestDto.builder()
+                .content(objectMapper.writeValueAsString(Login.Common.builder()
                         .email("test@test.com")
                         .password(updatePasswordRequestDto.getPassword()).build())))
                 .andExpect(status().isOk())
