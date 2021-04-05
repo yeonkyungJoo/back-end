@@ -6,7 +6,6 @@ import com.project.devidea.modules.tagzone.tag.TagDummy;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import com.project.devidea.modules.tagzone.zone.ZoneDummy;
 import org.apache.tomcat.util.buf.StringUtils;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -37,7 +36,7 @@ class AccountTest {
                 () -> assertEquals(account.getGender(), accountProfileUpdateRequestDto.getGender()),
                 () -> assertEquals(account.getUrl(), accountProfileUpdateRequestDto.getUrl()),
                 () -> assertEquals(account.getJob(), accountProfileUpdateRequestDto.getJob()),
-                () -> assertEquals(account.getProfileImage(), accountProfileUpdateRequestDto.getProfileImage()),
+                () -> assertEquals(account.getProfilePath(), accountProfileUpdateRequestDto.getProfileImage()),
                 () -> assertEquals(techStacks, StringUtils.join(accountProfileUpdateRequestDto.getTechStacks(), '/')));
     }
 

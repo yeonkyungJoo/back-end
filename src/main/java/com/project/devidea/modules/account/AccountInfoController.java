@@ -4,7 +4,7 @@ import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.error.GlobalResponse;
 import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.account.validator.NicknameValidator;
-import com.project.devidea.modules.account.validator.UpdatePasswordValidator;
+import com.project.devidea.modules.account.validator.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class AccountInfoController {
 
     private final AccountService accountService;
-    private final UpdatePasswordValidator updatePasswordValidator;
+    private final PasswordValidator updatePasswordValidator;
     private final NicknameValidator nicknameValidator;
 
     @InitBinder("updatePasswordRequestDto")

@@ -48,7 +48,7 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final StringPath password = createString("password");
 
-    public final StringPath profileImage = createString("profileImage");
+    public final StringPath profilePath = createString("profilePath");
 
     public final StringPath provider = createString("provider");
 
