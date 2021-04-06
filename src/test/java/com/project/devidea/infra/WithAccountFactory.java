@@ -2,7 +2,7 @@ package com.project.devidea.infra;
 
 import com.project.devidea.infra.config.security.CustomUserDetailService;
 import com.project.devidea.modules.account.AccountService;
-import com.project.devidea.modules.account.dto.SignUpRequestDto;
+import com.project.devidea.modules.account.dto.SignUp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,10 +25,10 @@ public class WithAccountFactory implements WithSecurityContextFactory<WithAccoun
 
     @Override
     public SecurityContext createSecurityContext(WithAccount withAccount) {
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto().builder()
+        SignUp.CommonRequest signUpRequestDto = SignUp.CommonRequest.builder()
                 .email(withAccount.NickName() + "@gmail.com")
                 .name(withAccount.NickName())
-//                .nickname(withAccount.NickName())
+                .nickname(withAccount.NickName())
                 .password("password")
                 .gender("남성")
                 .passwordConfirm("yes")

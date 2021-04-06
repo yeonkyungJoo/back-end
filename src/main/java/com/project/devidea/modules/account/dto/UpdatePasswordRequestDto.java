@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Builder
 public class UpdatePasswordRequestDto {
 
-    @Size(min = 8, max = 30, message = "8자 이상 30자 이하로 입력해주세요.")
+    @NotBlank(message = "8자 이상 30자 이하로 입력해주세요.")
     private String password;
 
     @NotBlank(message = "비밀번호를 한번 더 입력해주세요.")

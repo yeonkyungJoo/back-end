@@ -1,8 +1,5 @@
 package com.project.devidea.modules.notification;
 
-import javax.persistence.Enumerated;
-
-
 public enum NotificationType {
-    STUDY,TECH,MENTORING;
+    STUDY,TECH,SUGGESTION;
 }

@@ -24,15 +24,15 @@ public class QResume extends EntityPathBase<Resume> {
 
     public final com.project.devidea.modules.account.QAccount account;
 
-    public final ListPath<Activity, QActivity> activites = this.<Activity, QActivity>createList("activites", Activity.class, QActivity.class, PathInits.DIRECT2);
+    public final ListPath<com.project.devidea.modules.content.resume.activity.Activity, com.project.devidea.modules.content.resume.activity.QActivity> activites = this.<com.project.devidea.modules.content.resume.activity.Activity, com.project.devidea.modules.content.resume.activity.QActivity>createList("activites", com.project.devidea.modules.content.resume.activity.Activity.class, com.project.devidea.modules.content.resume.activity.QActivity.class, PathInits.DIRECT2);
 
-    public final ListPath<Award, QAward> awards = this.<Award, QAward>createList("awards", Award.class, QAward.class, PathInits.DIRECT2);
+    public final ListPath<com.project.devidea.modules.content.resume.award.Award, com.project.devidea.modules.content.resume.award.QAward> awards = this.<com.project.devidea.modules.content.resume.award.Award, com.project.devidea.modules.content.resume.award.QAward>createList("awards", com.project.devidea.modules.content.resume.award.Award.class, com.project.devidea.modules.content.resume.award.QAward.class, PathInits.DIRECT2);
 
     public final StringPath blog = createString("blog");
 
-    public final ListPath<Career, QCareer> careers = this.<Career, QCareer>createList("careers", Career.class, QCareer.class, PathInits.DIRECT2);
+    public final ListPath<com.project.devidea.modules.content.resume.career.Career, com.project.devidea.modules.content.resume.career.QCareer> careers = this.<com.project.devidea.modules.content.resume.career.Career, com.project.devidea.modules.content.resume.career.QCareer>createList("careers", com.project.devidea.modules.content.resume.career.Career.class, com.project.devidea.modules.content.resume.career.QCareer.class, PathInits.DIRECT2);
 
-    public final ListPath<Education, QEducation> educations = this.<Education, QEducation>createList("educations", Education.class, QEducation.class, PathInits.DIRECT2);
+    public final ListPath<com.project.devidea.modules.content.resume.education.Education, com.project.devidea.modules.content.resume.education.QEducation> educations = this.<com.project.devidea.modules.content.resume.education.Education, com.project.devidea.modules.content.resume.education.QEducation>createList("educations", com.project.devidea.modules.content.resume.education.Education.class, com.project.devidea.modules.content.resume.education.QEducation.class, PathInits.DIRECT2);
 
     public final StringPath github = createString("github");
 
@@ -40,7 +40,7 @@ public class QResume extends EntityPathBase<Resume> {
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final ListPath<Project, QProject> projects = this.<Project, QProject>createList("projects", Project.class, QProject.class, PathInits.DIRECT2);
+    public final ListPath<com.project.devidea.modules.content.resume.project.Project, com.project.devidea.modules.content.resume.project.QProject> projects = this.<com.project.devidea.modules.content.resume.project.Project, com.project.devidea.modules.content.resume.project.QProject>createList("projects", com.project.devidea.modules.content.resume.project.Project.class, com.project.devidea.modules.content.resume.project.QProject.class, PathInits.DIRECT2);
 
     public QResume(String variable) {
         this(Resume.class, forVariable(variable), INITS);

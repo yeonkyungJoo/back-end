@@ -1,8 +1,9 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.infra.config.security.SHA256;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
-import com.project.devidea.infra.config.security.oauth.OAuthServiceInterface;
+import com.project.devidea.infra.config.security.oauth.OAuthService;
 import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.account.repository.InterestRepository;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AccountService implements OAuthServiceInterface {
+public class AccountService implements OAuthService {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
@@ -41,11 +43,11 @@ public class AccountService implements OAuthServiceInterface {
     private final MainActivityZoneRepository mainActivityZoneRepository;
     private final String OAUTH_PASSWORD = "dev_idea_oauth_password";
 
-    //    회원가입
-    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
+    public SignUp.Response signUp(SignUp.CommonRequest signUpRequestDto) {
         Account savedAccount = accountRepository.save(Account.builder()
                 .email(signUpRequestDto.getEmail())
                 .name(signUpRequestDto.getName())
+                .nickname(signUpRequestDto.getNickname())
                 .password("{bcrypt}" + passwordEncoder.encode(signUpRequestDto.getPassword()))
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
@@ -55,40 +57,42 @@ public class AccountService implements OAuthServiceInterface {
                 .profileImage(null)
                 .build());
 
-        return modelMapper.map(savedAccount, SignUpResponseDto.class);
+        return modelMapper.map(savedAccount, SignUp.Response.class);
     }
 
-//    OAuth 회원가입
     @Override
-    public SignUpResponseDto signUpOAuth(SignUpOAuthRequestDto signUpOAuthRequestDto) {
+    public SignUp.Response signUpOAuth(SignUp.OAuthRequest request) throws NoSuchAlgorithmException {
+
         Account savedAccount = accountRepository.save(Account.builder()
-                .email(signUpOAuthRequestDto.getEmail())
-                .name(signUpOAuthRequestDto.getName())
+                .email(SHA256.encrypt(request.getId()))
+                .name(request.getName())
+                .nickname(request.getNickname())
                 .password("{bcrypt}" + passwordEncoder.encode(OAUTH_PASSWORD))
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
-                .provider(signUpOAuthRequestDto.getProvider())
-                .gender(null)
-                .profileImage(signUpOAuthRequestDto.getProfileImage())
+                .provider(request.getProvider())
+                .gender(request.getGender())
                 .build());
 
-        return modelMapper.map(savedAccount, SignUpResponseDto.class);
+        return SignUp.Response.builder().provider(savedAccount.getProvider())
+                .id(savedAccount.getId().toString()).name(savedAccount.getName()).build();
     }
 
-    public Map<String, String> login(LoginRequestDto requestDto) throws Exception {
-        authenticate(requestDto.getEmail(), requestDto.getPassword());
+    public Map<String, String> login(Login.Common login) throws Exception {
+        authenticate(login.getEmail(), login.getPassword());
 
-        String jwtToken = jwtTokenUtil.generateToken(requestDto.getEmail());
+        String jwtToken = jwtTokenUtil.generateToken(login.getEmail());
         return jwtTokenUtil.createTokenMap(jwtToken);
     }
 
 //    OAuth 로그인
     @Override
-    public Map<String, String> loginOAuth(LoginOAuthRequestDto loginOAuthRequestDto) throws Exception {
-        LoginRequestDto loginRequestDto =
-                LoginRequestDto.builder().email(loginOAuthRequestDto.getEmail()).password(OAUTH_PASSWORD).build();
-        return login(loginRequestDto);
+    public Map<String, String> loginOAuth(Login.OAuth login) throws Exception {
+        Login.Common request = Login.Common.builder()
+                .email(SHA256.encrypt(login.getId()))
+                .password(OAUTH_PASSWORD).build();
+        return login(request);
     }
 
     private void authenticate(String email, String password) throws Exception {
@@ -101,7 +105,7 @@ public class AccountService implements OAuthServiceInterface {
         }
     }
 
-    public void saveSignUpDetail(LoginUser loginUser, SignUpDetailRequestDto req) {
+    public void saveSignUpDetail(LoginUser loginUser, SignUp.DetailRequest req) {
 
         Account account = accountRepository.findByEmailWithMainActivityZoneAndInterests(loginUser.getUsername());
 
@@ -211,7 +215,19 @@ public class AccountService implements OAuthServiceInterface {
     }
 
     public void updateAccountNickname(LoginUser loginUser, ChangeNicknameRequest request) {
-        Account account = loginUser.getAccount();
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
         account.changeNickname(request.getNickname());
+    }
+
+    public NotificationRequestResponse getAccountNotification(LoginUser loginUser) {
+
+        Account account = loginUser.getAccount();
+        return modelMapper.map(account, NotificationRequestResponse.class);
+    }
+
+    public void updateAccountNotification(LoginUser loginUser, NotificationRequestResponse request) {
+
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
+        account.updateNotifications(request);
     }
 }

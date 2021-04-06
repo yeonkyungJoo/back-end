@@ -1,7 +1,8 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.SignUpDetailRequestDto;
+import com.project.devidea.modules.account.dto.NotificationRequestResponse;
+import com.project.devidea.modules.account.dto.SignUp;
 import com.project.devidea.modules.content.study.StudyMember;
 import lombok.*;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -43,7 +44,7 @@ public class Account {
 
     private String bio;
 
-    private String profileImage;
+    private String profilePath;
 
     private String url;
 
@@ -116,7 +117,7 @@ public class Account {
         this.joinedAt = joinedAt;
         this.modifiedAt = modifiedAt;
         this.bio = bio;
-        this.profileImage = profileImage;
+        this.profilePath = profileImage;
         this.url = url;
         this.gender = gender;
         this.job = job;
@@ -135,10 +136,10 @@ public class Account {
     }
 
     //    편의 메서드
-    public void saveSignUpDetail(SignUpDetailRequestDto req, Set<MainActivityZone> mainActivityZones, Set<Interest> interests) {
+    public void saveSignUpDetail(SignUp.DetailRequest req, Set<MainActivityZone> mainActivityZones,
+                                 Set<Interest> interests) {
 
-        this.nickname = req.getNickname();
-        this.profileImage = req.getProfileImage();
+        this.profilePath = req.getProfilePath();
         this.receiveEmail = req.isReceiveEmail();
         this.careerYears = req.getCareerYears();
         this.job = req.getJobField();
@@ -150,7 +151,7 @@ public class Account {
 
     public void updateProfile(AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
         this.bio = accountProfileUpdateRequestDto.getBio();
-        this.profileImage = accountProfileUpdateRequestDto.getProfileImage();
+        this.profilePath = accountProfileUpdateRequestDto.getProfileImage();
         this.url = accountProfileUpdateRequestDto.getUrl();
         this.gender = accountProfileUpdateRequestDto.getGender();
         this.job = accountProfileUpdateRequestDto.getJob();
@@ -181,6 +182,16 @@ public class Account {
     public static Account generateAccountById(Long id){
         return new Account().builder()
                 .id(id).build();
+    }
+
+    public void updateNotifications(NotificationRequestResponse request) {
+
+        this.receiveEmail = request.isReceiveEmail();
+        this.receiveNotification = request.isReceiveNotification();
+        this.receiveTechNewsNotification = request.isReceiveTechNewsNotification();
+        this.receiveMentoringNotification = request.isReceiveMentoringNotification();
+        this.receiveStudyNotification = request.isReceiveStudyNotification();
+        this.receiveRecruitingNotification = request.isReceiveRecruitingNotification();
     }
 }
 

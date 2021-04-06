@@ -6,6 +6,9 @@ import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +18,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Mentee {
 
@@ -32,15 +36,14 @@ public class Mentee {
 
     private LocalDateTime publishedDate;
 
-    // @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "mentee_zone",
                 joinColumns = @JoinColumn(name = "mentee_id"),
                 inverseJoinColumns = @JoinColumn(name = "zone_id"))
                 // indexes = @Index(name = "zone", columnList = "zone_id"))
     private Set<Zone> zones = new HashSet<>();
-    // @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL)
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "mentee_tag",
                 joinColumns = @JoinColumn(name = "mentee_id"),
                 inverseJoinColumns = @JoinColumn(name = "tag_id"))
@@ -100,5 +103,20 @@ public class Mentee {
         this.tags = tags;
         this.open = open;
         this.free = free;
+    }
+
+    public static Mentee createMentee(Account account, String description,
+                                      Set<Zone> zones, Set<Tag> tags, boolean free) {
+
+        Mentee mentee = new Mentee();
+        mentee.setAccount(account);
+        mentee.setDescription(description);
+        mentee.setZones(zones);
+        mentee.setTags(tags);
+        mentee.setFree(free);
+
+        mentee.publish();
+
+        return mentee;
     }
 }
