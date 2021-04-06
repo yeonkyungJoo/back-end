@@ -1,29 +1,20 @@
 package com.project.devidea.modules.content.mentoring.form;
 
-import com.project.devidea.api.Request;
-import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.zone.Zone;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
-public class UpdateMenteeRequest extends Request {
-
-    private String description;
-    private Set<Zone> zones;
-    private Set<Tag> tags;
+@Getter @Setter
+@NoArgsConstructor
+public class UpdateMenteeRequest extends MenteeRequest {
 
     private boolean open;
-    private boolean free;
 
     @Builder
-    public UpdateMenteeRequest(String description, Set<Zone> zones, Set<Tag> tags, boolean open, boolean free) {
-        this.description = description;
-        this.zones = zones;
-        this.tags = tags;
+    public UpdateMenteeRequest(String description, @NotEmpty Set<String> zones, @NotEmpty Set<String> tags, boolean free, boolean open) {
+        super(description, zones, tags, free);
         this.open = open;
-        this.free = free;
     }
 }

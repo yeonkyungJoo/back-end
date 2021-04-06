@@ -1,25 +1,25 @@
 package com.project.devidea.modules.content.mentoring;
 
-import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.infra.config.security.CurrentUser;
 import com.project.devidea.modules.account.Account;
+import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.mentoring.form.CreateMentorRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMentorRequest;
-import com.project.devidea.modules.content.mentoring.validator.CreateMentorRequestValidator;
-import com.project.devidea.modules.content.resume.Resume;
-import com.project.devidea.modules.content.resume.ResumeRepository;
-import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.zone.Zone;
+import com.project.devidea.modules.content.mentoring.validator.MentorRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.Errors;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,138 +28,64 @@ public class MentorController {
 
     private final MentorRepository mentorRepository;
     private final MentorService mentorService;
-    private final CreateMentorRequestValidator createMentorRequestValidator;
-    private final ResumeRepository resumeRepository;
-/*
-    @InitBinder("createMentorRequest")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(createMentorRequestValidator);
-    }
-*/
 
+    // TODO - 페이징
     /**
      * 멘토 전체 조회 - 페이징
      */
-    @GetMapping("/")
+    @GetMapping("/list")
     public ResponseEntity getMentors(Pageable pageable) {
-
         return ResponseEntity.ok(null);
     }
 
-/*
+    @ApiOperation("멘토 전체 조회")
     @GetMapping("/")
     public ResponseEntity getMentors() {
 
-        List<Mentor> mentors = mentorRepository.findAll();
-        List<MentorDto> collect = mentors.stream()
+        List<MentorDto> collect = mentorRepository.findAll().stream()
                 .map(mentor -> new MentorDto(mentor))
                 .collect(Collectors.toList());
-
         return new ResponseEntity(collect, HttpStatus.OK);
     }
-*/
 
-    /**
-     * 멘토 조회
-     */
+    @ApiOperation("멘토 조회")
     @GetMapping("/{id}")
     public ResponseEntity getMentor(@PathVariable(name = "id") Long mentorId) {
-
         Mentor mentor = mentorRepository.findById(mentorId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Id"));
-
-        MentorDto dto = new MentorDto(mentor);
-        return ResponseEntity.ok(dto);
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 멘토입니다."));
+        return new ResponseEntity(new MentorDto(mentor), HttpStatus.OK);
     }
 
-    /**
-     * 멘토 등록
-     */
+    @ApiOperation("멘토 등록")
     @PostMapping("/")
-    public ResponseEntity newMentor(@RequestBody @Valid CreateMentorRequest request, Errors errors,
-                                    // @AuthenticationPrincipal Account account)
-                                    @AuthenticationPrincipal LoginUser loginUser) {
-
-        Account account = loginUser.getAccount();
+    public ResponseEntity newMentor(@RequestBody @Valid CreateMentorRequest request,
+                                    @CurrentUser Account account) {
         if (account == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            throw new AccessDeniedException("Access is Denied");
         }
-
-        // TODO - validate
-        // - free와 cost 확인
-
-        // TODO - test : 이미 멘토인 경우
-        Mentor findMentor = mentorRepository.findByAccountId(account.getId());
-        if (findMentor != null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        if (errors.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        Resume resume = resumeRepository.findByAccountId(account.getId());
-        if (resume == null) {
-            throw new IllegalStateException("Not Exist Resume");
-        }
-
-        Mentor mentor = Mentor.builder()
-                .account(account)
-                .resume(resume)
-                .zones(request.getZones())
-                .tags(request.getTags())
-                .free(request.isFree())
-                .cost(request.getCost())
-                .build();
-
-        // TODO - validate
-        Long mentorId = mentorService.createMentor(mentor);
+        Long mentorId = mentorService.createMentor(account, request);
         return new ResponseEntity(mentorId, HttpStatus.CREATED);
     }
 
-    /**
-     * 멘토 정보 수정
-     */
+    @ApiOperation("멘토 정보 수정")
     @PostMapping("/update")
-    public ResponseEntity editMentor(@RequestBody @Valid UpdateMentorRequest request, Errors errors,
-                                     // @AuthenticationPrincipal Account account)
-                                     @AuthenticationPrincipal LoginUser loginUser) {
-
-        Account account = loginUser.getAccount();
+    public ResponseEntity editMentor(@RequestBody @Valid UpdateMentorRequest request,
+                                     @CurrentUser Account account) {
         if (account == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            throw new AccessDeniedException("Access is Denied");
         }
-        Mentor mentor = mentorRepository.findByAccountId(account.getId());
-        if (mentor == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        if (errors.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        // TODO - validate
-        mentorService.updateMentor(request, mentor);
+        mentorService.updateMentor(account, request);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * 멘토 탈퇴
-     */
+    @ApiOperation("멘토 탈퇴")
     @PostMapping("/delete")
-    public ResponseEntity quitMentor(
-            // @AuthenticationPrincipal Account account)
-            @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity quitMentor(@CurrentUser Account account) {
 
-        Account account = loginUser.getAccount();
         if (account == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            throw new AccessDeniedException("Access is Denied");
         }
-
-        Mentor mentor = mentorRepository.findByAccountId(account.getId());
-        if (mentor == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        // TODO - DB에서 정보를 아예 삭제해버리면 이력관리는? -> is_del 컬럼을 추가하는 게 어떠한가?
-        mentorService.deleteMentor(mentor);
+        mentorService.deleteMentor(account);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -168,17 +94,21 @@ public class MentorController {
     @Data
     class MentorDto {
 
+        private Long id;
         private String name;
-        private Set<Zone> zones;
-        private Set<Tag> tags;
+        private Set<String> zones;
+        private Set<String> tags;
         private boolean open;
         private boolean free;
         private Integer cost;
 
         public MentorDto(Mentor mentor) {
+            this.id = mentor.getId();
             this.name = mentor.getAccount().getName();
-            this.zones = mentor.getZones();
-            this.tags = mentor.getTags();
+            this.zones = mentor.getZones().stream()
+                    .map(zone -> zone.toString()).collect(Collectors.toSet());
+            this.tags = mentor.getTags().stream()
+                    .map(tag -> tag.toString()).collect(Collectors.toSet());
             this.open = mentor.isOpen();
             this.free = mentor.isFree();
             this.cost = mentor.getCost();

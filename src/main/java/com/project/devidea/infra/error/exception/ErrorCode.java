@@ -19,8 +19,9 @@ public enum ErrorCode {
     ENTITY_NOT_FOUND(400, " Entity Not Found"),
 
 //    Account 관련 에러코드
-    ACCOUNT_ERROR(400, "Invalid Input Value From Account");
+    ACCOUNT_ERROR(400, "Invalid Input Value From Account"),
 
+    ENTITY_ALREADY_EXIST(400, "Entity Already Exist");
 
 //    // Member
 //    EMAIL_DUPLICATION(400,"Email is Duplication"),

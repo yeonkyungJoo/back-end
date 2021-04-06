@@ -90,8 +90,14 @@ public class GlobalExceptionController {
         final ErrorCode errorCode = e.getErrorCode();
 
         ErrorResponse response = new ErrorResponse();
-        if(!e.getMessage().equals(""))  response = ErrorResponse.of(errorCode, e.getErrors());
-        else response = ErrorResponse.of(errorCode);
+
+//        if(!e.getMessage().equals(""))  response = ErrorResponse.of(errorCode, e.getErrors());
+//        else response = ErrorResponse.of(errorCode);
+        if (!e.getMessage().equals("") && e.getErrors() != null) {
+            response = ErrorResponse.of(errorCode, e.getErrors());
+        } else {
+            response = ErrorResponse.of(errorCode);
+        }
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
