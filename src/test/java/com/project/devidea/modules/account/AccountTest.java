@@ -22,7 +22,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
+        Update.ProfileRequest accountProfileUpdateRequestDto =
                 AccountDummy.getAccountProfileUpdateRequestDto();
 
 //        when
@@ -45,7 +45,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        UpdatePasswordRequestDto updatePasswordRequestDto = AccountDummy.getUpdatePassowordRequestDto();
+        Update.PasswordRequest updatePasswordRequestDto = AccountDummy.getUpdatePassowordRequestDto();
 
 //        when
         account.updatePassword(updatePasswordRequestDto.getPassword());
@@ -91,7 +91,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("변경닉네임").build();
+        Update.NicknameRequest request = Update.NicknameRequest.builder().nickname("변경닉네임").build();
 
 //        when
         account.changeNickname(request.getNickname());
@@ -105,7 +105,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        NotificationRequestResponse request = NotificationRequestResponse.builder().receiveEmail(true)
+        Update.Notification request = Update.Notification.builder().receiveEmail(true)
                 .receiveMentoringNotification(true).receiveNotification(true).receiveRecruitingNotification(true)
                 .receiveStudyNotification(true).receiveTechNewsNotification(true).build();
 

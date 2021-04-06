@@ -73,7 +73,7 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
+        Update.ProfileRequest accountProfileUpdateRequestDto =
                 AccountDummy.getAccountProfileUpdateRequestDto();
 
 //        when
@@ -105,7 +105,7 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        UpdatePasswordRequestDto updatePasswordRequestDto =
+        Update.PasswordRequest updatePasswordRequestDto =
                 AccountDummy.getUpdatePassowordRequestDto();
 
 //        when
@@ -152,7 +152,7 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        InterestsUpdateRequestDto interestsUpdateRequestDto = AccountDummy.getInterestsUpdateRequestDto();
+        Update.Interest interestsUpdateRequestDto = AccountDummy.getInterestsUpdateRequestDto();
 
 //        when
         mockMvc.perform(patch("/account/settings/interests")
@@ -166,7 +166,7 @@ class AccountInfoControllerTest {
                 .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.tagNames.length()", is(3)))
+                .andExpect(jsonPath("$.data.interests.length()", is(3)))
                 .andDo(print());
     }
 
@@ -183,7 +183,8 @@ class AccountInfoControllerTest {
                 .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("$.data.mainActivityZones.length()", is(0)));
     }
 
     @Test
@@ -192,7 +193,7 @@ class AccountInfoControllerTest {
 
 //        given
         LoginUser loginUser = (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto =
+        Update.MainActivityZone mainActivityZonesUpdateRequestDto =
                 AccountDummy.getMainActivityZonesUpdateRequestDto();
 
 //        when
@@ -207,7 +208,7 @@ class AccountInfoControllerTest {
                 .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.zoneNames.length()", is(2)));
+                .andExpect(jsonPath("$.data.mainActivityZones.length()", is(2)));
     }
 
     @Test
@@ -233,7 +234,7 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("변경할닉네임").build();
+        Update.NicknameRequest request = Update.NicknameRequest.builder().nickname("변경할닉네임").build();
 
 //        when
         mockMvc.perform(patch("/account/settings/nickname")
@@ -272,7 +273,7 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        NotificationRequestResponse request = NotificationRequestResponse.builder()
+        Update.Notification request = Update.Notification.builder()
                 .receiveTechNewsNotification(true).receiveStudyNotification(true).receiveRecruitingNotification(true)
                 .receiveNotification(true).receiveMentoringNotification(true).receiveEmail(true).build();
 
@@ -305,7 +306,7 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        UpdatePasswordRequestDto request = AccountDummy.getBlankPasswordRequest();
+        Update.PasswordRequest request = AccountDummy.getBlankPasswordRequest();
 
 
 //        when, then
@@ -325,7 +326,7 @@ class AccountInfoControllerTest {
     //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        UpdatePasswordRequestDto updatePasswordRequestDto = AccountDummy.getNotEqualsPasswordAndPasswordConfirm();
+        Update.PasswordRequest updatePasswordRequestDto = AccountDummy.getNotEqualsPasswordAndPasswordConfirm();
 
 
     //        when, then
@@ -344,10 +345,10 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("범석").build();
+        Update.NicknameRequest request = Update.NicknameRequest.builder().nickname("범").build();
 
 //        when, then
-//        Valid 3자 미만의 경우
+//        Valid 2자 미만의 경우
         mockMvc.perform(patch("/account/settings/nickname")
                 .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -364,7 +365,7 @@ class AccountInfoControllerTest {
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("DevIdea").build();
+        Update.NicknameRequest request = Update.NicknameRequest.builder().nickname("DevIdea").build();
 
 //        when, then
 //        중복 금지

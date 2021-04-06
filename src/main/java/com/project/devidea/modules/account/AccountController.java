@@ -26,7 +26,6 @@ public class AccountController {
     // TODO : Custom-Validator를 상속해도 잘 동작하는지?
     private final SignUpRequestValidator signUpRequestValidator;
     private final SignUpOAuthRequestValidator signUpOAuthRequestValidator;
-//    private final NicknameValidator nicknameValidator;
 
     @InitBinder("commonRequest")
     public void initSignUpValidator(WebDataBinder binder) {

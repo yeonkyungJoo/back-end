@@ -1,8 +1,7 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.NotificationRequestResponse;
 import com.project.devidea.modules.account.dto.SignUp;
+import com.project.devidea.modules.account.dto.Update;
 import com.project.devidea.modules.content.study.StudyMember;
 import lombok.*;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -149,7 +148,7 @@ public class Account {
         this.mainActivityZones.addAll(mainActivityZones);
     }
 
-    public void updateProfile(AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
+    public void updateProfile(Update.ProfileRequest accountProfileUpdateRequestDto) {
         this.bio = accountProfileUpdateRequestDto.getBio();
         this.profilePath = accountProfileUpdateRequestDto.getProfileImage();
         this.url = accountProfileUpdateRequestDto.getUrl();
@@ -184,7 +183,7 @@ public class Account {
                 .id(id).build();
     }
 
-    public void updateNotifications(NotificationRequestResponse request) {
+    public void updateNotifications(Update.Notification request) {
 
         this.receiveEmail = request.isReceiveEmail();
         this.receiveNotification = request.isReceiveNotification();

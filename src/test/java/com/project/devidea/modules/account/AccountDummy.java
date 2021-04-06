@@ -54,44 +54,44 @@ public class AccountDummy {
         return Login.OAuth.builder().id(SHA256.encrypt("google56785678")).build();
     }
 
-    public static AccountProfileResponseDto getAccountProfileResponseDtoAtMockito() {
-        return AccountProfileResponseDto.builder()
+    public static Update.ProfileResponse getAccountProfileResponseDtoAtMockito() {
+        return Update.ProfileResponse.builder()
                 .name("").bio("").careerYears(3).email("ko@naver.com").gender("male").job("PM")
                 .joinedAt(LocalDateTime.now()).modifiedAt(LocalDateTime.now()).nickname("고범석")
                 .profileImage("1231234").techStacks("java/spring/jpa").url("github.com")
                 .build();
     }
 
-    public static AccountProfileUpdateRequestDto getAccountProfileUpdateRequestDto() {
-        return AccountProfileUpdateRequestDto.builder().bio("12345").careerYears(1).gender("female")
+    public static Update.ProfileRequest getAccountProfileUpdateRequestDto() {
+        return Update.ProfileRequest.builder().bio("12345").careerYears(1).gender("female")
                 .job("웹개발").profileImage("123456").techStacks(Arrays.asList("django", "jpa")).build();
     }
 
-    public static UpdatePasswordRequestDto getUpdatePassowordRequestDto() {
-        return UpdatePasswordRequestDto.builder()
+    public static Update.PasswordRequest getUpdatePassowordRequestDto() {
+        return Update.PasswordRequest.builder()
                 .password(SHA256.encrypt("123123123123"))
                 .passwordConfirm(SHA256.encrypt("123123123123")).build();
     }
 
-    public static UpdatePasswordRequestDto getNotEqualsPasswordAndPasswordConfirm() {
-        return UpdatePasswordRequestDto.builder()
+    public static Update.PasswordRequest getNotEqualsPasswordAndPasswordConfirm() {
+        return Update.PasswordRequest.builder()
                 .password(SHA256.encrypt("1234567890"))
                 .passwordConfirm(SHA256.encrypt("123")).build();
     }
 
-    public static UpdatePasswordRequestDto getBlankPasswordRequest() {
-        return UpdatePasswordRequestDto.builder()
+    public static Update.PasswordRequest getBlankPasswordRequest() {
+        return Update.PasswordRequest.builder()
                 .password("  ")
                 .passwordConfirm("").build();
     }
 
-    public static InterestsUpdateRequestDto getInterestsUpdateRequestDto() {
-        return InterestsUpdateRequestDto.builder().interests(Arrays.asList("Vue.js", "java", "docker")).build();
+    public static Update.Interest getInterestsUpdateRequestDto() {
+        return Update.Interest.builder().interests(Arrays.asList("Vue.js", "java", "docker")).build();
     }
 
-    public static MainActivityZonesUpdateRequestDto getMainActivityZonesUpdateRequestDto() {
-        return MainActivityZonesUpdateRequestDto.builder()
-                .citiesAndProvinces(Arrays.asList("서울특별시/중랑구", "서울특별시/노원구"))
+    public static Update.MainActivityZone getMainActivityZonesUpdateRequestDto() {
+        return Update.MainActivityZone.builder()
+                .mainActivityZones(Arrays.asList("서울특별시/중랑구", "서울특별시/노원구"))
                 .build();
     }
 
