@@ -337,25 +337,25 @@ class AccountInfoControllerTest {
                 .andExpect(jsonPath("$.errors.length()", is(1)));
     }
 
-    @Test
-    @WithUserDetails("test@test.com")
-    void 닉네임_변경_유효성_검사_1_Size() throws Exception {
-
-//        given
-        LoginUser loginUser =
-                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("범석").build();
-
-//        when, then
-//        Valid 3자 미만의 경우
-        mockMvc.perform(patch("/account/settings/nickname")
-                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andDo(print())
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.errors.length()", is(1)));
-    }
+//    @Test
+//    @WithUserDetails("test@test.com")
+//    void 닉네임_변경_유효성_검사_1_Size() throws Exception {
+//
+////        given
+//        LoginUser loginUser =
+//                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+//        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("범석").build();
+//
+////        when, then
+////        Valid 3자 미만의 경우
+//        mockMvc.perform(patch("/account/settings/nickname")
+//                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(request)))
+//                .andDo(print())
+//                .andExpect(status().is4xxClientError())
+//                .andExpect(jsonPath("$.errors.length()", is(1)));
+//    }
 
     @Test
     @WithUserDetails("test@test.com")

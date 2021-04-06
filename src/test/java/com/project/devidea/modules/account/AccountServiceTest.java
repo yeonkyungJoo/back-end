@@ -220,22 +220,22 @@ class AccountServiceTest {
         verify(account).getNickname();
     }
 
-    @Test
-    void 닉네임_변경하기() throws Exception{
-
-//        given
-        LoginUser loginUser = mock(LoginUser.class);
-        Account account = mock(Account.class);
-        ChangeNicknameRequest request = mock(ChangeNicknameRequest.class);
-        when(loginUser.getAccount()).thenReturn(account);
-
-//        when
-        accountService.updateAccountNickname(loginUser, request);
-
-//        then
-        verify(loginUser).getAccount();
-        verify(account).changeNickname(any());
-    }
+//    @Test
+//    void 닉네임_변경하기() throws Exception{
+//
+////        given
+//        LoginUser loginUser = mock(LoginUser.class);
+//        Account account = mock(Account.class);
+//        ChangeNicknameRequest request = mock(ChangeNicknameRequest.class);
+//        when(loginUser.getAccount()).thenReturn(account);
+//
+////        when
+//        accountService.updateAccountNickname(loginUser, request);
+//
+////        then
+//        verify(loginUser).getAccount();
+//        verify(account).changeNickname(any());
+//    }
 
     @Test
     void 알림_설정_가져오기() throws Exception {
