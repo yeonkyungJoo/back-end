@@ -1,9 +1,12 @@
 package com.project.devidea.modules.content.mentoring;
 
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.mentoring.exception.AlreadyExistException;
+import com.project.devidea.modules.content.mentoring.exception.InvalidInputException;
 import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.mentoring.form.CreateMentorRequest;
+import com.project.devidea.modules.content.mentoring.form.MentorRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMentorRequest;
 import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
@@ -34,7 +37,15 @@ public class MentorService extends AbstractService {
         return mentorRepository.findByAccountId(accountId);
     }
 
+    private void validateMentorRequest(MentorRequest request) {
+        if ((request.isFree() && request.getCost() > 0) || request.getCost() < 0) {
+            throw new InvalidInputException();
+        }
+    }
+
     public Long createMentor(Account account, CreateMentorRequest request) {
+
+        validateMentorRequest(request);
 
         if (getMentor(account.getId()) != null) {
             throw new AlreadyExistException("이미 등록된 멘토입니다.");
@@ -53,14 +64,20 @@ public class MentorService extends AbstractService {
 
     public void updateMentor(Account account, UpdateMentorRequest request) {
 
+        validateMentorRequest(request);
+
         Mentor mentor = getMentor(account.getId());
         if (mentor == null) {
             throw new NotFoundException("존재하지 않는 멘토입니다.");
         }
         Set<Zone> zones = getZones(request.getZones());
         Set<Tag> tags = getTags(request.getTags());
+
+        mentor.getZones().clear();
         mentor.setZones(zones);
+        mentor.getTags().clear();
         mentor.setTags(tags);
+
         mentor.setOpen(request.isOpen());
         mentor.setFree(request.isFree());
         mentor.setCost(request.getCost());
@@ -72,6 +89,9 @@ public class MentorService extends AbstractService {
         if (mentor == null) {
             throw new NotFoundException("존재하지 않는 멘토입니다.");
         }
+
+        mentor.getTags().clear();
+        mentor.getZones().clear();
 
         mentor.setAccount(null);
         mentor.setResume(null);

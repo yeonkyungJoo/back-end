@@ -5,13 +5,12 @@ import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.mentoring.form.CreateMenteeRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest;
-import com.project.devidea.modules.content.mentoring.validator.MenteeRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,18 +25,10 @@ public class MenteeController {
 
     private final MenteeService menteeService;
     private final MenteeRepository menteeRepository;
-    private final MenteeRequestValidator menteeRequestValidator;
-
-    @InitBinder("request")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(menteeRequestValidator);
-    }
 
     // TODO - 페이징 처리
-    
-    /**
-     * 멘티 전체 조회
-     */
+
+    @ApiOperation("멘티 전체 조회")
     @GetMapping("/")
     public ResponseEntity getMentees() {
 
@@ -47,9 +38,7 @@ public class MenteeController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    /**
-     * 멘티 조회
-     */
+    @ApiOperation("멘티 조회")
     @GetMapping("/{id}")
     public ResponseEntity getMentee(@PathVariable(name = "id") Long menteeId) {
 
@@ -58,9 +47,7 @@ public class MenteeController {
         return new ResponseEntity(new MenteeDto(mentee), HttpStatus.OK);
     }
 
-    /**
-     * 멘티 등록
-     */
+    @ApiOperation("멘티 등록")
     @PostMapping("/")
     public ResponseEntity newMentee(@RequestBody @Valid CreateMenteeRequest request,
                                     @CurrentUser Account account) {
@@ -72,9 +59,7 @@ public class MenteeController {
         return new ResponseEntity(menteeId, HttpStatus.CREATED);
     }
 
-    /**
-     * 멘티 정보 수정
-     */
+    @ApiOperation("멘티 정보 수정")
     @PostMapping("/update")
     public ResponseEntity editMentee(@RequestBody @Valid UpdateMenteeRequest request,
                                      @CurrentUser Account account) {
@@ -85,9 +70,7 @@ public class MenteeController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * 멘티 탈퇴
-     */
+    @ApiOperation("멘티 탈퇴")
     @PostMapping("/delete")
     public ResponseEntity quitMentee(@CurrentUser Account account) {
 

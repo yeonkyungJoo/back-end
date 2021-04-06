@@ -1,10 +1,7 @@
 package com.project.devidea.modules.content.mentoring.form;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
@@ -12,6 +9,7 @@ import java.util.Set;
 
 @Getter @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MentorRequest {
 
     @NotEmpty

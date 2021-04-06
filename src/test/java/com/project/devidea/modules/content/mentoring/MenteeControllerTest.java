@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -54,6 +55,9 @@ class MenteeControllerTest {
 
     Set<String> tagSet = new HashSet<>();
     Set<String> zoneSet = new HashSet<>();
+
+    Set<String> updateTagSet = new HashSet<>();
+    Set<String> updateZoneSet = new HashSet<>();
 
     @BeforeEach
     @Transactional
@@ -96,18 +100,32 @@ class MenteeControllerTest {
         Random random = new Random();
         int i = 0;
         while (i < 3) {
-            int randomIdx = random.nextInt(tagList.size());
+            int randomIdx = random.nextInt(tagList.size()-1);
             tagSet.add(tagList.get(randomIdx).toString());
             zoneSet.add(zoneList.get(randomIdx).toString());
+
+            updateTagSet.add(tagList.get(randomIdx+1).toString());
+            updateZoneSet.add(zoneList.get(randomIdx+1).toString());
             i++;
         }
+    }
 
+    private Set<Tag> getTags(Set<String> tags) {
+        return tags.stream()
+                .map(tag -> tagRepository.findByFirstName(tag)).collect(Collectors.toSet());
+    }
+
+    private Set<Zone> getZones(Set<String> zones) {
+        return zones.stream().map(zone -> {
+            String[] locations = zone.split("/");
+            return zoneRepository.findByCityAndProvince(locations[0], locations[1]);
+        }).collect(Collectors.toSet());
     }
 
     @Test
     @DisplayName("멘티 등록 - empty zones")
     @WithAccount("yk")
-    public void newMentee_invalidInput() throws Exception {
+    public void newMentee_withInvalidInput() throws Exception {
         // Given
         // When, Then
         CreateMenteeRequest request = CreateMenteeRequest.builder()
@@ -185,6 +203,8 @@ class MenteeControllerTest {
         Account account = accountRepository.findByNickname("yk");
         Mentee mentee = Mentee.builder()
                 .account(account)
+                .tags(getTags(tagSet))
+                .zones(getZones(zoneSet))
                 .description("description")
                 .free(true)
                 .build();
@@ -203,6 +223,8 @@ class MenteeControllerTest {
         // Then
         UpdateMenteeRequest request = UpdateMenteeRequest.builder()
                 .description("change description")
+                .zones(updateZoneSet)
+                .tags(updateTagSet)
                 .open(false)
                 .free(false)
                 .build();
@@ -216,6 +238,8 @@ class MenteeControllerTest {
         Mentee findMentee = menteeRepository.findById(menteeId).get();
         assertNotNull(findMentee);
         assertEquals("change description", findMentee.getDescription());
+        assertEquals(getZones(updateZoneSet), findMentee.getZones());
+        assertEquals(getTags(updateTagSet), findMentee.getTags());
         assertEquals(false, findMentee.isFree());
         assertEquals(false, findMentee.isOpen());
         assertEquals("yk", findMentee.getAccount().getNickname());
@@ -256,7 +280,7 @@ class MenteeControllerTest {
         // Then
         mockMvc.perform(post("/mentee/delete"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().is(403));
         assertTrue(menteeRepository.findById(menteeId).isPresent());
     }
 }

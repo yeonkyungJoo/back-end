@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter @Setter
+@NoArgsConstructor
 public class UpdateMenteeRequest extends MenteeRequest {
 
     private boolean open;

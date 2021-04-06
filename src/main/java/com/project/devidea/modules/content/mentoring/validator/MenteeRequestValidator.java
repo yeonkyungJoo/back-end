@@ -1,6 +1,7 @@
 package com.project.devidea.modules.content.mentoring.validator;
 
 import com.project.devidea.infra.error.exception.ErrorCode;
+import com.project.devidea.modules.content.mentoring.exception.InvalidInputException;
 import com.project.devidea.modules.content.mentoring.form.MenteeRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

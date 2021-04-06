@@ -10,7 +10,7 @@ import java.util.Set;
 public class CreateMenteeRequest extends MenteeRequest {
 
     @Builder
-    public CreateMenteeRequest(String description, Set<String> zones, Set<String> tags, boolean free) {
+    public CreateMenteeRequest(String description, @NotEmpty Set<String> zones, @NotEmpty Set<String> tags, boolean free) {
         super(description, zones, tags, free);
     }
 }

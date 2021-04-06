@@ -28,7 +28,7 @@ public class MentorRequestValidator implements Validator {
             errors.rejectValue("tags", ErrorCode.INVALID_INPUT_VALUE.getCode());
         }
 
-        if (request.isFree() && request.getCost() <= 0) {
+        if ((request.isFree() && request.getCost() > 0) || request.getCost() < 0) {
             errors.rejectValue("cost", ErrorCode.INVALID_INPUT_VALUE.getCode());
         }
     }

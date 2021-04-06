@@ -12,9 +12,9 @@ import java.util.Set;
 public class MenteeRequest {
 
     private String description;
-    // @NotEmpty
+    @NotEmpty
     private Set<String> zones;
-    // @NotEmpty
+    @NotEmpty
     private Set<String> tags;
     private boolean free;
 

@@ -6,6 +6,7 @@ import com.project.devidea.modules.content.mentoring.exception.NotFoundException
 import com.project.devidea.modules.content.mentoring.form.CreateMentorRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMentorRequest;
 import com.project.devidea.modules.content.mentoring.validator.MentorRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -27,12 +28,6 @@ public class MentorController {
 
     private final MentorRepository mentorRepository;
     private final MentorService mentorService;
-    private final MentorRequestValidator mentorRequestValidator;
-
-    @InitBinder("request")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(mentorRequestValidator);
-    }
 
     // TODO - 페이징
     /**
@@ -43,9 +38,7 @@ public class MentorController {
         return ResponseEntity.ok(null);
     }
 
-    /**
-     * 멘토 전체 조회
-     */
+    @ApiOperation("멘토 전체 조회")
     @GetMapping("/")
     public ResponseEntity getMentors() {
 
@@ -55,9 +48,7 @@ public class MentorController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    /**
-     * 멘토 조회
-     */
+    @ApiOperation("멘토 조회")
     @GetMapping("/{id}")
     public ResponseEntity getMentor(@PathVariable(name = "id") Long mentorId) {
         Mentor mentor = mentorRepository.findById(mentorId)
@@ -65,9 +56,7 @@ public class MentorController {
         return new ResponseEntity(new MentorDto(mentor), HttpStatus.OK);
     }
 
-    /**
-     * 멘토 등록
-     */
+    @ApiOperation("멘토 등록")
     @PostMapping("/")
     public ResponseEntity newMentor(@RequestBody @Valid CreateMentorRequest request,
                                     @CurrentUser Account account) {
@@ -78,9 +67,7 @@ public class MentorController {
         return new ResponseEntity(mentorId, HttpStatus.CREATED);
     }
 
-    /**
-     * 멘토 정보 수정
-     */
+    @ApiOperation("멘토 정보 수정")
     @PostMapping("/update")
     public ResponseEntity editMentor(@RequestBody @Valid UpdateMentorRequest request,
                                      @CurrentUser Account account) {
@@ -91,9 +78,7 @@ public class MentorController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * 멘토 탈퇴
-     */
+    @ApiOperation("멘토 탈퇴")
     @PostMapping("/delete")
     public ResponseEntity quitMentor(@CurrentUser Account account) {
 

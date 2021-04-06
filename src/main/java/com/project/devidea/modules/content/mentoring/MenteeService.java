@@ -49,6 +49,9 @@ public class MenteeService extends AbstractService {
         if(mentee == null) {
             throw new NotFoundException("존재하지 않는 멘티입니다.");
         }
+
+        mentee.getTags().clear();
+        mentee.getZones().clear();
         mentee.setAccount(null);
         menteeRepository.delete(mentee);
     }
@@ -64,8 +67,12 @@ public class MenteeService extends AbstractService {
         Set<Tag> tags = getTags(request.getTags());
 
         mentee.setDescription(request.getDescription());
+
+        mentee.getZones().clear();
         mentee.setZones(zones);
+        mentee.getTags().clear();
         mentee.setTags(tags);
+
         mentee.setOpen(request.isOpen());
         mentee.setFree(request.isFree());
     }
