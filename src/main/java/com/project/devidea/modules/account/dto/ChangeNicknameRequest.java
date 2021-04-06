@@ -12,6 +12,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class ChangeNicknameRequest {
 
-    @Size(min = 3, max = 8, message = "닉네임은 3자 이상 8자 이하로 입력해주세요.")
+    @Size(min = 2, max = 8, message = "닉네임은 3자 이상 8자 이하로 입력해주세요.")
     private String nickname;
 }

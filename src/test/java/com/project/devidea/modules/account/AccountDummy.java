@@ -10,10 +10,9 @@ import java.util.*;
 
 public class AccountDummy {
 
-    public static SignUpDetailRequestDto getSignUpDetailRequestDto() {
-        return SignUpDetailRequestDto.builder()
-                .careerYears(3).receiveEmail(true).jobField("웹개발").profileImage("1234")
-                .nickname("고범석짱짱짱")
+    public static SignUp.DetailRequest getSignUpDetailRequestDto() {
+        return SignUp.DetailRequest.builder()
+                .careerYears(3).receiveEmail(true).jobField("웹개발").profilePath("1234")
                 .zones(Arrays.asList("서울특별시/광진구", "서울특별시/중랑구", "경기도/수원시"))
                 .techStacks(Arrays.asList("java", "python"))
                 .interests(Arrays.asList("react", "Vue.js", "spring"))
@@ -41,24 +40,18 @@ public class AccountDummy {
         return zones;
     }
 
-    public static SignUpOAuthRequestDto getSignUpOAuthRequestDto() {
-        return SignUpOAuthRequestDto.builder().id(SHA256.encrypt("google123412341234"))
-                .name("구글범석").profileImage("12341234").provider("google").build();
+    public static SignUp.OAuthRequest getSignUpOAuthRequestDto() {
+        return SignUp.OAuthRequest.builder().id(SHA256.encrypt("google123412341234"))
+                .name("구글범석").provider("google").build();
     }
 
-    public static SignUpOAuthRequestDto getSignUpOAuthRequestDto2() {
-        return SignUpOAuthRequestDto.builder().id(SHA256.encrypt("google56785678"))
-                .name("고오범석").profileImage("12341234").provider("google").build();
+    public static SignUp.OAuthRequest getSignUpOAuthRequestDto2() {
+        return SignUp.OAuthRequest.builder().id(SHA256.encrypt("google56785678"))
+                .nickname("고오범석").name("고오범석").provider("google").build();
     }
 
-    public static LoginOAuthRequestDto getLoginOAuthRequestDto() {
-        return LoginOAuthRequestDto.builder().provider("google")
-                .id(SHA256.encrypt("google56785678")).build();
-    }
-
-    public static LoginOAuthRequestDto getLoginOAuthRequestDto2() {
-        return LoginOAuthRequestDto.builder().provider("google")
-                .id(SHA256.encrypt("google123412341234")).build();
+    public static Login.OAuth getLoginOAuthRequestDto() {
+        return Login.OAuth.builder().id(SHA256.encrypt("google56785678")).build();
     }
 
     public static AccountProfileResponseDto getAccountProfileResponseDtoAtMockito() {
@@ -75,7 +68,21 @@ public class AccountDummy {
     }
 
     public static UpdatePasswordRequestDto getUpdatePassowordRequestDto() {
-        return UpdatePasswordRequestDto.builder().password("123123123123").passwordConfirm("123123123123").build();
+        return UpdatePasswordRequestDto.builder()
+                .password(SHA256.encrypt("123123123123"))
+                .passwordConfirm(SHA256.encrypt("123123123123")).build();
+    }
+
+    public static UpdatePasswordRequestDto getNotEqualsPasswordAndPasswordConfirm() {
+        return UpdatePasswordRequestDto.builder()
+                .password(SHA256.encrypt("1234567890"))
+                .passwordConfirm(SHA256.encrypt("123")).build();
+    }
+
+    public static UpdatePasswordRequestDto getBlankPasswordRequest() {
+        return UpdatePasswordRequestDto.builder()
+                .password("  ")
+                .passwordConfirm("").build();
     }
 
     public static InterestsUpdateRequestDto getInterestsUpdateRequestDto() {
@@ -88,31 +95,27 @@ public class AccountDummy {
                 .build();
     }
 
-    public static SignUpRequestDto getFailSignUpRequestWithValid() {
-        return SignUpRequestDto.builder()
-                .email("").name("").password("").passwordConfirm("").build();
+    public static SignUp.CommonRequest getFailSignUpRequestWithValid() {
+        return SignUp.CommonRequest.builder()
+                .email("").name("").password("").passwordConfirm("").nickname("").build();
     }
 
-    public static SignUpRequestDto getFailSignUpRequestWithValidator() {
-        return SignUpRequestDto.builder().email("test@test.com").name("고범석")
+    public static SignUp.CommonRequest getFailSignUpRequestWithValidator() {
+        return SignUp.CommonRequest.builder().email("test@test.com").name("고범석").nickname("DevIdea")
                 .password("12341234").passwordConfirm("123412341234").build();
     }
 
-    public static SignUpOAuthRequestDto getFailSignUpOAuthRequestWithValid() {
-        return SignUpOAuthRequestDto.builder().provider("").id("").name("").build();
+    public static SignUp.OAuthRequest getFailSignUpOAuthRequestWithValid() {
+        return SignUp.OAuthRequest.builder().provider("").id("").name("").nickname("").build();
     }
 
-    public static SignUpOAuthRequestDto getFailSignUpOAuthRequestWithValidator() {
-        return SignUpOAuthRequestDto.builder().provider("kakao").id("asdfasdf").name("고범석").build();
+    public static SignUp.OAuthRequest getFailSignUpOAuthRequestWithValidator() {
+        return SignUp.OAuthRequest.builder().provider("kakao").id("asdfasdf").name("고범석").
+                nickname("DevIdea").build();
     }
 
-    public static SignUpDetailRequestDto getFailSignUpDetailRequestWithValid(){
-        return SignUpDetailRequestDto.builder()
-                .careerYears(-1).jobField("").nickname("testusers").build();
-    }
-
-    public static SignUpDetailRequestDto getFailSignUpDetailRequestWithValidator() {
-        return SignUpDetailRequestDto.builder().nickname("DevIdea")
-                .careerYears(2).jobField("웹개발").build();
+    public static SignUp.DetailRequest getFailSignUpDetailRequestWithValid(){
+        return SignUp.DetailRequest.builder()
+                .careerYears(-1).build();
     }
 }

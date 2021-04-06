@@ -5,12 +5,6 @@ import com.project.devidea.infra.config.security.CustomUserDetailService;
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.modules.account.dto.*;
-import com.project.devidea.modules.account.repository.InterestRepository;
-import com.project.devidea.modules.account.repository.MainActivityZoneRepository;
-import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.tag.TagRepository;
-import com.project.devidea.modules.tagzone.zone.Zone;
-import com.project.devidea.modules.tagzone.zone.ZoneRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -23,13 +17,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -53,14 +42,6 @@ class AccountInfoControllerTest {
     CustomUserDetailService customUserDetailService;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    MainActivityZoneRepository mainActivityZoneRepository;
-    @Autowired
-    ZoneRepository zoneRepository;
-    @Autowired
-    InterestRepository interestRepository;
-    @Autowired
-    TagRepository tagRepository;
 
     @Test
     @WithUserDetails(value = "test@test.com")
@@ -87,7 +68,6 @@ class AccountInfoControllerTest {
 
     @Test
     @WithUserDetails(value = "test@test.com")
-    @Transactional
     void 유저_프로필_수정() throws Exception {
 
 //        given
@@ -105,10 +85,11 @@ class AccountInfoControllerTest {
                 .andExpect(status().isOk());
 
 //        then
-        Account account = loginUser.getAccount();
+        LoginUser findUser = (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        Account account = findUser.getAccount();
         assertAll(
                 () -> assertEquals(account.getBio(), accountProfileUpdateRequestDto.getBio()),
-                () -> assertEquals(account.getProfileImage(), accountProfileUpdateRequestDto.getProfileImage()),
+                () -> assertEquals(account.getProfilePath(), accountProfileUpdateRequestDto.getProfileImage()),
                 () -> assertEquals(account.getUrl(), accountProfileUpdateRequestDto.getUrl()),
                 () -> assertEquals(account.getGender(), accountProfileUpdateRequestDto.getGender()),
                 () -> assertEquals(account.getJob(), accountProfileUpdateRequestDto.getJob()),
@@ -119,7 +100,6 @@ class AccountInfoControllerTest {
 
     @Test
     @WithUserDetails(value = "test@test.com")
-    @Transactional
     void 유저_패스워드_수정() throws Exception {
 
 //        given
@@ -138,7 +118,7 @@ class AccountInfoControllerTest {
 //        then, 바뀐 비밀번호로 로그인할 경우 Bearer 토큰을 주는지?
         MockHttpServletResponse response = mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(LoginRequestDto.builder()
+                .content(objectMapper.writeValueAsString(Login.Common.builder()
                         .email("test@test.com")
                         .password(updatePasswordRequestDto.getPassword()).build())))
                 .andExpect(status().isOk())
@@ -151,7 +131,6 @@ class AccountInfoControllerTest {
 
     @Test
     @WithUserDetails(value = "test@test.com")
-    @Transactional
     void 관심기술_가져오기() throws Exception {
 
 //        given
@@ -160,7 +139,7 @@ class AccountInfoControllerTest {
 
 //        when, then
         mockMvc.perform(get("/account/settings/interests")
-                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -168,47 +147,31 @@ class AccountInfoControllerTest {
 
     @Test
     @WithUserDetails(value = "test@test.com")
-    @Transactional
     void 관심기술_수정하기() throws Exception {
 
 //        given
         LoginUser loginUser =
                 (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        addInterests(loginUser);
         InterestsUpdateRequestDto interestsUpdateRequestDto = AccountDummy.getInterestsUpdateRequestDto();
 
 //        when
         mockMvc.perform(patch("/account/settings/interests")
-                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(interestsUpdateRequestDto)))
+                .andExpect(status().isOk());
+
+//        then, 조회 시 수정한 값이 제대로 나오는지 확인하기
+        mockMvc.perform(get("/account/settings/interests")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.tagNames.length()", is(3)))
                 .andDo(print());
-
-//        then
-        Set<Interest> interests = loginUser.getAccount().getInterests();
-        List<String> names =
-                interests.stream().map(interest -> interest.getTag().getFirstName()).collect(Collectors.toList());
-        List<Interest> findInter = interestRepository.findByAccount(loginUser.getAccount());
-
-        assertThat(names).contains("Vue.js", "java", "docker");
-        assertThat(findInter.size()).isEqualTo(3);
-    }
-
-    private void addInterests(LoginUser loginUser) {
-        Account account = loginUser.getAccount();
-        List<Tag> tags = tagRepository.findByFirstNameIn(Arrays.asList("java", "spring"));
-
-        Set<Interest> interests = tags.stream().map(tag -> Interest.builder()
-                .account(account).tag(tag).build()).collect(Collectors.toSet());
-
-        account.getInterests().addAll(interests);
-        interestRepository.saveAll(interests);
     }
 
     @Test
     @WithUserDetails("test@test.com")
-    @Transactional
     void 활동지역_가져오기() throws Exception {
 
 //        given
@@ -217,7 +180,7 @@ class AccountInfoControllerTest {
 
 //        when, then
         mockMvc.perform(get("/account/settings/mainactivityzones")
-                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -225,50 +188,30 @@ class AccountInfoControllerTest {
 
     @Test
     @WithUserDetails("test@test.com")
-    @Transactional
     void 활동지역_수정하기() throws Exception {
 
 //        given
         LoginUser loginUser = (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-//        기존 유저에 활동지역 저장해두기
-        addMainActivityZones(loginUser);
         MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto =
                 AccountDummy.getMainActivityZonesUpdateRequestDto();
 
 //        when
         mockMvc.perform(patch("/account/settings/mainactivityzones")
-                .header("Authorization", "Bearer" + jwtTokenUtil.generateToken(loginUser))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(mainActivityZonesUpdateRequestDto)))
-                .andDo(print());
+                .andExpect(status().isOk());
 
 //        then
-        Set<MainActivityZone> mainActivityZones = loginUser.getAccount().getMainActivityZones();
-        List<String> citiesAndProvinces = mainActivityZones.stream()
-                .map(mainActivityZone -> mainActivityZone.getZone().toString())
-                .collect(Collectors.toList());
-        List<MainActivityZone> findMains = mainActivityZoneRepository.findByAccount(loginUser.getAccount());
-
-        assertThat(citiesAndProvinces).contains("서울특별시/중랑구", "서울특별시/노원구");
-        assertThat(findMains.size()).isEqualTo(2);
-    }
-
-    private void addMainActivityZones(LoginUser loginUser) {
-        Account account = loginUser.getAccount();
-        List<Zone> zones =
-                zoneRepository.findByCityInAndProvinceIn(Arrays.asList("서울특별시", "서울특별시"),
-                        Arrays.asList("광진구", "송파구"));
-
-        Set<MainActivityZone> mainActivityZones = zones.stream().map(zone -> MainActivityZone.builder()
-                .account(account).zone(zone).build()).collect(Collectors.toSet());
-
-        account.getMainActivityZones().addAll(mainActivityZones);
-        mainActivityZoneRepository.saveAll(mainActivityZones);
+        mockMvc.perform(get("/account/settings/mainactivityzones")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.zoneNames.length()", is(2)));
     }
 
     @Test
     @WithUserDetails("test@test.com")
-    @Transactional
     void 닉네임_가져오기() throws Exception {
 
 //        given
@@ -278,14 +221,13 @@ class AccountInfoControllerTest {
 //        when, then
         mockMvc.perform(get("/account/settings/nickname")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", jwtTokenUtil.generateToken(loginUser)))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser)))
                 .andDo(print())
                 .andExpect(jsonPath("$.data.nickname", is(loginUser.getNickName())));
     }
 
     @Test
     @WithUserDetails("test@test.com")
-    @Transactional
     void 닉네임_변경하기() throws Exception {
 
 //        given
@@ -295,21 +237,109 @@ class AccountInfoControllerTest {
 
 //        when
         mockMvc.perform(patch("/account/settings/nickname")
-                .header("Authorization", jwtTokenUtil.generateToken(loginUser))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andDo(print());
 
 //        then
-        assertThat(loginUser.getNickName()).isEqualTo(request.getNickname());
+        LoginUser findUser = (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        assertThat(findUser.getNickName()).isEqualTo(request.getNickname());
     }
 
-//    ValidationTest ====================================================================================================
     @Test
     @WithUserDetails("test@test.com")
-    @Transactional
-    void 닉네임_변경_유효성_검사_1_Size() throws Exception{
+    void 알림_설정_가져오기() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+
+//        when, then
+        mockMvc.perform(get("/account/settings/notifications")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(6)))
+                .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    void 알림_설정_수정하기() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        NotificationRequestResponse request = NotificationRequestResponse.builder()
+                .receiveTechNewsNotification(true).receiveStudyNotification(true).receiveRecruitingNotification(true)
+                .receiveNotification(true).receiveMentoringNotification(true).receiveEmail(true).build();
+
+//        when
+        mockMvc.perform(patch("/account/settings/notifications")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk());
+
+//        then
+        mockMvc.perform(get("/account/settings/notifications")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(6)))
+                .andExpect(jsonPath("$.data.receiveEmail", is(true)))
+                .andExpect(jsonPath("$.data.receiveNotification", is(true)))
+                .andExpect(jsonPath("$.data.receiveTechNewsNotification", is(true)))
+                .andExpect(jsonPath("$.data.receiveMentoringNotification", is(true)))
+                .andExpect(jsonPath("$.data.receiveStudyNotification", is(true)))
+                .andExpect(jsonPath("$.data.receiveRecruitingNotification", is(true)));
+    }
+
+//    ValidationTest ===================================================================================================
+    @Test
+    @WithUserDetails("test@test.com")
+    void 패스워드_변경_유효성_검사_1_패스워드와_패스워드확인_공백체크() throws Exception {
+
+//        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        UpdatePasswordRequestDto request = AccountDummy.getBlankPasswordRequest();
+
+
+//        when, then
+//        불일치, 공백금지
+        mockMvc.perform(patch("/account/settings/password")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(3)));
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    void 패스워드_변경_유효성_검사_2_패스워드와_패스워드확인값_불일치() throws Exception {
+
+    //        given
+        LoginUser loginUser =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        UpdatePasswordRequestDto updatePasswordRequestDto = AccountDummy.getNotEqualsPasswordAndPasswordConfirm();
+
+
+    //        when, then
+        mockMvc.perform(patch("/account/settings/password")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatePasswordRequestDto)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.errors.length()", is(1)));
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    void 닉네임_변경_유효성_검사_1_Size() throws Exception {
 
 //        given
         LoginUser loginUser =
@@ -319,7 +349,7 @@ class AccountInfoControllerTest {
 //        when, then
 //        Valid 3자 미만의 경우
         mockMvc.perform(patch("/account/settings/nickname")
-                .header("Authorization", jwtTokenUtil.generateToken(loginUser))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
@@ -329,7 +359,6 @@ class AccountInfoControllerTest {
 
     @Test
     @WithUserDetails("test@test.com")
-    @Transactional
     void 닉네임_변경_유효성_검사_2_Duplicate() throws Exception{
 
 //        given
@@ -340,7 +369,7 @@ class AccountInfoControllerTest {
 //        when, then
 //        중복 금지
         mockMvc.perform(patch("/account/settings/nickname")
-                .header("Authorization", jwtTokenUtil.generateToken(loginUser))
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
