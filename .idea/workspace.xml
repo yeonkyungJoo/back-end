@@ -242,7 +242,6 @@
         <item itemvalue="JUnit.account in devidea.test" />
         <item itemvalue="JUnit.AccountControllerTest.로그인_유효성_테스트_2_아이디와_비밀번호가_일치하지_않은_경우" />
         <item itemvalue="JUnit.AccountControllerTest.탈퇴한_회원_로그인_실패" />
-        <item itemvalue="JUnit.AccountControllerTest.탈퇴한_회원_로그인" />
       </list>
     </recent_temporary>
   </component>
