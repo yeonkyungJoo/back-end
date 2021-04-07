@@ -64,11 +64,11 @@ class AccountServiceTest {
                 .thenReturn(AccountDummy.getAccountProfileResponseDtoAtMockito());
 
 //        when
-        AccountProfileResponseDto accountProfileResponseDto =
+        Update.ProfileResponse accountProfileResponseDto =
                 accountService.getProfile(loginUser);
 
 //        then
-        verify(modelMapper).map(loginUser.getAccount(), AccountProfileResponseDto.class);
+        verify(modelMapper).map(loginUser.getAccount(), Update.ProfileResponse.class);
     }
 
     @Test
@@ -77,17 +77,17 @@ class AccountServiceTest {
 //        given
         LoginUser loginUser = mock(LoginUser.class);
         Account account = mock(Account.class);
-        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
-                mock(AccountProfileUpdateRequestDto.class);
+        Update.ProfileRequest request =
+                mock(Update.ProfileRequest.class);
         when(accountRepository.findByEmail(account.getEmail()))
                 .thenReturn(Optional.of(account));
 
 //        when
-        accountService.updateProfile(loginUser, accountProfileUpdateRequestDto);
+        accountService.updateProfile(loginUser, request);
 
 //        then
         verify(accountRepository).findByEmail(account.getEmail());
-        verify(account).updateProfile(accountProfileUpdateRequestDto);
+        verify(account).updateProfile(request);
     }
 
     @Test
@@ -96,7 +96,7 @@ class AccountServiceTest {
 //        given
         LoginUser loginUser = mock(LoginUser.class);
         Account account = mock(Account.class);
-        UpdatePasswordRequestDto updatePasswordRequestDto = mock(UpdatePasswordRequestDto.class);
+        Update.PasswordRequest updatePasswordRequestDto = mock(Update.PasswordRequest.class);
         String changePassword = "{bcrypt}1234";
         when(passwordEncoder.encode(any()))
                 .thenReturn(changePassword);
@@ -134,7 +134,7 @@ class AccountServiceTest {
 //        given
         LoginUser loginUser = mock(LoginUser.class);
         Account account = mock(Account.class);
-        InterestsUpdateRequestDto interestsUpdateRequestDto = mock(InterestsUpdateRequestDto.class);
+        Update.Interest interestsUpdateRequestDto = mock(Update.Interest.class);
         List<Tag> tags = new ArrayList<>();
         Tag tag = mock(Tag.class);
         tags.add(tag);
@@ -143,7 +143,6 @@ class AccountServiceTest {
                 .thenReturn(account);
         when(tagRepository.findByFirstNameIn(interestsUpdateRequestDto.getInterests()))
                 .thenReturn(tags);
-//        when(interestRepository.deleteByAccount(account)).thenReturn(anyInt());
 
 //        when
         accountService.updateAccountInterests(loginUser, interestsUpdateRequestDto);
@@ -178,8 +177,8 @@ class AccountServiceTest {
 //        given
         LoginUser loginUser = mock(LoginUser.class);
         Account account = mock(Account.class);
-        MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto =
-                mock(MainActivityZonesUpdateRequestDto.class);
+        Update.MainActivityZone mainActivityZonesUpdateRequestDto =
+                mock(Update.MainActivityZone.class);
         List<Zone> zones = new ArrayList<>();
         Zone zone = mock(Zone.class);
         zones.add(zone);
@@ -188,7 +187,6 @@ class AccountServiceTest {
                 .thenReturn(account);
         when(zoneRepository.findByCityInAndProvinceIn(any(), any()))
                 .thenReturn(zones);
-//        when(mainActivityZoneRepository.deleteByAccount(account)).thenReturn(anyInt());
 
 //        when
         accountService.updateAccountMainActivityZones(loginUser, mainActivityZonesUpdateRequestDto);
@@ -220,22 +218,27 @@ class AccountServiceTest {
         verify(account).getNickname();
     }
 
-//    @Test
-//    void 닉네임_변경하기() throws Exception{
-//
-////        given
-//        LoginUser loginUser = mock(LoginUser.class);
-//        Account account = mock(Account.class);
-//        ChangeNicknameRequest request = mock(ChangeNicknameRequest.class);
-//        when(loginUser.getAccount()).thenReturn(account);
-//
-////        when
-//        accountService.updateAccountNickname(loginUser, request);
-//
-////        then
-//        verify(loginUser).getAccount();
-//        verify(account).changeNickname(any());
-//    }
+    @Test
+    void 닉네임_변경하기() throws Exception{
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        String username = "username";
+        String changeUsername = "changeUsername";
+        Account account = mock(Account.class);
+        Update.NicknameRequest request = mock(Update.NicknameRequest.class);
+        when(loginUser.getUsername()).thenReturn(username);
+        when(request.getNickname()).thenReturn(changeUsername);
+        when(accountRepository.findByEmail(username))
+                .thenReturn(Optional.of(account));
+
+//        when
+        accountService.updateAccountNickname(loginUser, request);
+
+//        then
+        verify(loginUser).getUsername();
+        verify(account).changeNickname(request.getNickname());
+    }
 
     @Test
     void 알림_설정_가져오기() throws Exception {
@@ -243,7 +246,7 @@ class AccountServiceTest {
 //        given
         LoginUser loginUser = mock(LoginUser.class);
         Account account = mock(Account.class);
-        NotificationRequestResponse response = mock(NotificationRequestResponse.class);
+        Update.Notification response = mock(Update.Notification.class);
         when(loginUser.getAccount()).thenReturn(account);
 
 //        when
@@ -251,7 +254,7 @@ class AccountServiceTest {
 
 //        then
         verify(loginUser).getAccount();
-        verify(modelMapper).map(account, NotificationRequestResponse.class);
+        verify(modelMapper).map(account, Update.Notification.class);
     }
 
     @Test
@@ -260,7 +263,7 @@ class AccountServiceTest {
 //        given
         LoginUser loginUser = mock(LoginUser.class);
         Account account = mock(Account.class);
-        NotificationRequestResponse request = mock(NotificationRequestResponse.class);
+        Update.Notification request = mock(Update.Notification.class);
         when(loginUser.getUsername()).thenReturn("email");
         when(accountRepository.findByEmail(loginUser.getUsername()))
                 .thenReturn(Optional.of(account));
@@ -272,5 +275,23 @@ class AccountServiceTest {
 //        then
         verify(accountRepository).findByEmail(loginUser.getUsername());
         verify(account).updateNotifications(request);
+    }
+
+    @Test
+    void 회원_탈퇴() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        String email = "email";
+        when(loginUser.getUsername()).thenReturn(email);
+        when(accountRepository.findByEmail(any())).thenReturn(Optional.of(account));
+
+//        when
+        accountService.quit(loginUser);
+
+//        then
+        verify(accountRepository).findByEmail(any());
+        verify(account).changeToQuit();
     }
 }

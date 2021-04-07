@@ -20,7 +20,11 @@ public class LoginUser extends User {
     private Account account;
     //need default constructor for JSON Parsing
     public LoginUser(Account account) {
-//        에러 발생! 설명드릴것!!!
+        /**
+         *  @Param account.getNickname() -> account.getEmail()
+         *  우리 프로젝트에서 이메일이 아이디 개념이기 때문에 getNickname() 보다는
+         *  getEmail()이 맞을 것 같아 수정했습니다. to.근우
+         */
         super(account.getEmail(), account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
         this.account = account;
     }
@@ -69,6 +73,7 @@ public class LoginUser extends User {
     @Override
     @JsonIgnore
     public boolean isEnabled() {
-        return true;
+        // 회원 탈퇴의 경우 여기서 에러 발생
+        return !account.isQuit();
     }
 }

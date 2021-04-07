@@ -1,11 +1,14 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.NotificationRequestResponse;
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.dto.SignUp;
+import com.project.devidea.modules.account.dto.Update;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.content.study.StudyMember;
 import lombok.*;
 import org.apache.tomcat.util.buf.StringUtils;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -100,13 +103,16 @@ public class Account {
 
     private boolean receiveRecruitingNotification;
 
+    // 회원 탈퇴 여부 true가 탈퇴한 회원!
+    private boolean quit;
+
     @Override
     public String toString() {
         return getNickname();
     }
 
     @Builder
-    public Account(Long id, String email, String password, String name, String nickname, String emailCheckToken, String roles, LocalDateTime joinedAt, LocalDateTime modifiedAt, String bio, String profileImage, String url, String gender, String job, int careerYears, String techStacks, Set<Interest> interests, Set<MainActivityZone> mainActivityZones, Set<StudyMember> studies, String provider, boolean receiveEmail, boolean receiveNotification, boolean receiveTechNewsNotification, boolean receiveMentoringNotification, boolean receiveStudyNotification, boolean receiveRecruitingNotification) {
+    public Account(Long id, String email, String password, String name, String nickname, String emailCheckToken, String roles, LocalDateTime joinedAt, LocalDateTime modifiedAt, String bio, String profileImage, String url, String gender, String job, int careerYears, String techStacks, Set<Interest> interests, Set<MainActivityZone> mainActivityZones, Set<StudyMember> studies, String provider, boolean receiveEmail, boolean receiveNotification, boolean receiveTechNewsNotification, boolean receiveMentoringNotification, boolean receiveStudyNotification, boolean receiveRecruitingNotification, boolean quit) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -133,6 +139,7 @@ public class Account {
         this.receiveMentoringNotification = receiveMentoringNotification;
         this.receiveStudyNotification = receiveStudyNotification;
         this.receiveRecruitingNotification = receiveRecruitingNotification;
+        this.quit = quit;
     }
 
     //    편의 메서드
@@ -149,7 +156,7 @@ public class Account {
         this.mainActivityZones.addAll(mainActivityZones);
     }
 
-    public void updateProfile(AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
+    public void updateProfile(Update.ProfileRequest accountProfileUpdateRequestDto) {
         this.bio = accountProfileUpdateRequestDto.getBio();
         this.profilePath = accountProfileUpdateRequestDto.getProfileImage();
         this.url = accountProfileUpdateRequestDto.getUrl();
@@ -184,7 +191,7 @@ public class Account {
                 .id(id).build();
     }
 
-    public void updateNotifications(NotificationRequestResponse request) {
+    public void updateNotifications(Update.Notification request) {
 
         this.receiveEmail = request.isReceiveEmail();
         this.receiveNotification = request.isReceiveNotification();
@@ -192,6 +199,14 @@ public class Account {
         this.receiveMentoringNotification = request.isReceiveMentoringNotification();
         this.receiveStudyNotification = request.isReceiveStudyNotification();
         this.receiveRecruitingNotification = request.isReceiveRecruitingNotification();
+    }
+
+    public void changeToQuit() {
+
+        if (this.isQuit()) {
+            throw new AccountException("이미 탈퇴한 회원입니다.", ErrorCode.ACCOUNT_ERROR);
+        }
+        this.quit = true;
     }
 }
 

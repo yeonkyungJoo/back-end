@@ -48,6 +48,13 @@ public class ErrorResponse {
         this.message = message;
     }
 
+    public ErrorResponse(ErrorCode code, List<FieldError> errors, String message) {
+        this.code = code.getCode();
+        this.status = code.getStatus();
+        this.errors = errors;
+        this.message = message;
+    }
+
     public static ErrorResponse of(final ErrorCode code, String message) {
         return new ErrorResponse(code, message);
     }
@@ -72,6 +79,10 @@ public class ErrorResponse {
         final String value = e.getValue() == null ? "" : e.getValue().toString();
         final List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), value, e.getErrorCode());
         return new ErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
+    }
+
+    public static ErrorResponse of(final ErrorCode code, final Errors errors, String message) {
+        return new ErrorResponse(code, FieldError.of(errors), message);
     }
 
     @Getter

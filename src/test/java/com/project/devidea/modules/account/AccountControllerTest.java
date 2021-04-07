@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -116,16 +117,16 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("로그인 시 jwt, 토큰의 username == 로그인 username 확인")
-        void confirmJwtTokenAndAuthorization() throws Exception {
+    void confirmJwtTokenAndAuthorization() throws Exception {
 
 //        when, then
         MockHttpServletResponse mockHttpServletResponse = mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Login.Common.builder()
                         .email("test@test.com").password("1234").build())))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(header().exists("Authorization")).andReturn().getResponse();
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(header().exists("Authorization")).andReturn().getResponse();
 
         String jwtToken = mockHttpServletResponse.getHeader("Authorization").substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -186,6 +187,27 @@ class AccountControllerTest {
         assertAll(
                 () -> assertEquals(mainActivityZones.size(), 3),
                 () -> assertEquals(interests.size(), 3));
+    }
+
+    @Test
+    @WithUserDetails("test@test.com")
+    void 회원_탈퇴() throws Exception {
+
+//        given
+        LoginUser user =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+
+//        when
+        mockMvc.perform(delete("/account/quit")
+                .header("Authorization", jwtTokenUtil.generateToken(user))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+//        then
+        LoginUser confirm =
+                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+        assertTrue(confirm.getAccount().isQuit());
     }
 
 //    ValidationTest ====================================================================================================
@@ -312,5 +334,37 @@ class AccountControllerTest {
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.errors.length()", is(1)));
+    }
+
+    @Test
+    @WithUserDetails("quit@quit.com")
+    void 이미_탈퇴한_회원() throws Exception {
+
+//        given
+        LoginUser user =
+                (LoginUser) customUserDetailService.loadUserByUsername("quit@quit.com");
+
+//        when
+        mockMvc.perform(delete("/account/quit")
+                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(user))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @WithUserDetails("quit@quit.com")
+    void 탈퇴한_회원_로그인_실패() throws Exception {
+
+//        given
+        Login.Common login =
+                Login.Common.builder().email("quit@quit.com").password(SHA256.encrypt("1234")).build();
+
+//        when, then
+        mockMvc.perform(post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(login)))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 }

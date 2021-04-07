@@ -2,7 +2,9 @@ package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.error.GlobalResponse;
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.dto.*;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.account.validator.NicknameValidator;
 import com.project.devidea.modules.account.validator.SignUpOAuthRequestValidator;
 import com.project.devidea.modules.account.validator.SignUpRequestValidator;
@@ -26,7 +28,6 @@ public class AccountController {
     // TODO : Custom-Validator를 상속해도 잘 동작하는지?
     private final SignUpRequestValidator signUpRequestValidator;
     private final SignUpOAuthRequestValidator signUpOAuthRequestValidator;
-//    private final NicknameValidator nicknameValidator;
 
     @InitBinder("commonRequest")
     public void initSignUpValidator(WebDataBinder binder) {
@@ -71,12 +72,18 @@ public class AccountController {
         return headers;
     }
 
-//    회원가입 디테일
     @PostMapping("/sign-up/detail")
     public ResponseEntity<?> signUpDetail(@AuthenticationPrincipal LoginUser loginUser,
                                         @Valid @RequestBody SignUp.DetailRequest detailRequest) {
 
         accountService.saveSignUpDetail(loginUser, detailRequest);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/account/quit")
+    public ResponseEntity<?> quit(@AuthenticationPrincipal LoginUser loginUser) {
+
+        accountService.quit(loginUser);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 }

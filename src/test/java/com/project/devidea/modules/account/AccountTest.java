@@ -1,6 +1,7 @@
 package com.project.devidea.modules.account;
 
 import com.project.devidea.modules.account.dto.*;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagDummy;
 import com.project.devidea.modules.tagzone.zone.Zone;
@@ -22,7 +23,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
+        Update.ProfileRequest accountProfileUpdateRequestDto =
                 AccountDummy.getAccountProfileUpdateRequestDto();
 
 //        when
@@ -45,7 +46,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        UpdatePasswordRequestDto updatePasswordRequestDto = AccountDummy.getUpdatePassowordRequestDto();
+        Update.PasswordRequest updatePasswordRequestDto = AccountDummy.getUpdatePassowordRequestDto();
 
 //        when
         account.updatePassword(updatePasswordRequestDto.getPassword());
@@ -91,7 +92,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("변경닉네임").build();
+        Update.NicknameRequest request = Update.NicknameRequest.builder().nickname("변경닉네임").build();
 
 //        when
         account.changeNickname(request.getNickname());
@@ -105,7 +106,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        NotificationRequestResponse request = NotificationRequestResponse.builder().receiveEmail(true)
+        Update.Notification request = Update.Notification.builder().receiveEmail(true)
                 .receiveMentoringNotification(true).receiveNotification(true).receiveRecruitingNotification(true)
                 .receiveStudyNotification(true).receiveTechNewsNotification(true).build();
 
@@ -120,5 +121,31 @@ class AccountTest {
                 () -> assertTrue(account.isReceiveRecruitingNotification()),
                 () -> assertTrue(account.isReceiveStudyNotification()),
                 () -> assertTrue(account.isReceiveTechNewsNotification()));
+    }
+
+    @Test
+    void 탈퇴처리() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+
+//        when
+        account.changeToQuit();
+
+//        then
+        assertTrue(account.isQuit());
+    }
+
+    @Test
+    void 이미_탈퇴된_회원_예외처리() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+
+//        when
+        account.changeToQuit();
+
+//        then
+        assertThrows(AccountException.class, account::changeToQuit);
     }
 }

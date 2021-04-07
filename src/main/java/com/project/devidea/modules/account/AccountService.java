@@ -4,7 +4,9 @@ import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.SHA256;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.security.oauth.OAuthService;
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.dto.*;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.account.repository.InterestRepository;
 import com.project.devidea.modules.account.repository.MainActivityZoneRepository;
@@ -52,9 +54,8 @@ public class AccountService implements OAuthService {
                 .roles("ROLE_USER")
                 .joinedAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
-                .provider(null)
                 .gender(signUpRequestDto.getGender())
-                .profileImage(null)
+                .quit(false)
                 .build());
 
         return modelMapper.map(savedAccount, SignUp.Response.class);
@@ -73,6 +74,7 @@ public class AccountService implements OAuthService {
                 .modifiedAt(LocalDateTime.now())
                 .provider(request.getProvider())
                 .gender(request.getGender())
+                .quit(false)
                 .build());
 
         return SignUp.Response.builder().provider(savedAccount.getProvider())
@@ -99,7 +101,7 @@ public class AccountService implements OAuthService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new DisabledException("이미 탈퇴한 회원입니다.", e);
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("회원의 아이디와 비밀번호가 일치하지 않습니다.", e);
         }
@@ -144,35 +146,35 @@ public class AccountService implements OAuthService {
     }
 
     @Transactional(readOnly = true)
-    public AccountProfileResponseDto getProfile(LoginUser loginUser) {
-        return modelMapper.map(loginUser.getAccount(), AccountProfileResponseDto.class);
+    public Update.ProfileResponse getProfile(LoginUser loginUser) {
+
+        return modelMapper.map(loginUser.getAccount(), Update.ProfileResponse.class);
     }
 
-    public void updateProfile(LoginUser loginUser,
-                              AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
+    public void updateProfile(LoginUser loginUser, Update.ProfileRequest request) {
         Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
-        account.updateProfile(accountProfileUpdateRequestDto);
+        account.updateProfile(request);
     }
 
     public void updatePassword(LoginUser loginUser,
-                               UpdatePasswordRequestDto updatePasswordRequestDto) {
+                               Update.PasswordRequest request) {
         Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
-        account.updatePassword("{bcrypt}" + passwordEncoder.encode(updatePasswordRequestDto.getPassword()));
+        account.updatePassword("{bcrypt}" + passwordEncoder.encode(request.getPassword()));
     }
 
-    public InterestsResponseDto getAccountInterests(LoginUser loginUser) {
+    public Update.Interest getAccountInterests(LoginUser loginUser) {
         Set<Interest> interests =
                 accountRepository.findByEmailWithInterests(loginUser.getUsername()).getInterests();
-        return InterestsResponseDto.builder().tagNames(
+        return Update.Interest.builder().interests(
                 interests.stream()
                         .map(interest -> interest.getTag().getFirstName())
                         .collect(Collectors.toList())).build();
     }
 
-    public void updateAccountInterests(LoginUser loginUser,
-                                InterestsUpdateRequestDto interestsUpdateRequestDto) {
+    public void updateAccountInterests(LoginUser loginUser, Update.Interest request) {
+
         Account account = accountRepository.findByEmailWithInterests(loginUser.getUsername());
-        List<Tag> tags = tagRepository.findByFirstNameIn(interestsUpdateRequestDto.getInterests());
+        List<Tag> tags = tagRepository.findByFirstNameIn(request.getInterests());
         Set<Interest> interests = getInterests(account, tags);
 
 //        기존에 있던 정보들 삭제
@@ -183,19 +185,19 @@ public class AccountService implements OAuthService {
         interestRepository.saveAll(interests);
     }
 
-    public MainActivityZonesResponseDto getAccountMainActivityZones(LoginUser loginUser) {
+    public Update.MainActivityZone getAccountMainActivityZones(LoginUser loginUser) {
         Set<MainActivityZone> mainActivityZones =
                 accountRepository.findByEmailWithMainActivityZones(loginUser.getUsername()).getMainActivityZones();
-        return MainActivityZonesResponseDto.builder()
-                .zoneNames(
+        return Update.MainActivityZone.builder()
+                .mainActivityZones(
                         mainActivityZones.stream().map(zone -> zone.getZone().toString()).collect(Collectors.toList()))
                 .build();
     }
 
     public void updateAccountMainActivityZones(LoginUser loginUser,
-                                               MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto) {
+                                               Update.MainActivityZone request) {
         Account account = accountRepository.findByEmailWithMainActivityZones(loginUser.getUsername());
-        Map<String, List<String>> map = mainActivityZonesUpdateRequestDto.splitCityAndProvince();
+        Map<String, List<String>> map = request.splitCityAndProvince();
         List<Zone> zones
                 = zoneRepository.findByCityInAndProvinceIn(map.get("city"), map.get("province"));
         Set<MainActivityZone> mainActivityZones = getMainActivityZones(account, zones);
@@ -214,20 +216,26 @@ public class AccountService implements OAuthService {
         return map;
     }
 
-    public void updateAccountNickname(LoginUser loginUser, ChangeNicknameRequest request) {
+    public void updateAccountNickname(LoginUser loginUser, Update.NicknameRequest request) {
         Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
         account.changeNickname(request.getNickname());
     }
 
-    public NotificationRequestResponse getAccountNotification(LoginUser loginUser) {
+    public Update.Notification getAccountNotification(LoginUser loginUser) {
 
         Account account = loginUser.getAccount();
-        return modelMapper.map(account, NotificationRequestResponse.class);
+        return modelMapper.map(account, Update.Notification.class);
     }
 
-    public void updateAccountNotification(LoginUser loginUser, NotificationRequestResponse request) {
+    public void updateAccountNotification(LoginUser loginUser, Update.Notification request) {
 
         Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
         account.updateNotifications(request);
+    }
+
+    public void quit(LoginUser loginUser) {
+
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
+        account.changeToQuit();
     }
 }

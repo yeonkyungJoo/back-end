@@ -1,7 +1,7 @@
 package com.project.devidea.modules.account.validator;
 
 import com.project.devidea.infra.error.exception.ErrorCode;
-import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
+import com.project.devidea.modules.account.dto.Update;
 import com.project.devidea.modules.account.exception.AccountException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -12,13 +12,13 @@ public class PasswordValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return UpdatePasswordRequestDto.class.equals(clazz);
+        return Update.PasswordRequest.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
 
-        UpdatePasswordRequestDto updatePasswordRequestDto = (UpdatePasswordRequestDto) target;
+        Update.PasswordRequest updatePasswordRequestDto = (Update.PasswordRequest) target;
 
         if (!updatePasswordRequestDto.getPassword().equals(updatePasswordRequestDto.getPasswordConfirm())) {
             errors.rejectValue("password", "invalid.password",
