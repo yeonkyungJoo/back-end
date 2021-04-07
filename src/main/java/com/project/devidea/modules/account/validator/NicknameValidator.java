@@ -1,7 +1,7 @@
 package com.project.devidea.modules.account.validator;
 
 import com.project.devidea.infra.error.exception.ErrorCode;
-import com.project.devidea.modules.account.dto.ChangeNicknameRequest;
+import com.project.devidea.modules.account.dto.Update;
 import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +17,13 @@ public class NicknameValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return ChangeNicknameRequest.class.isAssignableFrom(clazz);
+        return Update.NicknameRequest.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
 
-        ChangeNicknameRequest request = (ChangeNicknameRequest) target;
+        Update.NicknameRequest request = (Update.NicknameRequest) target;
 
         if (accountRepository.existsByNickname(request.getNickname())) {
             errors.rejectValue("nickname", "invalid.nickname", "닉네임이 중복되었습니다.");

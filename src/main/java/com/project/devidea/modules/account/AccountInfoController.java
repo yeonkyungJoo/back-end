@@ -4,7 +4,7 @@ import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.error.GlobalResponse;
 import com.project.devidea.modules.account.dto.*;
 import com.project.devidea.modules.account.validator.NicknameValidator;
-import com.project.devidea.modules.account.validator.UpdatePasswordValidator;
+import com.project.devidea.modules.account.validator.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,60 +22,64 @@ import java.util.Map;
 public class AccountInfoController {
 
     private final AccountService accountService;
-    private final UpdatePasswordValidator updatePasswordValidator;
+    private final PasswordValidator updatePasswordValidator;
     private final NicknameValidator nicknameValidator;
 
-    @InitBinder("updatePasswordRequestDto")
+    @InitBinder("passwordRequest")
     public void initUpdatePasswordValidator(WebDataBinder binder) {
         binder.addValidators(updatePasswordValidator);
     }
 
-    @InitBinder("changeNicknameRequest")
+    @InitBinder("nicknameRequest")
     public void initNicknameValidator(WebDataBinder binder) {
         binder.addValidators(nicknameValidator);
     }
 
     @GetMapping("/profile")
-    public AccountProfileResponseDto getProfile(@AuthenticationPrincipal LoginUser loginUser) {
-        return accountService.getProfile(loginUser);
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal LoginUser loginUser) {
+
+        return new ResponseEntity<>(GlobalResponse.of(accountService.getProfile(loginUser)), HttpStatus.OK);
     }
 
     @PatchMapping("/profile")
     public ResponseEntity<?> updateProfile(@AuthenticationPrincipal LoginUser loginUser,
-                                           @RequestBody AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
-        accountService.updateProfile(loginUser, accountProfileUpdateRequestDto);
+                                           @RequestBody Update.ProfileRequest request) {
+
+        accountService.updateProfile(loginUser, request);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
     @PatchMapping("/password")
     public ResponseEntity<?> updatePassword(@AuthenticationPrincipal LoginUser loginUser,
-                                            @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto, Errors errors) {
+                                            @Valid @RequestBody Update.PasswordRequest request) {
 
-        accountService.updatePassword(loginUser, updatePasswordRequestDto);
+        accountService.updatePassword(loginUser, request);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
     @GetMapping("/interests")
-    public InterestsResponseDto getInterests(@AuthenticationPrincipal LoginUser loginUser) {
-        return accountService.getAccountInterests(loginUser);
+    public ResponseEntity<?> getInterests(@AuthenticationPrincipal LoginUser loginUser) {
+
+        return new ResponseEntity<>(GlobalResponse.of(accountService.getAccountInterests(loginUser)), HttpStatus.OK);
     }
 
     @PatchMapping("/interests")
     public ResponseEntity<?> updateInterests(@AuthenticationPrincipal LoginUser loginUser,
-                                             @RequestBody InterestsUpdateRequestDto interestsUpdateRequestDto) {
-        accountService.updateAccountInterests(loginUser, interestsUpdateRequestDto);
+                                             @RequestBody Update.Interest request) {
+        accountService.updateAccountInterests(loginUser, request);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
     @GetMapping("/mainactivityzones")
-    public MainActivityZonesResponseDto getMainActivityZones(@AuthenticationPrincipal LoginUser loginUser) {
-        return accountService.getAccountMainActivityZones(loginUser);
+    public ResponseEntity<?> getMainActivityZones(@AuthenticationPrincipal LoginUser loginUser) {
+
+        return new ResponseEntity<>(GlobalResponse.of(accountService.getAccountMainActivityZones(loginUser)), HttpStatus.OK);
     }
 
     @PatchMapping("/mainactivityzones")
     public ResponseEntity<?> updateMainActivityZones(@AuthenticationPrincipal LoginUser loginUser,
-                                                     @RequestBody MainActivityZonesUpdateRequestDto mainActivityZonesUpdateRequestDto) {
-        accountService.updateAccountMainActivityZones(loginUser, mainActivityZonesUpdateRequestDto);
+                                                     @RequestBody Update.MainActivityZone request) {
+        accountService.updateAccountMainActivityZones(loginUser, request);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 
@@ -88,9 +92,24 @@ public class AccountInfoController {
 
     @PatchMapping("/nickname")
     public ResponseEntity<?> updateAccountNickname(@AuthenticationPrincipal LoginUser loginUser,
-                                                   @Valid @RequestBody ChangeNicknameRequest changeNicknameRequest){
+                                                   @Valid @RequestBody Update.NicknameRequest request){
 
-        accountService.updateAccountNickname(loginUser, changeNicknameRequest);
+        accountService.updateAccountNickname(loginUser, request);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
+    }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<?> getAccountNotifications(@AuthenticationPrincipal LoginUser loginUser) {
+
+        Update.Notification response = accountService.getAccountNotification(loginUser);
+        return new ResponseEntity<>(GlobalResponse.of(response), HttpStatus.OK);
+    }
+
+    @PatchMapping("/notifications")
+    public ResponseEntity<?> updateAccountNotifications(@AuthenticationPrincipal LoginUser loginUser,
+                                                     @RequestBody Update.Notification request) {
+
+        accountService.updateAccountNotification(loginUser, request);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 }

@@ -1,15 +1,12 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.ChangeNicknameRequest;
-import com.project.devidea.modules.account.dto.InterestsResponseDto;
-import com.project.devidea.modules.account.dto.UpdatePasswordRequestDto;
+import com.project.devidea.modules.account.dto.*;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.tagzone.tag.Tag;
 import com.project.devidea.modules.tagzone.tag.TagDummy;
 import com.project.devidea.modules.tagzone.zone.Zone;
 import com.project.devidea.modules.tagzone.zone.ZoneDummy;
 import org.apache.tomcat.util.buf.StringUtils;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -26,7 +23,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        AccountProfileUpdateRequestDto accountProfileUpdateRequestDto =
+        Update.ProfileRequest accountProfileUpdateRequestDto =
                 AccountDummy.getAccountProfileUpdateRequestDto();
 
 //        when
@@ -40,7 +37,7 @@ class AccountTest {
                 () -> assertEquals(account.getGender(), accountProfileUpdateRequestDto.getGender()),
                 () -> assertEquals(account.getUrl(), accountProfileUpdateRequestDto.getUrl()),
                 () -> assertEquals(account.getJob(), accountProfileUpdateRequestDto.getJob()),
-                () -> assertEquals(account.getProfileImage(), accountProfileUpdateRequestDto.getProfileImage()),
+                () -> assertEquals(account.getProfilePath(), accountProfileUpdateRequestDto.getProfileImage()),
                 () -> assertEquals(techStacks, StringUtils.join(accountProfileUpdateRequestDto.getTechStacks(), '/')));
     }
 
@@ -49,7 +46,7 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        UpdatePasswordRequestDto updatePasswordRequestDto = AccountDummy.getUpdatePassowordRequestDto();
+        Update.PasswordRequest updatePasswordRequestDto = AccountDummy.getUpdatePassowordRequestDto();
 
 //        when
         account.updatePassword(updatePasswordRequestDto.getPassword());
@@ -95,12 +92,60 @@ class AccountTest {
 
 //        given
         Account account = AccountDummy.getAccount();
-        ChangeNicknameRequest request = ChangeNicknameRequest.builder().nickname("변경닉네임").build();
+        Update.NicknameRequest request = Update.NicknameRequest.builder().nickname("변경닉네임").build();
 
 //        when
         account.changeNickname(request.getNickname());
 
 //        then
         assertThat(account.getNickname()).isEqualTo(request.getNickname());
+    }
+
+    @Test
+    void 알림_설정_변경() throws Exception{
+
+//        given
+        Account account = AccountDummy.getAccount();
+        Update.Notification request = Update.Notification.builder().receiveEmail(true)
+                .receiveMentoringNotification(true).receiveNotification(true).receiveRecruitingNotification(true)
+                .receiveStudyNotification(true).receiveTechNewsNotification(true).build();
+
+//        when
+        account.updateNotifications(request);
+
+//        then
+        assertAll(
+                () -> assertTrue(account.isReceiveEmail()),
+                () -> assertTrue(account.isReceiveMentoringNotification()),
+                () -> assertTrue(account.isReceiveNotification()),
+                () -> assertTrue(account.isReceiveRecruitingNotification()),
+                () -> assertTrue(account.isReceiveStudyNotification()),
+                () -> assertTrue(account.isReceiveTechNewsNotification()));
+    }
+
+    @Test
+    void 탈퇴처리() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+
+//        when
+        account.changeToQuit();
+
+//        then
+        assertTrue(account.isQuit());
+    }
+
+    @Test
+    void 이미_탈퇴된_회원_예외처리() throws Exception {
+
+//        given
+        Account account = AccountDummy.getAccount();
+
+//        when
+        account.changeToQuit();
+
+//        then
+        assertThrows(AccountException.class, account::changeToQuit);
     }
 }

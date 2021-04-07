@@ -2,7 +2,9 @@ package com.project.devidea.modules.account;
 
 import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.error.GlobalResponse;
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.dto.*;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.account.validator.NicknameValidator;
 import com.project.devidea.modules.account.validator.SignUpOAuthRequestValidator;
 import com.project.devidea.modules.account.validator.SignUpRequestValidator;
@@ -23,52 +25,44 @@ import java.util.Map;
 public class AccountController {
 
     private final AccountService accountService;
+    // TODO : Custom-Validator를 상속해도 잘 동작하는지?
     private final SignUpRequestValidator signUpRequestValidator;
     private final SignUpOAuthRequestValidator signUpOAuthRequestValidator;
-    private final NicknameValidator nicknameValidator;
 
-    @InitBinder("signUpRequestDto")
-    public void initSignUpRequestDtoValidator(WebDataBinder binder) {
+    @InitBinder("commonRequest")
+    public void initSignUpValidator(WebDataBinder binder) {
         binder.addValidators(signUpRequestValidator);
-        System.out.println("AccountController.initSignUpRequestDtoValidator");
     }
 
-    @InitBinder("signUpOAuthRequestDto")
-    public void initSignUpOAuthRequestValidator(WebDataBinder binder) {
+    @InitBinder("OAuthRequest")
+    public void initSignUpOAuthValidator(WebDataBinder binder) {
         binder.addValidators(signUpOAuthRequestValidator);
     }
 
-    @InitBinder("signUpDetailRequestDto")
-    public void initSignUpDetailRequestDto(WebDataBinder binder) {
-        binder.addValidators(nicknameValidator);
-    }
-
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUp.CommonRequest commonRequest) {
 
-        return new ResponseEntity<>(GlobalResponse.of(accountService.signUp(signUpRequestDto)), HttpStatus.OK);
+        return new ResponseEntity<>(GlobalResponse.of(accountService.signUp(commonRequest)), HttpStatus.OK);
     }
 
-//    oauth 회원가입
     @PostMapping("/sign-up/oauth")
-    public ResponseEntity<?> signUpOAuth(@Valid @RequestBody SignUpOAuthRequestDto signUpOAuthRequestDto)
+    public ResponseEntity<?> signUpOAuth(@Valid @RequestBody SignUp.OAuthRequest oAuthRequest)
             throws NoSuchAlgorithmException {
 
-        return new ResponseEntity<>(GlobalResponse.of(accountService.signUpOAuth(signUpOAuthRequestDto)), HttpStatus.OK);
+        return new ResponseEntity<>(GlobalResponse.of(accountService.signUpOAuth(oAuthRequest)), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto loginRequestDto) throws Exception {
+    public ResponseEntity<?> login(@Valid @RequestBody Login.Common login) throws Exception {
 
-        Map<String, String> result = accountService.login(loginRequestDto);
+        Map<String, String> result = accountService.login(login);
         return new ResponseEntity<>(GlobalResponse.of(), getHttpHeaders(result), HttpStatus.OK);
     }
 
-//    oauth 로그인
     @PostMapping("/login/oauth")
-    public ResponseEntity<?> loginOAuth(@Valid @RequestBody LoginOAuthRequestDto loginOAuthRequestDto) throws Exception {
+    public ResponseEntity<?> loginOAuth(@Valid @RequestBody Login.OAuth login) throws Exception {
 
-        Map<String, String> result = accountService.loginOAuth(loginOAuthRequestDto);
+        Map<String, String> result = accountService.loginOAuth(login);
         return new ResponseEntity<>(GlobalResponse.of(), getHttpHeaders(result), HttpStatus.OK);
     }
 
@@ -78,12 +72,18 @@ public class AccountController {
         return headers;
     }
 
-//    회원가입 디테일
     @PostMapping("/sign-up/detail")
     public ResponseEntity<?> signUpDetail(@AuthenticationPrincipal LoginUser loginUser,
-                                        @Valid @RequestBody SignUpDetailRequestDto signUpDetailRequestDto) {
+                                        @Valid @RequestBody SignUp.DetailRequest detailRequest) {
 
-        accountService.saveSignUpDetail(loginUser, signUpDetailRequestDto);
+        accountService.saveSignUpDetail(loginUser, detailRequest);
+        return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/account/quit")
+    public ResponseEntity<?> quit(@AuthenticationPrincipal LoginUser loginUser) {
+
+        accountService.quit(loginUser);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
     }
 }

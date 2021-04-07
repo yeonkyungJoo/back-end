@@ -1,10 +1,14 @@
 package com.project.devidea.modules.account;
 
-import com.project.devidea.modules.account.dto.AccountProfileUpdateRequestDto;
-import com.project.devidea.modules.account.dto.SignUpDetailRequestDto;
+import com.project.devidea.infra.error.exception.ErrorCode;
+import com.project.devidea.modules.account.dto.SignUp;
+import com.project.devidea.modules.account.dto.Update;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.content.study.StudyMember;
 import lombok.*;
 import org.apache.tomcat.util.buf.StringUtils;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,7 +47,7 @@ public class Account {
 
     private String bio;
 
-    private String profileImage;
+    private String profilePath;
 
     private String url;
 
@@ -99,13 +103,16 @@ public class Account {
 
     private boolean receiveRecruitingNotification;
 
+    // 회원 탈퇴 여부 true가 탈퇴한 회원!
+    private boolean quit;
+
     @Override
     public String toString() {
         return getNickname();
     }
 
     @Builder
-    public Account(Long id, String email, String password, String name, String nickname, String emailCheckToken, String roles, LocalDateTime joinedAt, LocalDateTime modifiedAt, String bio, String profileImage, String url, String gender, String job, int careerYears, String techStacks, Set<Interest> interests, Set<MainActivityZone> mainActivityZones, Set<StudyMember> studies, String provider, boolean receiveEmail, boolean receiveNotification, boolean receiveTechNewsNotification, boolean receiveMentoringNotification, boolean receiveStudyNotification, boolean receiveRecruitingNotification) {
+    public Account(Long id, String email, String password, String name, String nickname, String emailCheckToken, String roles, LocalDateTime joinedAt, LocalDateTime modifiedAt, String bio, String profileImage, String url, String gender, String job, int careerYears, String techStacks, Set<Interest> interests, Set<MainActivityZone> mainActivityZones, Set<StudyMember> studies, String provider, boolean receiveEmail, boolean receiveNotification, boolean receiveTechNewsNotification, boolean receiveMentoringNotification, boolean receiveStudyNotification, boolean receiveRecruitingNotification, boolean quit) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -116,7 +123,7 @@ public class Account {
         this.joinedAt = joinedAt;
         this.modifiedAt = modifiedAt;
         this.bio = bio;
-        this.profileImage = profileImage;
+        this.profilePath = profileImage;
         this.url = url;
         this.gender = gender;
         this.job = job;
@@ -132,13 +139,14 @@ public class Account {
         this.receiveMentoringNotification = receiveMentoringNotification;
         this.receiveStudyNotification = receiveStudyNotification;
         this.receiveRecruitingNotification = receiveRecruitingNotification;
+        this.quit = quit;
     }
 
     //    편의 메서드
-    public void saveSignUpDetail(SignUpDetailRequestDto req, Set<MainActivityZone> mainActivityZones, Set<Interest> interests) {
+    public void saveSignUpDetail(SignUp.DetailRequest req, Set<MainActivityZone> mainActivityZones,
+                                 Set<Interest> interests) {
 
-        this.nickname = req.getNickname();
-        this.profileImage = req.getProfileImage();
+        this.profilePath = req.getProfilePath();
         this.receiveEmail = req.isReceiveEmail();
         this.careerYears = req.getCareerYears();
         this.job = req.getJobField();
@@ -148,9 +156,9 @@ public class Account {
         this.mainActivityZones.addAll(mainActivityZones);
     }
 
-    public void updateProfile(AccountProfileUpdateRequestDto accountProfileUpdateRequestDto) {
+    public void updateProfile(Update.ProfileRequest accountProfileUpdateRequestDto) {
         this.bio = accountProfileUpdateRequestDto.getBio();
-        this.profileImage = accountProfileUpdateRequestDto.getProfileImage();
+        this.profilePath = accountProfileUpdateRequestDto.getProfileImage();
         this.url = accountProfileUpdateRequestDto.getUrl();
         this.gender = accountProfileUpdateRequestDto.getGender();
         this.job = accountProfileUpdateRequestDto.getJob();
@@ -181,6 +189,24 @@ public class Account {
     public static Account generateAccountById(Long id){
         return new Account().builder()
                 .id(id).build();
+    }
+
+    public void updateNotifications(Update.Notification request) {
+
+        this.receiveEmail = request.isReceiveEmail();
+        this.receiveNotification = request.isReceiveNotification();
+        this.receiveTechNewsNotification = request.isReceiveTechNewsNotification();
+        this.receiveMentoringNotification = request.isReceiveMentoringNotification();
+        this.receiveStudyNotification = request.isReceiveStudyNotification();
+        this.receiveRecruitingNotification = request.isReceiveRecruitingNotification();
+    }
+
+    public void changeToQuit() {
+
+        if (this.isQuit()) {
+            throw new AccountException("이미 탈퇴한 회원입니다.", ErrorCode.ACCOUNT_ERROR);
+        }
+        this.quit = true;
     }
 }
 
