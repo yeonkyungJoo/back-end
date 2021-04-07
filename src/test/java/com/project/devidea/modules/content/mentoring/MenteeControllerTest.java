@@ -98,16 +98,24 @@ class MenteeControllerTest {
         List<Zone> zoneList = zoneRepository.findAll();
 
         Random random = new Random();
-        int i = 0;
-        while (i < 3) {
-            int randomIdx = random.nextInt(tagList.size()-1);
-            tagSet.add(tagList.get(randomIdx).toString());
-            zoneSet.add(zoneList.get(randomIdx).toString());
 
-            updateTagSet.add(tagList.get(randomIdx+1).toString());
-            updateZoneSet.add(zoneList.get(randomIdx+1).toString());
-            i++;
+        while (tagSet.size() < 3) {
+            int randomIdx = random.nextInt(tagList.size());
+            tagSet.add(tagList.get(randomIdx).toString());
         }
+        while (updateTagSet.size() < 3) {
+            int randomIdx = random.nextInt(tagList.size());
+            updateTagSet.add(tagList.get(randomIdx).toString());
+        }
+        while (zoneSet.size() < 3) {
+            int randomIdx = random.nextInt(zoneList.size());
+            zoneSet.add(zoneList.get(randomIdx).toString());
+        }
+        while (updateZoneSet.size() < 3) {
+            int randomIdx = random.nextInt(zoneList.size());
+            updateZoneSet.add(zoneList.get(randomIdx).toString());
+        }
+
     }
 
     private Set<Tag> getTags(Set<String> tags) {

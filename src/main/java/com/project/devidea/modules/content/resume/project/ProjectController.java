@@ -7,13 +7,12 @@ import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
 import com.project.devidea.modules.content.resume.form.project.CreateProjectRequest;
 import com.project.devidea.modules.content.resume.form.project.UpdateProjectRequest;
-import com.project.devidea.modules.content.resume.validator.ProjectRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,16 +28,8 @@ public class ProjectController {
     private final ResumeRepository resumeRepository;
     private final ProjectRepository projectRepository;
     private final ProjectService projectService;
-    private final ProjectRequestValidator projectRequestValidator;
 
-    @InitBinder("request")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(projectRequestValidator);
-    }
-
-    /**
-     * Project 전체 조회
-     */
+    @ApiOperation("Project 전체 조회")
     @GetMapping("/")
     public ResponseEntity getProjects(@CurrentUser Account account) {
 
@@ -56,9 +47,7 @@ public class ProjectController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    /**
-     * Project 조회
-     */
+    @ApiOperation("Project 조회")
     @GetMapping("/{id}")
     public ResponseEntity getProject(@CurrentUser Account account,
                                      @PathVariable("id") Long projectId) {
@@ -71,9 +60,7 @@ public class ProjectController {
         return new ResponseEntity(new ProjectDto(project), HttpStatus.OK);
     }
 
-    /**
-     * Project 등록
-     */
+    @ApiOperation("Project 등록")
     @PostMapping("/")
     public ResponseEntity newProject(@CurrentUser Account account,
                                      @RequestBody @Valid CreateProjectRequest request) {
@@ -85,9 +72,7 @@ public class ProjectController {
         return new ResponseEntity(projectId, HttpStatus.CREATED);
     }
 
-    /**
-     * Project 수정
-     */
+    @ApiOperation("Project 수정")
     @PostMapping("/{id}/edit")
     public ResponseEntity editProject(@CurrentUser Account account, @PathVariable("id") Long projectId,
                                       @RequestBody @Valid UpdateProjectRequest request) {
@@ -98,9 +83,7 @@ public class ProjectController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * Project 삭제
-     */
+    @ApiOperation("Project 삭제")
     @PostMapping("/{id}/delete")
     public ResponseEntity deleteProject(@CurrentUser Account account,
                                         @PathVariable("id") Long projectId) {

@@ -1,4 +1,3 @@
-/*
 package com.project.devidea.modules.content.resume;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,6 +73,45 @@ class ResumeControllerTest {
     }
 
     @Test
+    @DisplayName("이력서 등록 - Empty phoneNumber")
+    @WithAccount("yk")
+    public void newResume_withInvalidInput() throws Exception {
+        // Given
+        // When, Then
+        CreateResumeRequest request = CreateResumeRequest.builder()
+                .phoneNumber("")
+                .github("yk@github.com")
+                .blog("yk@blog.com")
+                .build();
+
+        mockMvc.perform(post("/resume/")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is(400));
+    }
+
+    @Test
+    @DisplayName("이력서 등록 - alreadyExist")
+    @WithAccount("yk")
+    public void newResume_alreadyExist() throws Exception {
+        // Given
+        // When, Then
+        createResume("yk");
+        CreateResumeRequest request = CreateResumeRequest.builder()
+                .phoneNumber("01012345678")
+                .github("yk@github.com")
+                .blog("yk@blog.com")
+                .build();
+
+        mockMvc.perform(post("/resume/")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is(400));
+    }
+
+    @Test
     @DisplayName("이력서 등록 실패 - withoutAccount로 unauthorized")
     public void newResume_withoutAccount() throws Exception {
         // Given
@@ -88,7 +126,7 @@ class ResumeControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().is(403));
     }
 
     @Test
@@ -127,7 +165,7 @@ class ResumeControllerTest {
     @WithAccount("yk")
     public void editResume_withoutAccount() throws Exception {
         // Given
-        Long resumeId = createResume("yk");
+        createResume("yk");
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(null);
 
@@ -142,7 +180,7 @@ class ResumeControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().is(403));
     }
 
     private Long createResume(String nickname) {
@@ -198,7 +236,7 @@ class ResumeControllerTest {
         // When, Then
         mockMvc.perform(post("/resume/delete"))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().is(403));
         assertTrue(resumeRepository.findById(resumeId).isPresent());
     }
-}*/
+}

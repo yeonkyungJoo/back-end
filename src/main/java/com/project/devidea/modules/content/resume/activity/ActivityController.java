@@ -7,13 +7,12 @@ import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
 import com.project.devidea.modules.content.resume.form.activity.CreateActivityRequest;
 import com.project.devidea.modules.content.resume.form.activity.UpdateActivityRequest;
-import com.project.devidea.modules.content.resume.validator.ActivityRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,16 +27,8 @@ public class ActivityController {
     private final ResumeRepository resumeRepository;
     private final ActivityRepository activityRepository;
     private final ActivityService activityService;
-    private final ActivityRequestValidator activityRequestValidator;
 
-    @InitBinder("request")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(activityRequestValidator);
-    }
-
-    /**
-     * Activity 전체 조회
-     */
+    @ApiOperation("Activity 전체 조회")
     @GetMapping("/")
     public ResponseEntity getActivities(@CurrentUser Account account) {
 
@@ -54,9 +45,7 @@ public class ActivityController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    /**
-     * Activity 조회
-     */
+    @ApiOperation("Activity 조회")
     @GetMapping("/{id}")
     public ResponseEntity getActivity(@CurrentUser Account account, @PathVariable("id") Long activityId) {
 
@@ -68,9 +57,7 @@ public class ActivityController {
         return new ResponseEntity(new ActivityDto(activity), HttpStatus.OK);
     }
 
-    /**
-     * Activity 등록
-     */
+    @ApiOperation("Activity 등록")
     @PostMapping("/")
     public ResponseEntity newActivity(@CurrentUser Account account,
                                       @RequestBody @Valid CreateActivityRequest request) {
@@ -81,9 +68,7 @@ public class ActivityController {
         return new ResponseEntity(activityId, HttpStatus.CREATED);
     }
 
-    /**
-     * Activity 수정
-     */
+    @ApiOperation("Activity 수정")
     @PostMapping("/{id}/edit")
     public ResponseEntity editActivity(@CurrentUser Account account, @PathVariable("id") Long activityId,
                                        @RequestBody @Valid UpdateActivityRequest request) {
@@ -94,9 +79,7 @@ public class ActivityController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * Activity 삭제
-     */
+    @ApiOperation("Activity 삭제")
     @PostMapping("/{id}/delete")
     public ResponseEntity deleteActivity(@CurrentUser Account account,
                                          @PathVariable("id") Long activityId) {

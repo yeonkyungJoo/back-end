@@ -7,13 +7,12 @@ import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
 import com.project.devidea.modules.content.resume.form.career.CreateCareerRequest;
 import com.project.devidea.modules.content.resume.form.career.UpdateCareerRequest;
-import com.project.devidea.modules.content.resume.validator.CareerRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,16 +28,8 @@ public class CareerController {
     private final ResumeRepository resumeRepository;
     private final CareerRepository careerRepository;
     private final CareerService careerService;
-    private final CareerRequestValidator careerRequestValidator;
 
-    @InitBinder("request")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(careerRequestValidator);
-    }
-
-    /**
-     * Career 전체 조회
-     */
+    @ApiOperation("Career 전체 조회")
     @GetMapping("/")
     public ResponseEntity getCareers(@CurrentUser Account account) {
 
@@ -55,9 +46,7 @@ public class CareerController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    /**
-     * Career 조회
-     */
+    @ApiOperation("Career 조회")
     @GetMapping("/{id}")
     public ResponseEntity getCareer(@CurrentUser Account account, @PathVariable("id") Long careerId) {
 
@@ -69,9 +58,7 @@ public class CareerController {
         return new ResponseEntity(new CareerDto(career), HttpStatus.OK);
     }
 
-    /**
-     * Career 등록
-     */
+    @ApiOperation("Career 등록")
     @PostMapping("/")
     public ResponseEntity newCareer(@RequestBody @Valid CreateCareerRequest request,
                                     @CurrentUser Account account) {
@@ -82,9 +69,7 @@ public class CareerController {
         return new ResponseEntity(careerId, HttpStatus.CREATED);
     }
 
-    /**
-     * Career 수정
-     */
+    @ApiOperation("Career 수정")
     @PostMapping("/{id}/edit")
     public ResponseEntity editCareer(@RequestBody @Valid UpdateCareerRequest request,
                                      @PathVariable("id") Long careerId, @CurrentUser Account account) {
@@ -95,9 +80,7 @@ public class CareerController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * Career 삭제
-     */
+    @ApiOperation("Career 삭제")
     @PostMapping("/{id}/delete")
     public ResponseEntity deleteCareer(@PathVariable("id") Long careerId,
                                        @CurrentUser Account account) {

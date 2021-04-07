@@ -67,10 +67,7 @@ public class MenteeService extends AbstractService {
         Set<Tag> tags = getTags(request.getTags());
 
         mentee.setDescription(request.getDescription());
-
-        mentee.getZones().clear();
         mentee.setZones(zones);
-        mentee.getTags().clear();
         mentee.setTags(tags);
 
         mentee.setOpen(request.isOpen());

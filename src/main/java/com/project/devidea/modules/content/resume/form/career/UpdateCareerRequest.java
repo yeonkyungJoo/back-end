@@ -2,12 +2,14 @@ package com.project.devidea.modules.content.resume.form.career;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Getter @Setter
+@NoArgsConstructor
 public class UpdateCareerRequest extends CareerRequest {
 
     @Builder

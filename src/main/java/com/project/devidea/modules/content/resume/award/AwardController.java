@@ -7,13 +7,12 @@ import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
 import com.project.devidea.modules.content.resume.form.award.CreateAwardRequest;
 import com.project.devidea.modules.content.resume.form.award.UpdateAwardRequest;
-import com.project.devidea.modules.content.resume.validator.AwardRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,16 +27,8 @@ public class AwardController {
     private final ResumeRepository resumeRepository;
     private final AwardRepository awardRepository;
     private final AwardService awardService;
-    private final AwardRequestValidator awardRequestValidator;
 
-    @InitBinder("request")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(awardRequestValidator);
-    }
-
-    /**
-     * Award 전체 조회
-     */
+    @ApiOperation("Award 전체 조회")
     @GetMapping("/")
     public ResponseEntity getAwards(@CurrentUser Account account) {
 
@@ -55,9 +46,7 @@ public class AwardController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    /**
-     * Award 조회
-     */
+    @ApiOperation("Award 조회")
     @GetMapping("/{id}")
     public ResponseEntity getAward(@CurrentUser Account account,
                                    @PathVariable("id") Long awardId) {
@@ -69,9 +58,7 @@ public class AwardController {
         return new ResponseEntity(new AwardDto(award), HttpStatus.OK);
     }
 
-    /**
-     * Award 등록
-     */
+    @ApiOperation("Award 등록")
     @PostMapping("/")
     public ResponseEntity newAward(@RequestBody @Valid CreateAwardRequest request,
                                    @CurrentUser Account account) {
@@ -82,9 +69,7 @@ public class AwardController {
         return new ResponseEntity(awardId, HttpStatus.CREATED);
     }
 
-    /**
-     * Award 수정
-     */
+    @ApiOperation("Award 수정")
     @PostMapping("/{id}/edit")
     public ResponseEntity editAward(@RequestBody @Valid UpdateAwardRequest request,
                                     @CurrentUser Account account, @PathVariable("id") Long awardId) {
@@ -96,9 +81,7 @@ public class AwardController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * Award 삭제
-     */
+    @ApiOperation("Award 삭제")
     @PostMapping("/{id}/delete")
     public ResponseEntity deleteAward(@CurrentUser Account account,
                                       @PathVariable("id") Long awardId) {

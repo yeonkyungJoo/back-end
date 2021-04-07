@@ -26,7 +26,7 @@ public class Career {
     private LocalDate endDate;
     private boolean present;    // 재직중
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "career_tag",
                 joinColumns = @JoinColumn(name = "career_id"),
                 inverseJoinColumns = @JoinColumn(name = "tag_id"))

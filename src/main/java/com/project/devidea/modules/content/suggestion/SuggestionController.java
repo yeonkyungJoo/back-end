@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,7 @@ public class SuggestionController {
     @ApiOperation("제안하기")
     @PostMapping("/{id}")
     public ResponseEntity suggest(@CurrentUser Account account, @PathVariable(name = "id") Long id,
-                                  @RequestBody SuggestionRequest request) {
+                                  @RequestBody @Valid SuggestionRequest request) {
         if (account == null) {
             throw new AccessDeniedException("Access is Denied");
         }

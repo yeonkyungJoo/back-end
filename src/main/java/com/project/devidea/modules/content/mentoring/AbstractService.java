@@ -25,7 +25,7 @@ public abstract class AbstractService {
                 .map(tag -> tagRepository.findByFirstName(tag)).collect(Collectors.toSet());
     }
 
-    protected Set<Zone> getZones(Set<String> zones) {
+    public Set<Zone> getZones(Set<String> zones) {
         return zones.stream().map(zone -> {
             String[] locations = zone.split("/");
             return zoneRepository.findByCityAndProvince(locations[0], locations[1]);

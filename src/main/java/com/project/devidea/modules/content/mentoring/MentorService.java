@@ -73,9 +73,7 @@ public class MentorService extends AbstractService {
         Set<Zone> zones = getZones(request.getZones());
         Set<Tag> tags = getTags(request.getTags());
 
-        mentor.getZones().clear();
         mentor.setZones(zones);
-        mentor.getTags().clear();
         mentor.setTags(tags);
 
         mentor.setOpen(request.isOpen());

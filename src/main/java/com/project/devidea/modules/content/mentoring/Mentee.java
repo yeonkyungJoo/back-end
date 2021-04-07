@@ -36,14 +36,14 @@ public class Mentee {
 
     private LocalDateTime publishedDate;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "mentee_zone",
                 joinColumns = @JoinColumn(name = "mentee_id"),
                 inverseJoinColumns = @JoinColumn(name = "zone_id"))
                 // indexes = @Index(name = "zone", columnList = "zone_id"))
     private Set<Zone> zones = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "mentee_tag",
                 joinColumns = @JoinColumn(name = "mentee_id"),
                 inverseJoinColumns = @JoinColumn(name = "tag_id"))
