@@ -8,6 +8,7 @@ import com.project.devidea.modules.content.resume.ResumeRepository;
 import com.project.devidea.modules.content.resume.form.education.CreateEducationRequest;
 import com.project.devidea.modules.content.resume.form.education.UpdateEducationRequest;
 import com.project.devidea.modules.content.resume.validator.EducationRequestValidator;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,16 +29,8 @@ public class EducationController {
     private final ResumeRepository resumeRepository;
     private final EducationRepository educationRepository;
     private final EducationService educationService;
-    private final EducationRequestValidator educationRequestValidator;
 
-    @InitBinder("request")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(educationRequestValidator);
-    }
-
-    /**
-     * Education 전체 조회
-     */
+    @ApiOperation("Education 전체 조회")
     @GetMapping("/")
     public ResponseEntity getEducations(@CurrentUser Account account) {
 
@@ -56,9 +49,7 @@ public class EducationController {
         return new ResponseEntity(collect, HttpStatus.OK);
     }
 
-    /**
-     * Education 조회
-     */
+    @ApiOperation("Education 조회")
     @GetMapping("/{id}")
     public ResponseEntity getEducation(@CurrentUser Account account, @PathVariable("id") Long educationId) {
 
@@ -70,9 +61,7 @@ public class EducationController {
         return new ResponseEntity(new EducationDto(education), HttpStatus.OK);
     }
 
-    /**
-     * Education 등록
-     */
+    @ApiOperation("Education 등록")
     @PostMapping("/")
     public ResponseEntity newEducation(@RequestBody @Valid CreateEducationRequest request,
                                        @CurrentUser Account account) {
@@ -83,9 +72,7 @@ public class EducationController {
         return new ResponseEntity(educationId, HttpStatus.CREATED);
     }
 
-    /**
-     * Education 수정
-     */
+    @ApiOperation("Education 수정")
     @PostMapping("/{id}/edit")
     public ResponseEntity editEducation(@CurrentUser Account account, @PathVariable("id") Long educationId,
                                         @RequestBody @Valid UpdateEducationRequest request) {
@@ -96,9 +83,7 @@ public class EducationController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * Education 삭제
-     */
+    @ApiOperation("Education 삭제")
     @PostMapping("/{id}/delete")
     public ResponseEntity deleteEducation(@CurrentUser Account account, @PathVariable("id") Long educationId) {
 

@@ -37,14 +37,14 @@ public class Mentor {
 
     private LocalDateTime publishedDate;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "mentor_zone",
                 joinColumns = @JoinColumn(name = "mentor_id"),
                 inverseJoinColumns = @JoinColumn(name = "zone_id"))
                 // indexes = @Index(name = "zone", columnList = "zone_id"))
     private Set<Zone> zones = new HashSet<>();  // 가능 지역
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "mentor_tag",
                 joinColumns = @JoinColumn(name = "mentor_id"),
                 inverseJoinColumns = @JoinColumn(name = "tag_id"))

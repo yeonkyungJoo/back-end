@@ -1,9 +1,12 @@
 package com.project.devidea.modules.content.resume.activity;
 
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.Account;
+import com.project.devidea.modules.content.mentoring.exception.InvalidInputException;
 import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
+import com.project.devidea.modules.content.resume.form.activity.ActivityRequest;
 import com.project.devidea.modules.content.resume.form.activity.CreateActivityRequest;
 import com.project.devidea.modules.content.resume.form.activity.UpdateActivityRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +23,24 @@ public class ActivityService {
     private final ResumeRepository resumeRepository;
     private final ActivityRepository activityRepository;
 
+    private void validateActivityRequest(ActivityRequest request) {
+
+        LocalDate startDate = LocalDate.parse(request.getStartDate());
+        LocalDate endDate = LocalDate.parse(request.getEndDate());
+        LocalDate now = LocalDate.now();
+
+        if (startDate.isAfter(now)) {
+            throw new InvalidInputException();
+        }
+
+        if (endDate != null && (endDate.isAfter(now) || !endDate.isAfter(startDate))) {
+            throw new InvalidInputException();
+        }
+    }
+
     public Long createActivity(Account account, CreateActivityRequest request) {
 
+        validateActivityRequest(request);
         Resume resume = resumeRepository.findByAccountId(account.getId());
         if (resume == null) {
             throw new NotFoundException("이력서가 존재하지 않습니다.");
@@ -39,6 +58,7 @@ public class ActivityService {
 
     public void updateActivity(Long activityId, UpdateActivityRequest request) {
 
+        validateActivityRequest(request);
         Activity activity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new NotFoundException());
 

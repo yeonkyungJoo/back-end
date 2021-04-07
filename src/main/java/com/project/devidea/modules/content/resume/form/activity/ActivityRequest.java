@@ -2,6 +2,7 @@ package com.project.devidea.modules.content.resume.form.activity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ActivityRequest {
 
     @NotEmpty

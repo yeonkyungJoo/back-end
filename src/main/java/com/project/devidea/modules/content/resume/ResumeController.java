@@ -6,6 +6,7 @@ import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.resume.form.CreateResumeRequest;
 import com.project.devidea.modules.content.resume.form.UpdateResumeRequest;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.internal.Errors;
@@ -26,9 +27,7 @@ public class ResumeController {
     private final ResumeRepository resumeRepository;
     private final ResumeService resumeService;
 
-    /**
-     * 이력서 조회
-     */
+    @ApiOperation("이력서 조회")
     @GetMapping("/")
     public ResponseEntity getResume(@CurrentUser Account account) {
 
@@ -42,9 +41,7 @@ public class ResumeController {
         return new ResponseEntity(new ResumeDto(resume), HttpStatus.OK);
     }
 
-    /**
-     * 이력서 등록
-     */
+    @ApiOperation("이력서 등록")
     @PostMapping("/")
     public ResponseEntity newResume(@RequestBody @Valid CreateResumeRequest request,
                                     @CurrentUser Account account) {
@@ -55,9 +52,7 @@ public class ResumeController {
         return new ResponseEntity(resumeId, HttpStatus.CREATED);
     }
 
-    /**
-     * 이력서 수정
-     */
+    @ApiOperation("이력서 수정")
     @PostMapping("/edit")
     public ResponseEntity editResume(@RequestBody @Valid UpdateResumeRequest request,
                                      @CurrentUser Account account) {
@@ -69,15 +64,14 @@ public class ResumeController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * 이력서 삭제
-     */
+    @ApiOperation("이력서 삭제")
     @PostMapping("/delete")
     public ResponseEntity deleteResume(@CurrentUser Account account) {
 
         if (account == null) {
             throw new AccessDeniedException("Access is Denied");
         }
+
         resumeService.deleteResume(account);
         return new ResponseEntity(HttpStatus.OK);
     }

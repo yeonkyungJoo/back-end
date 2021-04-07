@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class CreateActivityRequest extends ActivityRequest {
 
     @Builder

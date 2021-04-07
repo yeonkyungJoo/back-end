@@ -47,6 +47,7 @@ public class ResumeService {
         if (resume == null) {
             throw new NotFoundException("이력서가 존재하지 않습니다.");
         }
+
         resumeRepository.delete(resume);
     }
 }

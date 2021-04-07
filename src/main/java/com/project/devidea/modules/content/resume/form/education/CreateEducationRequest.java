@@ -2,12 +2,14 @@ package com.project.devidea.modules.content.resume.form.education;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class CreateEducationRequest extends EducationRequest {
 
     @Builder

@@ -2,11 +2,13 @@ package com.project.devidea.modules.content.resume.form.award;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter @Setter
+@NoArgsConstructor
 public class CreateAwardRequest extends AwardRequest {
 
     @Builder

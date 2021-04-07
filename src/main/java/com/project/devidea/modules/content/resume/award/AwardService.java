@@ -1,10 +1,13 @@
 package com.project.devidea.modules.content.resume.award;
 
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.Account;
 import com.project.devidea.modules.content.mentoring.AbstractService;
+import com.project.devidea.modules.content.mentoring.exception.InvalidInputException;
 import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.resume.Resume;
 import com.project.devidea.modules.content.resume.ResumeRepository;
+import com.project.devidea.modules.content.resume.form.award.AwardRequest;
 import com.project.devidea.modules.content.resume.form.award.CreateAwardRequest;
 import com.project.devidea.modules.content.resume.form.award.UpdateAwardRequest;
 import com.project.devidea.modules.tagzone.tag.TagRepository;
@@ -27,8 +30,18 @@ public class AwardService extends AbstractService {
         this.awardRepository = awardRepository;
     }
 
+    private void validateAwardRequest(AwardRequest request) {
+
+        LocalDate date = LocalDate.parse(request.getDate());
+
+        if (date.isAfter(LocalDate.now())) {
+            throw new InvalidInputException();
+        }
+    }
+
     public Long createAward(Account account, CreateAwardRequest request) {
 
+        validateAwardRequest(request);
         Resume resume = resumeRepository.findByAccountId(account.getId());
         if (resume == null) {
             throw new NotFoundException("이력서가 존재하지 않습니다.");
@@ -44,6 +57,7 @@ public class AwardService extends AbstractService {
 
     public void updateAward(Long awardId, UpdateAwardRequest request) {
 
+        validateAwardRequest(request);
         Award award = awardRepository.findById(awardId)
                 .orElseThrow(() -> new NotFoundException());
 
