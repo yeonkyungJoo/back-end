@@ -26,9 +26,13 @@ spring:
         brand: <img src="assets/img/icon-spring-boot-admin.svg"><span>Spring Boot Admin</span>
         title: Spring Boot Admin
   data:
+#    mongodb:
+#      #      url: mongodb://mongodb2:27017/test
+#      host: mongodb2
+#      port: 27017
+#      database: test
     mongodb:
-      #      url: mongodb://mongodb2:27017/test
-      host: mongodb2
+      host: localhost
       port: 27017
       database: test
   h2:

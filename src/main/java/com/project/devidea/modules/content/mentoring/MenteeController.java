@@ -1,18 +1,16 @@
 package com.project.devidea.modules.content.mentoring;
 
-import com.project.devidea.infra.config.security.LoginUser;
+import com.project.devidea.infra.config.security.CurrentUser;
 import com.project.devidea.modules.account.Account;
+import com.project.devidea.modules.content.mentoring.exception.NotFoundException;
 import com.project.devidea.modules.content.mentoring.form.CreateMenteeRequest;
 import com.project.devidea.modules.content.mentoring.form.UpdateMenteeRequest;
-import com.project.devidea.modules.content.mentoring.validator.CreateMenteeRequestValidator;
-import com.project.devidea.modules.tagzone.tag.Tag;
-import com.project.devidea.modules.tagzone.zone.Zone;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.Errors;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,120 +25,59 @@ public class MenteeController {
 
     private final MenteeService menteeService;
     private final MenteeRepository menteeRepository;
-    private final CreateMenteeRequestValidator createMenteeRequestValidator;
-/*
-    @InitBinder("createMenteeRequest")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(createMenteeRequestValidator);
-    }
-*/
 
-    /**
-     * 멘티 전체 조회
-     */
+    // TODO - 페이징 처리
+
+    @ApiOperation("멘티 전체 조회")
     @GetMapping("/")
     public ResponseEntity getMentees() {
 
-        List<Mentee> mentees = menteeRepository.findAll();
-
-        List<MenteeDto> collect = mentees.stream()
+        List<MenteeDto> collect = menteeRepository.findAll().stream()
                 .map(mentee -> new MenteeDto(mentee))
                 .collect(Collectors.toList());
-
         return new ResponseEntity(collect, HttpStatus.OK);
-
     }
 
-    /**
-     * 멘티 조회
-     */
+    @ApiOperation("멘티 조회")
     @GetMapping("/{id}")
     public ResponseEntity getMentee(@PathVariable(name = "id") Long menteeId) {
 
         Mentee mentee = menteeRepository.findById(menteeId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Id"));
-
-        MenteeDto dto = new MenteeDto(mentee);
-        return new ResponseEntity(dto, HttpStatus.OK);
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 멘티입니다."));
+        return new ResponseEntity(new MenteeDto(mentee), HttpStatus.OK);
     }
 
-    /**
-     * 멘티 등록
-     */
+    @ApiOperation("멘티 등록")
     @PostMapping("/")
-    public ResponseEntity newMentee(@RequestBody @Valid CreateMenteeRequest request, Errors errors,
-                                     // @AuthenticationPrincipal Account account)
-                                     @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity newMentee(@RequestBody @Valid CreateMenteeRequest request,
+                                    @CurrentUser Account account) {
 
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
-        // TODO - test : 이미 멘티인 경우
-        Mentee findMentee = menteeRepository.findByAccountId(account.getId());
-        if(findMentee != null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        if (errors.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        // TODO - validate
-        Mentee mentee = Mentee.builder()
-                .description(request.getDescription())
-                .zones(request.getZones())
-                .tags(request.getTags())
-                .free(request.isFree())
-                .build();
-
-        Long menteeId = menteeService.createMentee(mentee, account);
+        Long menteeId = menteeService.createMentee(account, request);
         return new ResponseEntity(menteeId, HttpStatus.CREATED);
     }
 
-    /**
-     * 멘티 정보 수정
-     */
+    @ApiOperation("멘티 정보 수정")
     @PostMapping("/update")
-    public ResponseEntity editMentee(@RequestBody @Valid UpdateMenteeRequest request, Errors errors,
-                                     // @AuthenticationPrincipal Account account)
-                                     @AuthenticationPrincipal LoginUser loginUser) {
-
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    public ResponseEntity editMentee(@RequestBody @Valid UpdateMenteeRequest request,
+                                     @CurrentUser Account account) {
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
-        Mentee mentee = menteeRepository.findByAccountId(account.getId());
-        if(mentee == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        if (errors.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        // TODO - validate
-        menteeService.updateMentee(request, mentee);
+        menteeService.updateMentee(account, request);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * 멘티 탈퇴
-     */
+    @ApiOperation("멘티 탈퇴")
     @PostMapping("/delete")
-    public ResponseEntity quitMentee(
-            // @AuthenticationPrincipal Account account)
-            @AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity quitMentee(@CurrentUser Account account) {
 
-        if (loginUser == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (account == null) {
+            throw new AccessDeniedException("Access is Denied");
         }
-        Account account = loginUser.getAccount();
-
-        Mentee mentee = menteeRepository.findByAccountId(account.getId());
-        if (mentee == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        menteeService.deleteMentee(mentee);
+        menteeService.deleteMentee(account);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -148,18 +85,22 @@ public class MenteeController {
     @Data
     class MenteeDto {
 
+        private Long id;
         private String name;
         private String description;
-        private Set<Zone> zones;
-        private Set<Tag> tags;
+        private Set<String> zones;
+        private Set<String> tags;
         private boolean open;
         private boolean free;
 
         public MenteeDto(Mentee mentee) {
+            this.id = mentee.getId();
             this.name = mentee.getAccount().getName();
             this.description = mentee.getDescription();
-            this.zones = mentee.getZones();
-            this.tags = mentee.getTags();
+            this.zones = mentee.getZones().stream()
+                    .map(zone -> zone.toString()).collect(Collectors.toSet());
+            this.tags = mentee.getTags().stream()
+                    .map(tag -> tag.toString()).collect(Collectors.toSet());
             this.open = mentee.isOpen();
             this.free = mentee.isFree();
         }
