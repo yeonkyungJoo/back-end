@@ -33,7 +33,29 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3b5d0166-6f91-48b5-bdc5-afeed5f06884" name="Default Changelist" comment="study알림구현" />
+    <list default="true" id="3b5d0166-6f91-48b5-bdc5-afeed5f06884" name="Default Changelist" comment="study알림구현">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/infra/config/security/LoginUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/infra/config/security/LoginUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/Account.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/devidea/modules/account/AccountService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountControllerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountServiceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountServiceTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/classes/com/project/devidea/modules/account/AccountTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/project/devidea/modules/account/QAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/project/devidea/modules/account/QAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/LoginUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/config/security/LoginUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/GlobalExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/infra/error/GlobalExceptionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/InitService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/InitService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/exception/AccountException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/exception/AccountException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/project/devidea/modules/account/AccountTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -150,7 +172,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.back-end [jar]">
+  <component name="RunManager" selected="JUnit.AccountControllerTest.이미_탈퇴한_회원">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -162,26 +184,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="back-end [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="jar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="AccountInfoControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccountControllerTest.이미_탈퇴한_회원" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="devidea.test" />
       <extension name="coverage">
         <pattern>
@@ -190,13 +193,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
-      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountInfoControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountControllerTest" />
+      <option name="METHOD_NAME" value="이미_탈퇴한_회원" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccountServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccountControllerTest.탈퇴한_회원_로그인" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="devidea.test" />
       <extension name="coverage">
         <pattern>
@@ -205,13 +209,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
-      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountControllerTest" />
+      <option name="METHOD_NAME" value="탈퇴한_회원_로그인" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccountServiceTest.닉네임_변경하기" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccountControllerTest.탈퇴한_회원_로그인_실패" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="devidea.test" />
       <extension name="coverage">
         <pattern>
@@ -220,8 +225,24 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
-      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountServiceTest" />
-      <option name="METHOD_NAME" value="닉네임_변경하기" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountControllerTest" />
+      <option name="METHOD_NAME" value="탈퇴한_회원_로그인_실패" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountControllerTest.로그인_유효성_테스트_2_아이디와_비밀번호가_일치하지_않은_경우" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="devidea.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.project.devidea.modules.account.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.project.devidea.modules.account" />
+      <option name="MAIN_CLASS_NAME" value="com.project.devidea.modules.account.AccountControllerTest" />
+      <option name="METHOD_NAME" value="로그인_유효성_테스트_2_아이디와_비밀번호가_일치하지_않은_경우" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -237,11 +258,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.back-end [jar]" />
+        <item itemvalue="JUnit.AccountControllerTest.이미_탈퇴한_회원" />
         <item itemvalue="JUnit.account in devidea.test" />
-        <item itemvalue="JUnit.AccountServiceTest.닉네임_변경하기" />
-        <item itemvalue="JUnit.AccountServiceTest" />
-        <item itemvalue="JUnit.AccountInfoControllerTest" />
+        <item itemvalue="JUnit.AccountControllerTest.로그인_유효성_테스트_2_아이디와_비밀번호가_일치하지_않은_경우" />
+        <item itemvalue="JUnit.AccountControllerTest.탈퇴한_회원_로그인_실패" />
+        <item itemvalue="JUnit.AccountControllerTest.탈퇴한_회원_로그인" />
       </list>
     </recent_temporary>
   </component>
@@ -321,46 +342,46 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1617715831343" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1617684014955">
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1617767871480">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1617684014955" />
-    <state width="1493" height="434" key="GridCell.Tab.0.bottom" timestamp="1617718368131">
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1617767871480" />
+    <state width="1493" height="92" key="GridCell.Tab.0.bottom" timestamp="1617785264959">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="91" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
-    <state width="1493" height="434" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617718368131" />
-    <state width="1493" height="434" key="GridCell.Tab.0.center" timestamp="1617718368130">
+    <state width="1493" height="92" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617785264959" />
+    <state width="1493" height="92" key="GridCell.Tab.0.center" timestamp="1617785264959">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="91" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
-    <state width="1493" height="434" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617718368130" />
-    <state width="1493" height="434" key="GridCell.Tab.0.left" timestamp="1617718368130">
+    <state width="1493" height="92" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617785264959" />
+    <state width="1493" height="92" key="GridCell.Tab.0.left" timestamp="1617785264959">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="91" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
-    <state width="1493" height="434" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617718368130" />
-    <state width="1493" height="434" key="GridCell.Tab.0.right" timestamp="1617718368131">
+    <state width="1493" height="92" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617785264959" />
+    <state width="1493" height="92" key="GridCell.Tab.0.right" timestamp="1617785264959">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="91" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1617458723442" />
-    <state width="1493" height="434" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617718368131" />
-    <state width="1493" height="276" key="GridCell.Tab.1.bottom" timestamp="1617633725296">
+    <state width="1493" height="92" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617785264959" />
+    <state width="1493" height="195" key="GridCell.Tab.1.bottom" timestamp="1617784983958">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="276" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617633725296" />
-    <state width="1493" height="276" key="GridCell.Tab.1.center" timestamp="1617633725296">
+    <state width="1493" height="195" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617784983958" />
+    <state width="1493" height="195" key="GridCell.Tab.1.center" timestamp="1617784983958">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="276" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1617633725296" />
-    <state width="1493" height="276" key="GridCell.Tab.1.left" timestamp="1617633725296">
+    <state width="1493" height="195" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1617784983958" />
+    <state width="1493" height="195" key="GridCell.Tab.1.left" timestamp="1617784983958">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="276" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1617633725296" />
-    <state width="1493" height="276" key="GridCell.Tab.1.right" timestamp="1617633725296">
+    <state width="1493" height="195" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1617784983958" />
+    <state width="1493" height="195" key="GridCell.Tab.1.right" timestamp="1617784983958">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="276" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1617633725296" />
+    <state width="1493" height="195" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1617784983958" />
     <state x="147" y="65" key="MergeDialog" timestamp="1617271689505">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -373,10 +394,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1617277463513" />
-    <state x="221" y="141" width="891" height="640" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1617537479321">
+    <state x="221" y="141" width="891" height="640" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1617785134358">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="221" y="141" width="891" height="640" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1617537479321" />
+    <state x="221" y="141" width="891" height="640" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1617785134358" />
     <state x="406" y="6" width="1130" height="800" key="new project wizard" timestamp="1617427700986">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -393,6 +414,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/project/devidea/modules/content/study/controller/StudyBasicController.java</url>
           <line>26</line>
           <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/project/devidea/modules/account/AccountService.java</url>
+          <line>238</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

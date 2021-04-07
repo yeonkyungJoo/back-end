@@ -111,6 +111,5 @@ public class AccountInfoController {
 
         accountService.updateAccountNotification(loginUser, request);
         return new ResponseEntity<>(GlobalResponse.of(), HttpStatus.OK);
-
     }
 }

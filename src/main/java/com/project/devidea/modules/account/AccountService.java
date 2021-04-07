@@ -4,7 +4,9 @@ import com.project.devidea.infra.config.security.LoginUser;
 import com.project.devidea.infra.config.security.SHA256;
 import com.project.devidea.infra.config.security.jwt.JwtTokenUtil;
 import com.project.devidea.infra.config.security.oauth.OAuthService;
+import com.project.devidea.infra.error.exception.ErrorCode;
 import com.project.devidea.modules.account.dto.*;
+import com.project.devidea.modules.account.exception.AccountException;
 import com.project.devidea.modules.account.repository.AccountRepository;
 import com.project.devidea.modules.account.repository.InterestRepository;
 import com.project.devidea.modules.account.repository.MainActivityZoneRepository;
@@ -53,6 +55,7 @@ public class AccountService implements OAuthService {
                 .joinedAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
                 .gender(signUpRequestDto.getGender())
+                .quit(false)
                 .build());
 
         return modelMapper.map(savedAccount, SignUp.Response.class);
@@ -71,6 +74,7 @@ public class AccountService implements OAuthService {
                 .modifiedAt(LocalDateTime.now())
                 .provider(request.getProvider())
                 .gender(request.getGender())
+                .quit(false)
                 .build());
 
         return SignUp.Response.builder().provider(savedAccount.getProvider())
@@ -97,7 +101,7 @@ public class AccountService implements OAuthService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new DisabledException("이미 탈퇴한 회원입니다.", e);
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("회원의 아이디와 비밀번호가 일치하지 않습니다.", e);
         }
@@ -227,5 +231,11 @@ public class AccountService implements OAuthService {
 
         Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
         account.updateNotifications(request);
+    }
+
+    public void quit(LoginUser loginUser) {
+
+        Account account = accountRepository.findByEmail(loginUser.getUsername()).orElseThrow();
+        account.changeToQuit();
     }
 }

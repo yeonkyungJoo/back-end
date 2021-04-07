@@ -276,4 +276,22 @@ class AccountServiceTest {
         verify(accountRepository).findByEmail(loginUser.getUsername());
         verify(account).updateNotifications(request);
     }
+
+    @Test
+    void 회원_탈퇴() throws Exception {
+
+//        given
+        LoginUser loginUser = mock(LoginUser.class);
+        Account account = mock(Account.class);
+        String email = "email";
+        when(loginUser.getUsername()).thenReturn(email);
+        when(accountRepository.findByEmail(any())).thenReturn(Optional.of(account));
+
+//        when
+        accountService.quit(loginUser);
+
+//        then
+        verify(accountRepository).findByEmail(any());
+        verify(account).changeToQuit();
+    }
 }

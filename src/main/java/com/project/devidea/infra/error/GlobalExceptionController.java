@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -72,12 +74,11 @@ public class GlobalExceptionController {
     }
 
     /**
-     * 로그인 에러처리
+     * 인증 관련 에러처리
      */
-    @ExceptionHandler(BadCredentialsException.class)
-    protected ResponseEntity<ErrorResponse> handleBadCredentialException(BadCredentialsException e) {
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.ACCOUNT_ERROR,
-                "회원의 아이디와 비밀번호가 일치하지 않습니다.");
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<ErrorResponse> handleBadCredentialException(AuthenticationException e) {
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.ACCOUNT_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -90,9 +91,9 @@ public class GlobalExceptionController {
         final ErrorCode errorCode = e.getErrorCode();
 
         ErrorResponse response = new ErrorResponse();
-        if(!e.getMessage().equals(""))  response = ErrorResponse.of(errorCode, e.getErrors());
+        if (!e.getMessage().equals("") && e.getErrors() != null) response = ErrorResponse.of(errorCode, e.getErrors(), e.getMessage());
+        else if (e.getErrors() == null) response = ErrorResponse.of(errorCode, e.getMessage());
         else response = ErrorResponse.of(errorCode);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
-
 }

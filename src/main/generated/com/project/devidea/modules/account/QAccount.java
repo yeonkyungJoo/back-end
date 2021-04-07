@@ -52,6 +52,8 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final StringPath provider = createString("provider");
 
+    public final BooleanPath quit = createBoolean("quit");
+
     public final BooleanPath receiveEmail = createBoolean("receiveEmail");
 
     public final BooleanPath receiveMentoringNotification = createBoolean("receiveMentoringNotification");
