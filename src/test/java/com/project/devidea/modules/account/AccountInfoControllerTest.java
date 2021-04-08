@@ -98,36 +98,36 @@ class AccountInfoControllerTest {
                         StringUtils.join(accountProfileUpdateRequestDto.getTechStacks(), '/')));
     }
 
-    @Test
-    @WithUserDetails(value = "test@test.com")
-    void 유저_패스워드_수정() throws Exception {
-
-//        given
-        LoginUser loginUser =
-                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-        Update.PasswordRequest updatePasswordRequestDto =
-                AccountDummy.getUpdatePassowordRequestDto();
-
-//        when
-        mockMvc.perform(patch("/account/settings/password")
-                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatePasswordRequestDto)))
-                .andDo(print());
-
-//        then, 바뀐 비밀번호로 로그인할 경우 Bearer 토큰을 주는지?
-        MockHttpServletResponse response = mockMvc.perform(post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Login.Common.builder()
-                        .email("test@test.com")
-                        .password(updatePasswordRequestDto.getPassword()).build())))
-                .andExpect(status().isOk())
-                .andExpect(header().exists("Authorization")).andReturn().getResponse();
-
-        String jwtToken = response.getHeader("Authorization").substring(7);
-        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        assertEquals(username, "test@test.com");
-    }
+//    @Test
+//    @WithUserDetails(value = "test@test.com")
+//    void 유저_패스워드_수정() throws Exception {
+//
+////        given
+//        LoginUser loginUser =
+//                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+//        Update.PasswordRequest updatePasswordRequestDto =
+//                AccountDummy.getUpdatePassowordRequestDto();
+//
+////        when
+//        mockMvc.perform(patch("/account/settings/password")
+//                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(updatePasswordRequestDto)))
+//                .andDo(print());
+//
+////        then, 바뀐 비밀번호로 로그인할 경우 Bearer 토큰을 주는지?
+//        MockHttpServletResponse response = mockMvc.perform(post("/login")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(Login.Common.builder()
+//                        .email("test@test.com")
+//                        .password(updatePasswordRequestDto.getPassword()).build())))
+//                .andExpect(status().isOk())
+//                .andExpect(header().exists("Authorization")).andReturn().getResponse();
+//
+//        String jwtToken = response.getHeader("Authorization").substring(7);
+//        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+//        assertEquals(username, "test@test.com");
+//    }
 
     @Test
     @WithUserDetails(value = "test@test.com")
@@ -170,22 +170,22 @@ class AccountInfoControllerTest {
                 .andDo(print());
     }
 
-    @Test
-    @WithUserDetails("test@test.com")
-    void 활동지역_가져오기() throws Exception {
-
-//        given
-        LoginUser loginUser =
-                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
-
-//        when, then
-        mockMvc.perform(get("/account/settings/mainactivityzones")
-                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$.data.mainActivityZones.length()", is(0)));
-    }
+//    @Test
+//    @WithUserDetails("test@test.com")
+//    void 활동지역_가져오기() throws Exception {
+//
+////        given
+//        LoginUser loginUser =
+//                (LoginUser) customUserDetailService.loadUserByUsername("test@test.com");
+//
+////        when, then
+//        mockMvc.perform(get("/account/settings/mainactivityzones")
+//                .header("Authorization", "Bearer " + jwtTokenUtil.generateToken(loginUser))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                .andExpect(jsonPath("$.data.mainActivityZones.length()", is(0)));
+//    }
 
     @Test
     @WithUserDetails("test@test.com")
