@@ -248,37 +248,37 @@ class CareerControllerTest {
         assertTrue(resume.getCareers().isEmpty());
     }
 
-    @Test
-    @DisplayName("Career 등록 - 인증 실패")
-    @WithAccount("yk")
-    public void newCareer_withoutAccount() throws Exception {
-        // Given
-        Account account = accountRepository.findByNickname("yk");
-        Resume resume = createResume(account);
-
-        // When
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(null);
-
-        // Then
-        CreateCareerRequest request = CreateCareerRequest.builder()
-                .companyName("ABC")
-                .duty("senior")
-                .startDate("2021-01-22")
-                .endDate("2021-01-31")
-                .present(false)
-                .tags(tagSet)
-                .detail("")
-                .url("")
-                .build();
-
-        mockMvc.perform(post("/resume/career/")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().is(403));
-        assertTrue(resume.getCareers().isEmpty());
-    }
+//    @Test
+//    @DisplayName("Career 등록 - 인증 실패")
+//    @WithAccount("yk")
+//    public void newCareer_withoutAccount() throws Exception {
+//        // Given
+//        Account account = accountRepository.findByNickname("yk");
+//        Resume resume = createResume(account);
+//
+//        // When
+//        SecurityContext context = SecurityContextHolder.getContext();
+//        context.setAuthentication(null);
+//
+//        // Then
+//        CreateCareerRequest request = CreateCareerRequest.builder()
+//                .companyName("ABC")
+//                .duty("senior")
+//                .startDate("2021-01-22")
+//                .endDate("2021-01-31")
+//                .present(false)
+//                .tags(tagSet)
+//                .detail("")
+//                .url("")
+//                .build();
+//
+//        mockMvc.perform(post("/resume/career/")
+//                .content(objectMapper.writeValueAsString(request))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andDo(print())
+//                .andExpect(status().is(403));
+//        assertTrue(resume.getCareers().isEmpty());
+//    }
 
     @Test
     @DisplayName("Career 등록 - 이력서가 없는 경우")
